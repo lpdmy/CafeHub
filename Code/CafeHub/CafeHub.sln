@@ -3,7 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.10.35013.160
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CafeHub.MVC", "CafeHub.MVC\CafeHub.MVC.csproj", "{29276D7F-DAA0-472E-86F7-D9E87A531C8C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CafeHub.MVC", "CafeHub.MVC\CafeHub.MVC.csproj", "{29276D7F-DAA0-472E-86F7-D9E87A531C8C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CafeHub.Repository", "CafeHub.Repository\CafeHub.Repository.csproj", "{1ECBA834-491E-4248-A181-34858736296D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CafeHub.Services", "CafeHub.Services\CafeHub.Services.csproj", "{3B8C3E17-DD8A-4579-8557-503F2BD34C70}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CafeHub.Commons", "CafeHub.Commons\CafeHub.Commons.csproj", "{1B337C63-38A8-440D-805C-BE8E8B573C3A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +21,18 @@ Global
 		{29276D7F-DAA0-472E-86F7-D9E87A531C8C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{29276D7F-DAA0-472E-86F7-D9E87A531C8C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{29276D7F-DAA0-472E-86F7-D9E87A531C8C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1ECBA834-491E-4248-A181-34858736296D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1ECBA834-491E-4248-A181-34858736296D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1ECBA834-491E-4248-A181-34858736296D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1ECBA834-491E-4248-A181-34858736296D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3B8C3E17-DD8A-4579-8557-503F2BD34C70}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3B8C3E17-DD8A-4579-8557-503F2BD34C70}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3B8C3E17-DD8A-4579-8557-503F2BD34C70}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3B8C3E17-DD8A-4579-8557-503F2BD34C70}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1B337C63-38A8-440D-805C-BE8E8B573C3A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1B337C63-38A8-440D-805C-BE8E8B573C3A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1B337C63-38A8-440D-805C-BE8E8B573C3A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1B337C63-38A8-440D-805C-BE8E8B573C3A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
