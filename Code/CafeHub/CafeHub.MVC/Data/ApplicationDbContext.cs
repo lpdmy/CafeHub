@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using CafeHub.Commons.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace CafeHub.MVC.Data
@@ -9,5 +10,14 @@ namespace CafeHub.MVC.Data
             : base(options)
         {
         }
+
+        public DbSet<Customer> Customers { get; set; }
+        public DbSet<Staff> Staffs { get; set; }
+        public DbSet<WorkShift> WorkShifts { get; set; }
+        public DbSet<Order> Orders { get; set; }
+        public DbSet<Salary> Payments { get; set; }
+        public DbSet<Product> Products { get; set; }
+        public DbSet<Category> Categories { get; set; }
+        public DbSet<Topping> Toppings { get; set; }
     }
 }
