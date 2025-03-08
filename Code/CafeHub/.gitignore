@@ -1,0 +1,39 @@
+# Visual Studio
+.vs/
+*.user
+*.suo
+*.cache
+*.csproj.user
+
+# Build outputs
+bin/
+obj/
+out/
+
+# Dependencies
+packages/
+*.nupkg
+project.lock.json
+project.assets.json
+.nuget/
+
+# Logs & Debugging
+*.log
+*.tlog
+*.pdb
+
+# User-specific settings
+*.rsuser
+*.userprefs
+
+# ASP.NET Core
+appsettings.dev.json
+appsettings.Local.json
+secrets.json
+
+# Entity Framework
+Migrations/
+
+# Rider / JetBrains
+.idea/
+*.sln.iml

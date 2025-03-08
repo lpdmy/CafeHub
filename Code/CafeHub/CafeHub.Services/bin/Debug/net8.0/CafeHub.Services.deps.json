@@ -637,20 +637,24 @@
           }
         }
       },
-      "CafeHub.Repository/1.0.0": {
+      "CafeHub.DAO/1.0.0": {
         "dependencies": {
           "CafeHub.Commons": "1.0.0"
         },
         "runtime": {
-          "CafeHub.Repository.dll": {
+          "CafeHub.DAO.dll": {
             "assemblyVersion": "1.0.0.0",
             "fileVersion": "1.0.0.0"
           }
         }
       },
-      "CafeHub.MVC/1.0.0.0": {
+      "CafeHub.Repository/1.0.0": {
+        "dependencies": {
+          "CafeHub.Commons": "1.0.0",
+          "CafeHub.DAO": "1.0.0"
+        },
         "runtime": {
-          "CafeHub.MVC.dll": {
+          "CafeHub.Repository.dll": {
             "assemblyVersion": "1.0.0.0",
             "fileVersion": "1.0.0.0"
           }
@@ -1089,13 +1093,13 @@
       "serviceable": false,
       "sha512": ""
     },
-    "CafeHub.Repository/1.0.0": {
+    "CafeHub.DAO/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
     },
-    "CafeHub.MVC/1.0.0.0": {
-      "type": "reference",
+    "CafeHub.Repository/1.0.0": {
+      "type": "project",
       "serviceable": false,
       "sha512": ""
     }

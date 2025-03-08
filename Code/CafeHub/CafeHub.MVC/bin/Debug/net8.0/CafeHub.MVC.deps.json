@@ -2184,9 +2184,21 @@
           }
         }
       },
-      "CafeHub.Repository/1.0.0": {
+      "CafeHub.DAO/1.0.0": {
         "dependencies": {
           "CafeHub.Commons": "1.0.0"
+        },
+        "runtime": {
+          "CafeHub.DAO.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      },
+      "CafeHub.Repository/1.0.0": {
+        "dependencies": {
+          "CafeHub.Commons": "1.0.0",
+          "CafeHub.DAO": "1.0.0"
         },
         "runtime": {
           "CafeHub.Repository.dll": {
@@ -3434,6 +3446,11 @@
       "hashPath": "system.windows.extensions.7.0.0.nupkg.sha512"
     },
     "CafeHub.Commons/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "CafeHub.DAO/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
