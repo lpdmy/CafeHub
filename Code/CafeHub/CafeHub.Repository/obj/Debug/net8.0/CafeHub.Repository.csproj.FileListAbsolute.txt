@@ -32,3 +32,5 @@ D:\fpt\Kì 7\prn222\Mock_Prn\CafeHub\Code\CafeHub\CafeHub.Repository\obj\Debug\n
 D:\fpt\Kì 7\prn222\Mock_Prn\CafeHub\Code\CafeHub\CafeHub.Repository\obj\Debug\net8.0\ref\CafeHub.Repository.dll
 D:\fpt\Kì 7\prn222\Mock_Prn\CafeHub\Code\CafeHub\CafeHub.Repository\bin\Debug\net8.0\CafeHub.DAO.dll
 D:\fpt\Kì 7\prn222\Mock_Prn\CafeHub\Code\CafeHub\CafeHub.Repository\bin\Debug\net8.0\CafeHub.DAO.pdb
+D:\PRN222_PROJECT\CafeHub\Code\CafeHub\CafeHub.Repository\bin\Debug\net8.0\CafeHub.DAO.dll
+D:\PRN222_PROJECT\CafeHub\Code\CafeHub\CafeHub.Repository\bin\Debug\net8.0\CafeHub.DAO.pdb

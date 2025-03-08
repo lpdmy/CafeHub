@@ -1,7 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using CafeHub.Commons;
+
 using CafeHub.Commons.Models;
 using CafeHub.Repository.Interfaces;
-using CafeHub.Commons;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace CafeHub.Repository.Repositories
 {
@@ -14,51 +16,36 @@ namespace CafeHub.Repository.Repositories
             _context = context;
         }
 
-        public async Task<IEnumerable<Product>> GetAllProductsAsync()
+        public IEnumerable<Product> GetAll()
         {
-            return await _context.Products.Include(p => p.Category).ToListAsync();
+            return _context.Products.ToList();
         }
 
-        public async Task<Product> GetProductByIdAsync(int id)
+        public Product GetById(int id)
         {
-            var product = await _context.Products.Include(p => p.Category)
-                .FirstOrDefaultAsync(p => p.Id == id);
-
-            if (product == null)
-            {
-                throw new KeyNotFoundException($"Product with ID {id} not found.");
-            }
-
-            return product;
+            return _context.Products.FirstOrDefault(p => p.Id == id);
         }
 
-
-
-        public async Task AddProductAsync(Product product)
+        public void Add(Product product)
         {
             _context.Products.Add(product);
-            await _context.SaveChangesAsync();
+            _context.SaveChanges();
         }
 
-        public async Task UpdateProductAsync(Product product)
+        public void Update(Product product)
         {
             _context.Products.Update(product);
-            await _context.SaveChangesAsync();
+            _context.SaveChanges();
         }
 
-        public async Task DeleteProductAsync(int id)
+        public void Delete(int id)
         {
-            var product = await _context.Products.FindAsync(id);
+            var product = _context.Products.Find(id);
             if (product != null)
             {
                 _context.Products.Remove(product);
-                await _context.SaveChangesAsync();
+                _context.SaveChanges();
             }
-        }
-
-        public async Task<bool> ProductExistsAsync(int id)
-        {
-            return await _context.Products.AnyAsync(e => e.Id == id);
         }
     }
 }

@@ -1,15 +1,14 @@
 ﻿using CafeHub.Commons.Models;
+using System.Collections.Generic;
 
 namespace CafeHub.Services.Interfaces
 {
     public interface IProductService
     {
-        Task<IEnumerable<Product>> GetAllProductsAsync();
-        Task<Product> GetProductByIdAsync(int id);
-        Task AddProductAsync(Product product);
-        Task UpdateProductAsync(Product product);
-        Task DeleteProductAsync(int id);
-        Task<bool> ProductExistsAsync(int id);
-        //Task<IEnumerable<Category>> GetCategoriesAsync();
+        IEnumerable<Product> GetAllProducts();
+        Product GetProductById(int id);
+        void CreateProduct(Product product);
+        void UpdateProduct(Product product);
+        void DeleteProduct(int id);
     }
 }

@@ -1,14 +1,14 @@
 ﻿using CafeHub.Commons.Models;
+using System.Collections.Generic;
 
 namespace CafeHub.Repository.Interfaces
 {
     public interface IProductRepository
     {
-        Task<IEnumerable<Product>> GetAllProductsAsync();
-        Task<Product> GetProductByIdAsync(int id);
-        Task AddProductAsync(Product product);
-        Task UpdateProductAsync(Product product);
-        Task DeleteProductAsync(int id);
-        Task<bool> ProductExistsAsync(int id);
+        IEnumerable<Product> GetAll();
+        Product GetById(int id);
+        void Add(Product product);
+        void Update(Product product);
+        void Delete(int id);
     }
 }

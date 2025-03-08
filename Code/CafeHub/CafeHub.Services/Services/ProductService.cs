@@ -1,60 +1,42 @@
 ﻿using CafeHub.Commons.Models;
 using CafeHub.Repository.Interfaces;
 using CafeHub.Services.Interfaces;
+using System.Collections.Generic;
 
 namespace CafeHub.Services.Services
 {
     public class ProductService : IProductService
     {
         private readonly IProductRepository _productRepository;
-        //private readonly ICategoryRepository _categoryRepository; // Thêm CategoryRepository
 
-        public ProductService(IProductRepository productRepository/*, ICategoryRepository categoryRepository*/)
+        public ProductService(IProductRepository productRepository)
         {
             _productRepository = productRepository;
-            //_categoryRepository = categoryRepository; // Khởi tạo CategoryRepository
         }
 
-        public async Task<IEnumerable<Product>> GetAllProductsAsync()
+        public IEnumerable<Product> GetAllProducts()
         {
-            return await _productRepository.GetAllProductsAsync();
+            return _productRepository.GetAll();
         }
 
-        public async Task<Product> GetProductByIdAsync(int id)
+        public Product GetProductById(int id)
         {
-            return await _productRepository.GetProductByIdAsync(id);
+            return _productRepository.GetById(id);
         }
 
-        public async Task AddProductAsync(Product product)
+        public void CreateProduct(Product product)
         {
-            if (product.Price <= 0)
-            {
-                throw new ArgumentException("Price must be greater than 0");
-            }
-            await _productRepository.AddProductAsync(product);
+            _productRepository.Add(product);
         }
 
-        public async Task UpdateProductAsync(Product product)
+        public void UpdateProduct(Product product)
         {
-            await _productRepository.UpdateProductAsync(product);
+            _productRepository.Update(product);
         }
 
-        public async Task DeleteProductAsync(int id)
+        public void DeleteProduct(int id)
         {
-            await _productRepository.DeleteProductAsync(id);
+            _productRepository.Delete(id);
         }
-
-        public async Task<bool> ProductExistsAsync(int id)
-        {
-            return await _productRepository.ProductExistsAsync(id);
-        }
-
-        // Phương thức GetCategories để lấy danh sách các Category
-        /*
-        public async Task<IEnumerable<Category>> GetCategoriesAsync()
-        {
-            return await _categoryRepository.GetAllCategoriesAsync();
-        }
-        */
     }
 }
