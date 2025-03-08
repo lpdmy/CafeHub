@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\CafeHub.Commons\CafeHub.Commons.csproj" />
+    <ProjectReference Include="..\CafeHub.DAO\CafeHub.DAO.csproj" />
     
   </ItemGroup>
 

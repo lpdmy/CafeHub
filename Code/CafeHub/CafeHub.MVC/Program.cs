@@ -1,4 +1,6 @@
 using CafeHub.Commons;
+using CafeHub.Repository.Interfaces;
+using CafeHub.Repository.Repositories;
 using CafeHub.Services.Interfaces;
 using CafeHub.Services.Services;
 using Microsoft.AspNetCore.Identity;
@@ -13,8 +15,15 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString));
 
-builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
+builder.Services.AddDatabaseDeveloperPageExceptionFilter();
+//add service and repository
+
+builder.Services.AddScoped<IOrderRepository, OrderRepository>();
+builder.Services.AddScoped<IOrderService, OrderService>();
+
+
+builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<IProductService, ProductService>();
 
 builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)

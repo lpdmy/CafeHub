@@ -6,6 +6,7 @@ namespace CafeHub.Commons
     {
         public class ApplicationDbContext : IdentityDbContext
     {
+        public ApplicationDbContext() {/*for signleton on DAO*/ }
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {

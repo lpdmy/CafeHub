@@ -7,12 +7,12 @@ namespace CafeHub.Services.Services
     public class ProductService : IProductService
     {
         private readonly IProductRepository _productRepository;
-        private readonly ICategoryRepository _categoryRepository; // Thêm CategoryRepository
+        //private readonly ICategoryRepository _categoryRepository; // Thêm CategoryRepository
 
-        public ProductService(IProductRepository productRepository, ICategoryRepository categoryRepository)
+        public ProductService(IProductRepository productRepository/*, ICategoryRepository categoryRepository*/)
         {
             _productRepository = productRepository;
-            _categoryRepository = categoryRepository; // Khởi tạo CategoryRepository
+            //_categoryRepository = categoryRepository; // Khởi tạo CategoryRepository
         }
 
         public async Task<IEnumerable<Product>> GetAllProductsAsync()
@@ -50,9 +50,11 @@ namespace CafeHub.Services.Services
         }
 
         // Phương thức GetCategories để lấy danh sách các Category
+        /*
         public async Task<IEnumerable<Category>> GetCategoriesAsync()
         {
             return await _categoryRepository.GetAllCategoriesAsync();
         }
+        */
     }
 }
