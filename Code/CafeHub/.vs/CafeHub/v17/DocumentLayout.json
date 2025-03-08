@@ -1,0 +1,356 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "D:\\PRN222_PROJECT\\CafeHub\\Code\\CafeHub\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{3B8C3E17-DD8A-4579-8557-503F2BD34C70}|CafeHub.Services\\CafeHub.Services.csproj|d:\\prn222_project\\cafehub\\code\\cafehub\\cafehub.services\\services\\productservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3B8C3E17-DD8A-4579-8557-503F2BD34C70}|CafeHub.Services\\CafeHub.Services.csproj|solutionrelative:cafehub.services\\services\\productservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3B8C3E17-DD8A-4579-8557-503F2BD34C70}|CafeHub.Services\\CafeHub.Services.csproj|d:\\prn222_project\\cafehub\\code\\cafehub\\cafehub.services\\interfaces\\iproductservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3B8C3E17-DD8A-4579-8557-503F2BD34C70}|CafeHub.Services\\CafeHub.Services.csproj|solutionrelative:cafehub.services\\interfaces\\iproductservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{1ECBA834-491E-4248-A181-34858736296D}|CafeHub.Repository\\CafeHub.Repository.csproj|d:\\prn222_project\\cafehub\\code\\cafehub\\cafehub.repository\\interfaces\\iproductrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{1ECBA834-491E-4248-A181-34858736296D}|CafeHub.Repository\\CafeHub.Repository.csproj|solutionrelative:cafehub.repository\\interfaces\\iproductrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{29276D7F-DAA0-472E-86F7-D9E87A531C8C}|CafeHub.MVC\\CafeHub.MVC.csproj|d:\\prn222_project\\cafehub\\code\\cafehub\\cafehub.mvc\\controllers\\homecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{29276D7F-DAA0-472E-86F7-D9E87A531C8C}|CafeHub.MVC\\CafeHub.MVC.csproj|solutionrelative:cafehub.mvc\\controllers\\homecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{1B337C63-38A8-440D-805C-BE8E8B573C3A}|CafeHub.Commons\\CafeHub.Commons.csproj|d:\\prn222_project\\cafehub\\code\\cafehub\\cafehub.commons\\models\\product.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{1B337C63-38A8-440D-805C-BE8E8B573C3A}|CafeHub.Commons\\CafeHub.Commons.csproj|solutionrelative:cafehub.commons\\models\\product.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{29276D7F-DAA0-472E-86F7-D9E87A531C8C}|CafeHub.MVC\\CafeHub.MVC.csproj|d:\\prn222_project\\cafehub\\code\\cafehub\\cafehub.mvc\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{29276D7F-DAA0-472E-86F7-D9E87A531C8C}|CafeHub.MVC\\CafeHub.MVC.csproj|solutionrelative:cafehub.mvc\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{1B337C63-38A8-440D-805C-BE8E8B573C3A}|CafeHub.Commons\\CafeHub.Commons.csproj|d:\\prn222_project\\cafehub\\code\\cafehub\\cafehub.commons\\data\\applicationdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{1B337C63-38A8-440D-805C-BE8E8B573C3A}|CafeHub.Commons\\CafeHub.Commons.csproj|solutionrelative:cafehub.commons\\data\\applicationdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{1ECBA834-491E-4248-A181-34858736296D}|CafeHub.Repository\\CafeHub.Repository.csproj|d:\\prn222_project\\cafehub\\code\\cafehub\\cafehub.repository\\repositories\\productrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{1ECBA834-491E-4248-A181-34858736296D}|CafeHub.Repository\\CafeHub.Repository.csproj|solutionrelative:cafehub.repository\\repositories\\productrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{1B337C63-38A8-440D-805C-BE8E8B573C3A}|CafeHub.Commons\\CafeHub.Commons.csproj|d:\\prn222_project\\cafehub\\code\\cafehub\\cafehub.commons\\models\\staff.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{1B337C63-38A8-440D-805C-BE8E8B573C3A}|CafeHub.Commons\\CafeHub.Commons.csproj|solutionrelative:cafehub.commons\\models\\staff.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{1B337C63-38A8-440D-805C-BE8E8B573C3A}|CafeHub.Commons\\CafeHub.Commons.csproj|d:\\prn222_project\\cafehub\\code\\cafehub\\cafehub.commons\\models\\customer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{1B337C63-38A8-440D-805C-BE8E8B573C3A}|CafeHub.Commons\\CafeHub.Commons.csproj|solutionrelative:cafehub.commons\\models\\customer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{29276D7F-DAA0-472E-86F7-D9E87A531C8C}|CafeHub.MVC\\CafeHub.MVC.csproj|d:\\prn222_project\\cafehub\\code\\cafehub\\cafehub.mvc\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{29276D7F-DAA0-472E-86F7-D9E87A531C8C}|CafeHub.MVC\\CafeHub.MVC.csproj|solutionrelative:cafehub.mvc\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{1B337C63-38A8-440D-805C-BE8E8B573C3A}|CafeHub.Commons\\CafeHub.Commons.csproj|d:\\prn222_project\\cafehub\\code\\cafehub\\cafehub.commons\\migrations\\20250308115536_firstmigration.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{1B337C63-38A8-440D-805C-BE8E8B573C3A}|CafeHub.Commons\\CafeHub.Commons.csproj|solutionrelative:cafehub.commons\\migrations\\20250308115536_firstmigration.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{1B337C63-38A8-440D-805C-BE8E8B573C3A}|CafeHub.Commons\\CafeHub.Commons.csproj|d:\\prn222_project\\cafehub\\code\\cafehub\\cafehub.commons\\migrations\\applicationdbcontextmodelsnapshot.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{1B337C63-38A8-440D-805C-BE8E8B573C3A}|CafeHub.Commons\\CafeHub.Commons.csproj|solutionrelative:cafehub.commons\\migrations\\applicationdbcontextmodelsnapshot.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{29276D7F-DAA0-472E-86F7-D9E87A531C8C}|CafeHub.MVC\\CafeHub.MVC.csproj|d:\\prn222_project\\cafehub\\code\\cafehub\\cafehub.mvc\\cafehub.mvc.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
+      "RelativeMoniker": "D:0:0:{29276D7F-DAA0-472E-86F7-D9E87A531C8C}|CafeHub.MVC\\CafeHub.MVC.csproj|solutionrelative:cafehub.mvc\\cafehub.mvc.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3B8C3E17-DD8A-4579-8557-503F2BD34C70}|CafeHub.Services\\CafeHub.Services.csproj|d:\\prn222_project\\cafehub\\code\\cafehub\\cafehub.services\\cafehub.services.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
+      "RelativeMoniker": "D:0:0:{3B8C3E17-DD8A-4579-8557-503F2BD34C70}|CafeHub.Services\\CafeHub.Services.csproj|solutionrelative:cafehub.services\\cafehub.services.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{1ECBA834-491E-4248-A181-34858736296D}|CafeHub.Repository\\CafeHub.Repository.csproj|d:\\prn222_project\\cafehub\\code\\cafehub\\cafehub.repository\\cafehub.repository.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
+      "RelativeMoniker": "D:0:0:{1ECBA834-491E-4248-A181-34858736296D}|CafeHub.Repository\\CafeHub.Repository.csproj|solutionrelative:cafehub.repository\\cafehub.repository.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{1B337C63-38A8-440D-805C-BE8E8B573C3A}|CafeHub.Commons\\CafeHub.Commons.csproj|d:\\prn222_project\\cafehub\\code\\cafehub\\cafehub.commons\\models\\workshift.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{1B337C63-38A8-440D-805C-BE8E8B573C3A}|CafeHub.Commons\\CafeHub.Commons.csproj|solutionrelative:cafehub.commons\\models\\workshift.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{1B337C63-38A8-440D-805C-BE8E8B573C3A}|CafeHub.Commons\\CafeHub.Commons.csproj|d:\\prn222_project\\cafehub\\code\\cafehub\\cafehub.commons\\enums\\roleenum.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{1B337C63-38A8-440D-805C-BE8E8B573C3A}|CafeHub.Commons\\CafeHub.Commons.csproj|solutionrelative:cafehub.commons\\enums\\roleenum.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{1B337C63-38A8-440D-805C-BE8E8B573C3A}|CafeHub.Commons\\CafeHub.Commons.csproj|d:\\prn222_project\\cafehub\\code\\cafehub\\cafehub.commons\\enums\\positionenum.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{1B337C63-38A8-440D-805C-BE8E8B573C3A}|CafeHub.Commons\\CafeHub.Commons.csproj|solutionrelative:cafehub.commons\\enums\\positionenum.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 3,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{d78612c7-9962-4b83-95d9-268046dad23a}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "ApplicationDbContext.cs",
+              "DocumentMoniker": "D:\\PRN222_PROJECT\\CafeHub\\Code\\CafeHub\\CafeHub.Commons\\Data\\ApplicationDbContext.cs",
+              "RelativeDocumentMoniker": "CafeHub.Commons\\Data\\ApplicationDbContext.cs",
+              "ToolTip": "D:\\PRN222_PROJECT\\CafeHub\\Code\\CafeHub\\CafeHub.Commons\\Data\\ApplicationDbContext.cs",
+              "RelativeToolTip": "CafeHub.Commons\\Data\\ApplicationDbContext.cs",
+              "ViewState": "AgIAAAYAAAAAAAAAAAAgwBcAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-08T11:47:50.186Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "Product.cs",
+              "DocumentMoniker": "D:\\PRN222_PROJECT\\CafeHub\\Code\\CafeHub\\CafeHub.Commons\\Models\\Product.cs",
+              "RelativeDocumentMoniker": "CafeHub.Commons\\Models\\Product.cs",
+              "ToolTip": "D:\\PRN222_PROJECT\\CafeHub\\Code\\CafeHub\\CafeHub.Commons\\Models\\Product.cs",
+              "RelativeToolTip": "CafeHub.Commons\\Models\\Product.cs",
+              "ViewState": "AgIAAA0AAAAAAAAAAAAQwBgAAAANAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-08T06:15:06.197Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "ProductService.cs",
+              "DocumentMoniker": "D:\\PRN222_PROJECT\\CafeHub\\Code\\CafeHub\\CafeHub.Services\\Services\\ProductService.cs",
+              "RelativeDocumentMoniker": "CafeHub.Services\\Services\\ProductService.cs",
+              "ToolTip": "D:\\PRN222_PROJECT\\CafeHub\\Code\\CafeHub\\CafeHub.Services\\Services\\ProductService.cs",
+              "RelativeToolTip": "CafeHub.Services\\Services\\ProductService.cs",
+              "ViewState": "AgIAAAMAAAAAAAAAAAAAAA0AAAAzAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-08T06:27:50.886Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "HomeController.cs",
+              "DocumentMoniker": "D:\\PRN222_PROJECT\\CafeHub\\Code\\CafeHub\\CafeHub.MVC\\Controllers\\HomeController.cs",
+              "RelativeDocumentMoniker": "CafeHub.MVC\\Controllers\\HomeController.cs",
+              "ToolTip": "D:\\PRN222_PROJECT\\CafeHub\\Code\\CafeHub\\CafeHub.MVC\\Controllers\\HomeController.cs",
+              "RelativeToolTip": "CafeHub.MVC\\Controllers\\HomeController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-08T13:11:40.472Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "IProductService.cs",
+              "DocumentMoniker": "D:\\PRN222_PROJECT\\CafeHub\\Code\\CafeHub\\CafeHub.Services\\Interfaces\\IProductService.cs",
+              "RelativeDocumentMoniker": "CafeHub.Services\\Interfaces\\IProductService.cs",
+              "ToolTip": "D:\\PRN222_PROJECT\\CafeHub\\Code\\CafeHub\\CafeHub.Services\\Interfaces\\IProductService.cs",
+              "RelativeToolTip": "CafeHub.Services\\Interfaces\\IProductService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAAuAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-08T06:26:59.22Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "IProductRepository.cs",
+              "DocumentMoniker": "D:\\PRN222_PROJECT\\CafeHub\\Code\\CafeHub\\CafeHub.Repository\\Interfaces\\IProductRepository.cs",
+              "RelativeDocumentMoniker": "CafeHub.Repository\\Interfaces\\IProductRepository.cs",
+              "ToolTip": "D:\\PRN222_PROJECT\\CafeHub\\Code\\CafeHub\\CafeHub.Repository\\Interfaces\\IProductRepository.cs",
+              "RelativeToolTip": "CafeHub.Repository\\Interfaces\\IProductRepository.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAAuAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-08T06:21:09.663Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "ProductRepository.cs",
+              "DocumentMoniker": "D:\\PRN222_PROJECT\\CafeHub\\Code\\CafeHub\\CafeHub.Repository\\Repositories\\ProductRepository.cs",
+              "RelativeDocumentMoniker": "CafeHub.Repository\\Repositories\\ProductRepository.cs",
+              "ToolTip": "D:\\PRN222_PROJECT\\CafeHub\\Code\\CafeHub\\CafeHub.Repository\\Repositories\\ProductRepository.cs",
+              "RelativeToolTip": "CafeHub.Repository\\Repositories\\ProductRepository.cs",
+              "ViewState": "AgIAABIAAAAAAAAAAAAAABsAAAANAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-08T06:23:04.21Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "Staff.cs",
+              "DocumentMoniker": "D:\\PRN222_PROJECT\\CafeHub\\Code\\CafeHub\\CafeHub.Commons\\Models\\Staff.cs",
+              "RelativeDocumentMoniker": "CafeHub.Commons\\Models\\Staff.cs",
+              "ToolTip": "D:\\PRN222_PROJECT\\CafeHub\\Code\\CafeHub\\CafeHub.Commons\\Models\\Staff.cs",
+              "RelativeToolTip": "CafeHub.Commons\\Models\\Staff.cs",
+              "ViewState": "AgIAAAkAAAAAAAAAAAAQwBIAAAAUAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-08T13:43:29.177Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "Customer.cs",
+              "DocumentMoniker": "D:\\PRN222_PROJECT\\CafeHub\\Code\\CafeHub\\CafeHub.Commons\\Models\\Customer.cs",
+              "RelativeDocumentMoniker": "CafeHub.Commons\\Models\\Customer.cs",
+              "ToolTip": "D:\\PRN222_PROJECT\\CafeHub\\Code\\CafeHub\\CafeHub.Commons\\Models\\Customer.cs",
+              "RelativeToolTip": "CafeHub.Commons\\Models\\Customer.cs",
+              "ViewState": "AgIAAAUAAAAAAAAAAAAQwA4AAAAWAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-08T13:43:28.36Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "appsettings.json",
+              "DocumentMoniker": "D:\\PRN222_PROJECT\\CafeHub\\Code\\CafeHub\\CafeHub.MVC\\appsettings.json",
+              "RelativeDocumentMoniker": "CafeHub.MVC\\appsettings.json",
+              "ToolTip": "D:\\PRN222_PROJECT\\CafeHub\\Code\\CafeHub\\CafeHub.MVC\\appsettings.json",
+              "RelativeToolTip": "CafeHub.MVC\\appsettings.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2025-03-08T06:06:22.739Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "Program.cs",
+              "DocumentMoniker": "D:\\PRN222_PROJECT\\CafeHub\\Code\\CafeHub\\CafeHub.MVC\\Program.cs",
+              "RelativeDocumentMoniker": "CafeHub.MVC\\Program.cs",
+              "ToolTip": "D:\\PRN222_PROJECT\\CafeHub\\Code\\CafeHub\\CafeHub.MVC\\Program.cs",
+              "RelativeToolTip": "CafeHub.MVC\\Program.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAA+AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-08T11:10:39.906Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "20250308115536_FirstMigration.cs",
+              "DocumentMoniker": "D:\\PRN222_PROJECT\\CafeHub\\Code\\CafeHub\\CafeHub.Commons\\Migrations\\20250308115536_FirstMigration.cs",
+              "RelativeDocumentMoniker": "CafeHub.Commons\\Migrations\\20250308115536_FirstMigration.cs",
+              "ToolTip": "D:\\PRN222_PROJECT\\CafeHub\\Code\\CafeHub\\CafeHub.Commons\\Migrations\\20250308115536_FirstMigration.cs",
+              "RelativeToolTip": "CafeHub.Commons\\Migrations\\20250308115536_FirstMigration.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAaAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-08T11:55:37.211Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": "ApplicationDbContextModelSnapshot.cs",
+              "DocumentMoniker": "D:\\PRN222_PROJECT\\CafeHub\\Code\\CafeHub\\CafeHub.Commons\\Migrations\\ApplicationDbContextModelSnapshot.cs",
+              "RelativeDocumentMoniker": "CafeHub.Commons\\Migrations\\ApplicationDbContextModelSnapshot.cs",
+              "ToolTip": "D:\\PRN222_PROJECT\\CafeHub\\Code\\CafeHub\\CafeHub.Commons\\Migrations\\ApplicationDbContextModelSnapshot.cs",
+              "RelativeToolTip": "CafeHub.Commons\\Migrations\\ApplicationDbContextModelSnapshot.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-08T13:38:18.265Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
+              "Title": "CafeHub.MVC.csproj",
+              "DocumentMoniker": "D:\\PRN222_PROJECT\\CafeHub\\Code\\CafeHub\\CafeHub.MVC\\CafeHub.MVC.csproj",
+              "RelativeDocumentMoniker": "CafeHub.MVC\\CafeHub.MVC.csproj",
+              "ToolTip": "D:\\PRN222_PROJECT\\CafeHub\\Code\\CafeHub\\CafeHub.MVC\\CafeHub.MVC.csproj",
+              "RelativeToolTip": "CafeHub.MVC\\CafeHub.MVC.csproj",
+              "ViewState": "AgIAAA4AAAAAAAAAAAAqwBgAAABEAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2025-03-08T11:16:02.45Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 14,
+              "Title": "CafeHub.Services.csproj",
+              "DocumentMoniker": "D:\\PRN222_PROJECT\\CafeHub\\Code\\CafeHub\\CafeHub.Services\\CafeHub.Services.csproj",
+              "RelativeDocumentMoniker": "CafeHub.Services\\CafeHub.Services.csproj",
+              "ToolTip": "D:\\PRN222_PROJECT\\CafeHub\\Code\\CafeHub\\CafeHub.Services\\CafeHub.Services.csproj",
+              "RelativeToolTip": "CafeHub.Services\\CafeHub.Services.csproj",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA8AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2025-03-08T11:31:27.605Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 15,
+              "Title": "CafeHub.Repository.csproj",
+              "DocumentMoniker": "D:\\PRN222_PROJECT\\CafeHub\\Code\\CafeHub\\CafeHub.Repository\\CafeHub.Repository.csproj",
+              "RelativeDocumentMoniker": "CafeHub.Repository\\CafeHub.Repository.csproj",
+              "ToolTip": "D:\\PRN222_PROJECT\\CafeHub\\Code\\CafeHub\\CafeHub.Repository\\CafeHub.Repository.csproj",
+              "RelativeToolTip": "CafeHub.Repository\\CafeHub.Repository.csproj",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAAEAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2025-03-08T11:31:03.808Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 16,
+              "Title": "WorkShift.cs",
+              "DocumentMoniker": "D:\\PRN222_PROJECT\\CafeHub\\Code\\CafeHub\\CafeHub.Commons\\Models\\WorkShift.cs",
+              "RelativeDocumentMoniker": "CafeHub.Commons\\Models\\WorkShift.cs",
+              "ToolTip": "D:\\PRN222_PROJECT\\CafeHub\\Code\\CafeHub\\CafeHub.Commons\\Models\\WorkShift.cs",
+              "RelativeToolTip": "CafeHub.Commons\\Models\\WorkShift.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-08T11:27:11.45Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 17,
+              "Title": "RoleEnum.cs",
+              "DocumentMoniker": "D:\\PRN222_PROJECT\\CafeHub\\Code\\CafeHub\\CafeHub.Commons\\Enums\\RoleEnum.cs",
+              "RelativeDocumentMoniker": "CafeHub.Commons\\Enums\\RoleEnum.cs",
+              "ToolTip": "D:\\PRN222_PROJECT\\CafeHub\\Code\\CafeHub\\CafeHub.Commons\\Enums\\RoleEnum.cs",
+              "RelativeToolTip": "CafeHub.Commons\\Enums\\RoleEnum.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAYAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-08T06:12:15.247Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 18,
+              "Title": "PositionEnum.cs",
+              "DocumentMoniker": "D:\\PRN222_PROJECT\\CafeHub\\Code\\CafeHub\\CafeHub.Commons\\Enums\\PositionEnum.cs",
+              "RelativeDocumentMoniker": "CafeHub.Commons\\Enums\\PositionEnum.cs",
+              "ToolTip": "D:\\PRN222_PROJECT\\CafeHub\\Code\\CafeHub\\CafeHub.Commons\\Enums\\PositionEnum.cs",
+              "RelativeToolTip": "CafeHub.Commons\\Enums\\PositionEnum.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-08T06:14:49.053Z"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{34e76e81-ee4a-11d0-ae2e-00a0c90fffc3}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{269a02dc-6af8-11d3-bdc4-00c04f688e50}"
+            }
+          ]
+        },
+        {
+          "DockedWidth": 879,
+          "SelectedChildIndex": -1,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:1:0:{d212f56b-c48a-434c-a121-1c5d80b59b9f}"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
