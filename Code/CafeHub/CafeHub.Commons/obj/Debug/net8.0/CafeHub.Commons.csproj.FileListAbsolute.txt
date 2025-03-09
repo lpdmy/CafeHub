@@ -28,3 +28,18 @@ D:\fpt\Kì 7\prn222\Mock_Prn\CafeHub\Code\CafeHub\CafeHub.Commons\obj\Debug\net8
 D:\fpt\Kì 7\prn222\Mock_Prn\CafeHub\Code\CafeHub\CafeHub.Commons\obj\Debug\net8.0\CafeHub.Commons.pdb
 D:\fpt\Kì 7\prn222\Mock_Prn\CafeHub\Code\CafeHub\CafeHub.Commons\obj\Debug\net8.0\CafeHub.Commons.genruntimeconfig.cache
 D:\fpt\Kì 7\prn222\Mock_Prn\CafeHub\Code\CafeHub\CafeHub.Commons\obj\Debug\net8.0\ref\CafeHub.Commons.dll
+D:\CafeHub\Code\CafeHub\CafeHub.Commons\bin\Debug\net8.0\CafeHub.Commons.deps.json
+D:\CafeHub\Code\CafeHub\CafeHub.Commons\bin\Debug\net8.0\CafeHub.Commons.runtimeconfig.json
+D:\CafeHub\Code\CafeHub\CafeHub.Commons\bin\Debug\net8.0\CafeHub.Commons.dll
+D:\CafeHub\Code\CafeHub\CafeHub.Commons\bin\Debug\net8.0\CafeHub.Commons.pdb
+D:\CafeHub\Code\CafeHub\CafeHub.Commons\obj\Debug\net8.0\CafeHub.Commons.csproj.AssemblyReference.cache
+D:\CafeHub\Code\CafeHub\CafeHub.Commons\obj\Debug\net8.0\CafeHub.Commons.GeneratedMSBuildEditorConfig.editorconfig
+D:\CafeHub\Code\CafeHub\CafeHub.Commons\obj\Debug\net8.0\CafeHub.Commons.AssemblyInfoInputs.cache
+D:\CafeHub\Code\CafeHub\CafeHub.Commons\obj\Debug\net8.0\CafeHub.Commons.AssemblyInfo.cs
+D:\CafeHub\Code\CafeHub\CafeHub.Commons\obj\Debug\net8.0\CafeHub.Commons.csproj.CoreCompileInputs.cache
+D:\CafeHub\Code\CafeHub\CafeHub.Commons\obj\Debug\net8.0\CafeHub.Commons.sourcelink.json
+D:\CafeHub\Code\CafeHub\CafeHub.Commons\obj\Debug\net8.0\CafeHub.Commons.dll
+D:\CafeHub\Code\CafeHub\CafeHub.Commons\obj\Debug\net8.0\refint\CafeHub.Commons.dll
+D:\CafeHub\Code\CafeHub\CafeHub.Commons\obj\Debug\net8.0\CafeHub.Commons.pdb
+D:\CafeHub\Code\CafeHub\CafeHub.Commons\obj\Debug\net8.0\CafeHub.Commons.genruntimeconfig.cache
+D:\CafeHub\Code\CafeHub\CafeHub.Commons\obj\Debug\net8.0\ref\CafeHub.Commons.dll

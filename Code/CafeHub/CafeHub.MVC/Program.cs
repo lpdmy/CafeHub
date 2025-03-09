@@ -1,4 +1,5 @@
 using CafeHub.Commons;
+using CafeHub.Commons.Models;
 using CafeHub.Repository.Interfaces;
 using CafeHub.Repository.Repositories;
 using CafeHub.Services.Interfaces;
@@ -22,13 +23,15 @@ builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
+builder.Services.AddScoped<IAccountRepository, AccountRepository>();
+builder.Services.AddScoped<IAccountService, AccountService>();
 
 
 
-builder.Services.AddScoped<IProductRepository, ProductRepository>();
+
 builder.Services.AddScoped<IProductService, ProductService>();
 
-builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+builder.Services.AddDefaultIdentity<User>(options => options.SignIn.RequireConfirmedAccount = true)
     .AddEntityFrameworkStores<ApplicationDbContext>();
 builder.Services.AddControllersWithViews();
 
