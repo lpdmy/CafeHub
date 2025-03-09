@@ -1,5 +1,6 @@
 ﻿using CafeHub.Commons.Models;
 using CafeHub.Repository.Interfaces;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -14,11 +15,12 @@ namespace CafeHub.Repository.Repositories
     {
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
-
-        public AccountRepository(UserManager<User> userManager, SignInManager<User> signInManager)
+        private readonly IHttpContextAccessor _httpContextAccessor;
+        public AccountRepository(UserManager<User> userManager, SignInManager<User> signInManager, IHttpContextAccessor httpContextAccessor)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         public async Task<User> GetUserByIdAsync(string userId)
@@ -63,5 +65,12 @@ namespace CafeHub.Repository.Repositories
         {
             await _signInManager.SignOutAsync();
         }
+
+        public async Task<string> GetCurrentUserId()
+        {
+            var user = await _userManager.GetUserAsync(_httpContextAccessor.HttpContext.User);
+            return user?.Id; 
+        }
+
     }
 }
