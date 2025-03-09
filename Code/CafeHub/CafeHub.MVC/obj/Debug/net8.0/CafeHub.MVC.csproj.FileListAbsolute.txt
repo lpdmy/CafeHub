@@ -302,7 +302,6 @@ D:\PRN222_PROJECT\CafeHub\Code\CafeHub\CafeHub.MVC\bin\Debug\net8.0\CafeHub.Repo
 D:\PRN222_PROJECT\CafeHub\Code\CafeHub\CafeHub.MVC\bin\Debug\net8.0\CafeHub.Services.dll
 D:\PRN222_PROJECT\CafeHub\Code\CafeHub\CafeHub.MVC\bin\Debug\net8.0\CafeHub.Services.pdb
 D:\PRN222_PROJECT\CafeHub\Code\CafeHub\CafeHub.MVC\bin\Debug\net8.0\CafeHub.Repository.pdb
-D:\fpt\Kì 7\prn222\Mock_Prn\CafeHub\Code\CafeHub\CafeHub.MVC\bin\Debug\net8.0\appsettings.Development.json
 D:\fpt\Kì 7\prn222\Mock_Prn\CafeHub\Code\CafeHub\CafeHub.MVC\bin\Debug\net8.0\appsettings.json
 D:\fpt\Kì 7\prn222\Mock_Prn\CafeHub\Code\CafeHub\CafeHub.MVC\bin\Debug\net8.0\CafeHub.MVC.staticwebassets.runtime.json
 D:\fpt\Kì 7\prn222\Mock_Prn\CafeHub\Code\CafeHub\CafeHub.MVC\bin\Debug\net8.0\CafeHub.MVC.staticwebassets.endpoints.json
@@ -606,8 +605,6 @@ D:\fpt\Kì 7\prn222\Mock_Prn\CafeHub\Code\CafeHub\CafeHub.MVC\obj\Debug\net8.0\r
 D:\fpt\Kì 7\prn222\Mock_Prn\CafeHub\Code\CafeHub\CafeHub.MVC\obj\Debug\net8.0\CafeHub.MVC.pdb
 D:\fpt\Kì 7\prn222\Mock_Prn\CafeHub\Code\CafeHub\CafeHub.MVC\obj\Debug\net8.0\CafeHub.MVC.genruntimeconfig.cache
 D:\fpt\Kì 7\prn222\Mock_Prn\CafeHub\Code\CafeHub\CafeHub.MVC\obj\Debug\net8.0\ref\CafeHub.MVC.dll
-D:\fpt\Kì 7\prn222\Mock_Prn\CafeHub\Code\CafeHub\CafeHub.MVC\bin\Debug\net8.0\CafeHub.DAO.dll
-D:\fpt\Kì 7\prn222\Mock_Prn\CafeHub\Code\CafeHub\CafeHub.MVC\bin\Debug\net8.0\CafeHub.DAO.pdb
 D:\PRN222_PROJECT\CafeHub\Code\CafeHub\CafeHub.MVC\bin\Debug\net8.0\CafeHub.DAO.dll
 D:\PRN222_PROJECT\CafeHub\Code\CafeHub\CafeHub.MVC\bin\Debug\net8.0\CafeHub.DAO.pdb
 D:\CafeHub\Code\CafeHub\CafeHub.MVC\bin\Debug\net8.0\appsettings.json
@@ -919,3 +916,10 @@ D:\CafeHub\Code\CafeHub\CafeHub.MVC\bin\Debug\net8.0\Microsoft.Extensions.WebEnc
 D:\CafeHub\Code\CafeHub\CafeHub.MVC\bin\Debug\net8.0\System.Security.Cryptography.Pkcs.dll
 D:\CafeHub\Code\CafeHub\CafeHub.MVC\bin\Debug\net8.0\System.Security.Cryptography.Xml.dll
 D:\CafeHub\Code\CafeHub\CafeHub.MVC\bin\Debug\net8.0\runtimes\win\lib\net8.0\System.Security.Cryptography.Pkcs.dll
+D:\fpt\Kì 7\prn222\Mock_Prn\CafeHub\Code\CafeHub\CafeHub.MVC\bin\Debug\net8.0\Microsoft.Extensions.Diagnostics.Abstractions.dll
+D:\fpt\Kì 7\prn222\Mock_Prn\CafeHub\Code\CafeHub\CafeHub.MVC\bin\Debug\net8.0\Microsoft.Extensions.Hosting.Abstractions.dll
+D:\fpt\Kì 7\prn222\Mock_Prn\CafeHub\Code\CafeHub\CafeHub.MVC\bin\Debug\net8.0\Microsoft.Extensions.ObjectPool.dll
+D:\fpt\Kì 7\prn222\Mock_Prn\CafeHub\Code\CafeHub\CafeHub.MVC\bin\Debug\net8.0\Microsoft.Extensions.WebEncoders.dll
+D:\fpt\Kì 7\prn222\Mock_Prn\CafeHub\Code\CafeHub\CafeHub.MVC\bin\Debug\net8.0\System.Security.Cryptography.Pkcs.dll
+D:\fpt\Kì 7\prn222\Mock_Prn\CafeHub\Code\CafeHub\CafeHub.MVC\bin\Debug\net8.0\System.Security.Cryptography.Xml.dll
+D:\fpt\Kì 7\prn222\Mock_Prn\CafeHub\Code\CafeHub\CafeHub.MVC\bin\Debug\net8.0\runtimes\win\lib\net8.0\System.Security.Cryptography.Pkcs.dll

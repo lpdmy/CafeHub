@@ -1516,19 +1516,6 @@
         "runtime": {
           "bin/placeholder/CafeHub.Commons.dll": {}
         }
-      },
-      "CafeHub.DAO/1.0.0": {
-        "type": "project",
-        "framework": ".NETCoreApp,Version=v8.0",
-        "dependencies": {
-          "CafeHub.Commons": "1.0.0"
-        },
-        "compile": {
-          "bin/placeholder/CafeHub.DAO.dll": {}
-        },
-        "runtime": {
-          "bin/placeholder/CafeHub.DAO.dll": {}
-        }
       }
     }
   },
@@ -3802,35 +3789,34 @@
       "type": "project",
       "path": "../CafeHub.Commons/CafeHub.Commons.csproj",
       "msbuildProject": "../CafeHub.Commons/CafeHub.Commons.csproj"
-    },
-    "CafeHub.DAO/1.0.0": {
-      "type": "project",
-      "path": "../CafeHub.DAO/CafeHub.DAO.csproj",
-      "msbuildProject": "../CafeHub.DAO/CafeHub.DAO.csproj"
     }
   },
   "projectFileDependencyGroups": {
     "net8.0": [
       "CafeHub.Commons >= 1.0.0",
-      "CafeHub.DAO >= 1.0.0",
       "Microsoft.AspNetCore.Identity >= 2.3.0",
       "Microsoft.AspNetCore.Identity.EntityFrameworkCore >= 8.0.11"
     ]
   },
   "packageFolders": {
-    "C:\\Users\\lpdie\\.nuget\\packages\\": {}
+    "C:\\Users\\ASUS\\.nuget\\packages\\": {},
+    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\CafeHub\\Code\\CafeHub\\CafeHub.Repository\\CafeHub.Repository.csproj",
+      "projectUniqueName": "D:\\fpt\\Kì 7\\prn222\\Mock_Prn\\CafeHub\\Code\\CafeHub\\CafeHub.Repository\\CafeHub.Repository.csproj",
       "projectName": "CafeHub.Repository",
-      "projectPath": "D:\\CafeHub\\Code\\CafeHub\\CafeHub.Repository\\CafeHub.Repository.csproj",
-      "packagesPath": "C:\\Users\\lpdie\\.nuget\\packages\\",
-      "outputPath": "D:\\CafeHub\\Code\\CafeHub\\CafeHub.Repository\\obj\\",
+      "projectPath": "D:\\fpt\\Kì 7\\prn222\\Mock_Prn\\CafeHub\\Code\\CafeHub\\CafeHub.Repository\\CafeHub.Repository.csproj",
+      "packagesPath": "C:\\Users\\ASUS\\.nuget\\packages\\",
+      "outputPath": "D:\\fpt\\Kì 7\\prn222\\Mock_Prn\\CafeHub\\Code\\CafeHub\\CafeHub.Repository\\obj\\",
       "projectStyle": "PackageReference",
+      "fallbackFolders": [
+        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+      ],
       "configFilePaths": [
-        "C:\\Users\\lpdie\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\ASUS\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -3838,18 +3824,14 @@
       ],
       "sources": {
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-        "C:\\Program Files\\dotnet\\library-packs": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
         "net8.0": {
           "targetAlias": "net8.0",
           "projectReferences": {
-            "D:\\CafeHub\\Code\\CafeHub\\CafeHub.Commons\\CafeHub.Commons.csproj": {
-              "projectPath": "D:\\CafeHub\\Code\\CafeHub\\CafeHub.Commons\\CafeHub.Commons.csproj"
-            },
-            "D:\\CafeHub\\Code\\CafeHub\\CafeHub.DAO\\CafeHub.DAO.csproj": {
-              "projectPath": "D:\\CafeHub\\Code\\CafeHub\\CafeHub.DAO\\CafeHub.DAO.csproj"
+            "D:\\fpt\\Kì 7\\prn222\\Mock_Prn\\CafeHub\\Code\\CafeHub\\CafeHub.Commons\\CafeHub.Commons.csproj": {
+              "projectPath": "D:\\fpt\\Kì 7\\prn222\\Mock_Prn\\CafeHub\\Code\\CafeHub\\CafeHub.Commons\\CafeHub.Commons.csproj"
             }
           }
         }
@@ -3863,7 +3845,8 @@
         "enableAudit": "true",
         "auditLevel": "low",
         "auditMode": "direct"
-      }
+      },
+      "SdkAnalysisLevel": "9.0.100"
     },
     "frameworks": {
       "net8.0": {
@@ -3894,7 +3877,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.302/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.103/PortableRuntimeIdentifierGraph.json"
       }
     }
   }

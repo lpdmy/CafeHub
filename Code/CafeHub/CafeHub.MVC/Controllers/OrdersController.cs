@@ -16,10 +16,10 @@ namespace CafeHub.MVC.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly IOrderService _iorderService;
-        public OrdersController(ApplicationDbContext context)
+        public OrdersController(ApplicationDbContext context, IOrderService iorderService)
         {
             _context = context;
-            _iorderService = new OrderService();
+            _iorderService = iorderService;
         }
 
         // GET: Orders
