@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace CafeHub.Commons.Models
 {
-    public class Customer
+    public class Customer : User
     {
         [Key]
         public int Id { get; set; }

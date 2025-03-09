@@ -4,14 +4,14 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CafeHub.Commons
     {
-        public class ApplicationDbContext : IdentityDbContext
+        public class ApplicationDbContext : IdentityDbContext<User>
     {
         public ApplicationDbContext() {/*for signleton on DAO*/ }
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {
         }
-
+        public DbSet<User> Users { get; set; }
         public DbSet<Customer> Customers { get; set; }
         public DbSet<Staff> Staffs { get; set; }
         public DbSet<WorkShift> WorkShifts { get; set; }
