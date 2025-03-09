@@ -13,9 +13,9 @@ namespace CafeHub.Services.Services
     public class OrderService : IOrderService
     {
         private readonly IOrderRepository _iorderRepository;
-        public OrderService()
+        public OrderService(IOrderRepository iorderRepository)
         {
-            _iorderRepository = new OrderRepository();
+            _iorderRepository = iorderRepository;
         }
 
         public async Task<IEnumerable<Order>> GetAllOrdersAsync()

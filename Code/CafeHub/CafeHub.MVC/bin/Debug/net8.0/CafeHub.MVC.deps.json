@@ -2182,14 +2182,7 @@
           }
         }
       },
-      "System.Formats.Asn1/8.0.1": {
-        "runtime": {
-          "lib/net8.0/System.Formats.Asn1.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.724.31311"
-          }
-        }
-      },
+      "System.Formats.Asn1/8.0.1": {},
       "System.IdentityModel.Tokens.Jwt/6.35.0": {
         "dependencies": {
           "Microsoft.IdentityModel.JsonWebTokens": "6.35.0",
@@ -2372,26 +2365,23 @@
           "Microsoft.EntityFrameworkCore.SqlServer": "8.0.11"
         },
         "runtime": {
-          "CafeHub.Commons.dll": {}
-        }
-      },
-      "CafeHub.DAO/1.0.0": {
-        "dependencies": {
-          "CafeHub.Commons": "1.0.0"
-        },
-        "runtime": {
-          "CafeHub.DAO.dll": {}
+          "CafeHub.Commons.dll": {
+            "assemblyVersion": "1.0.0",
+            "fileVersion": "1.0.0.0"
+          }
         }
       },
       "CafeHub.Repository/1.0.0": {
         "dependencies": {
           "CafeHub.Commons": "1.0.0",
-          "CafeHub.DAO": "1.0.0",
           "Microsoft.AspNetCore.Identity": "2.3.0",
           "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "8.0.11"
         },
         "runtime": {
-          "CafeHub.Repository.dll": {}
+          "CafeHub.Repository.dll": {
+            "assemblyVersion": "1.0.0",
+            "fileVersion": "1.0.0.0"
+          }
         }
       },
       "CafeHub.Services/1.0.0": {
@@ -2400,7 +2390,10 @@
           "CafeHub.Repository": "1.0.0"
         },
         "runtime": {
-          "CafeHub.Services.dll": {}
+          "CafeHub.Services.dll": {
+            "assemblyVersion": "1.0.0",
+            "fileVersion": "1.0.0.0"
+          }
         }
       }
     }
@@ -3791,11 +3784,6 @@
       "hashPath": "system.windows.extensions.7.0.0.nupkg.sha512"
     },
     "CafeHub.Commons/1.0.0": {
-      "type": "project",
-      "serviceable": false,
-      "sha512": ""
-    },
-    "CafeHub.DAO/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
