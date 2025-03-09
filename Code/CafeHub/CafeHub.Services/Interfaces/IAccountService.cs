@@ -18,6 +18,6 @@ namespace CafeHub.Services.Interfaces
         Task<IdentityResult> RegisterAsync(User user, string password);
         Task<SignInResult> LoginAsync(string email, string password);
         Task LogoutAsync();
-
+        Task<string> GetCurrentUserIdAsync();
     }
 }

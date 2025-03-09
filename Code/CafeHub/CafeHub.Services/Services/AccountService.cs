@@ -58,5 +58,9 @@ namespace CafeHub.Services.Services
             await _accountRepository.LogoutAsync();
         }
 
+        public async Task<string> GetCurrentUserIdAsync()
+        {
+            return await _accountRepository.GetCurrentUserId();
+        }
     }
 }

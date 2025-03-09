@@ -1,5 +1,6 @@
 ﻿using CafeHub.Commons.Models;
 using CafeHub.Services.Interfaces;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CafeHub.MVC.Controllers
@@ -22,8 +23,10 @@ namespace CafeHub.MVC.Controllers
         [HttpPost]
         public async Task<IActionResult> Register(User model, string password)
         {
+
             if (ModelState.IsValid)
             {
+                model.UserName = model.Email;
                 var result = await _accountService.RegisterAsync(model, password);
                 if (result.Succeeded)
                 {
@@ -74,7 +77,8 @@ namespace CafeHub.MVC.Controllers
         // Display user details
         public async Task<IActionResult> Details(string id)
         {
-            var user = await _accountService.GetUserByIdAsync(id);
+            var id1 = await _accountService.GetCurrentUserIdAsync();
+            var user = await _accountService.GetUserByIdAsync(id1);
             if (user == null) return NotFound();
             return View(user);
         }
@@ -123,5 +127,7 @@ namespace CafeHub.MVC.Controllers
             }
             return View("Error");
         }
+
+
     }
 }
