@@ -876,12 +876,10 @@ D:\CafeHub\Code\CafeHub\CafeHub.MVC\bin\Debug\net8.0\runtimes\win\lib\net6.0\Sys
 D:\CafeHub\Code\CafeHub\CafeHub.MVC\bin\Debug\net8.0\runtimes\win\lib\net7.0\System.Security.Cryptography.ProtectedData.dll
 D:\CafeHub\Code\CafeHub\CafeHub.MVC\bin\Debug\net8.0\runtimes\win\lib\net7.0\System.Windows.Extensions.dll
 D:\CafeHub\Code\CafeHub\CafeHub.MVC\bin\Debug\net8.0\CafeHub.Commons.dll
-D:\CafeHub\Code\CafeHub\CafeHub.MVC\bin\Debug\net8.0\CafeHub.DAO.dll
 D:\CafeHub\Code\CafeHub\CafeHub.MVC\bin\Debug\net8.0\CafeHub.Repository.dll
 D:\CafeHub\Code\CafeHub\CafeHub.MVC\bin\Debug\net8.0\CafeHub.Services.dll
 D:\CafeHub\Code\CafeHub\CafeHub.MVC\bin\Debug\net8.0\CafeHub.Commons.pdb
 D:\CafeHub\Code\CafeHub\CafeHub.MVC\bin\Debug\net8.0\CafeHub.Services.pdb
-D:\CafeHub\Code\CafeHub\CafeHub.MVC\bin\Debug\net8.0\CafeHub.DAO.pdb
 D:\CafeHub\Code\CafeHub\CafeHub.MVC\bin\Debug\net8.0\CafeHub.Repository.pdb
 D:\CafeHub\Code\CafeHub\CafeHub.MVC\obj\Debug\net8.0\CafeHub.MVC.csproj.AssemblyReference.cache
 D:\CafeHub\Code\CafeHub\CafeHub.MVC\obj\Debug\net8.0\CafeHub.MVC.GeneratedMSBuildEditorConfig.editorconfig

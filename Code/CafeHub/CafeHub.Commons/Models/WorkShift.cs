@@ -18,7 +18,7 @@ namespace CafeHub.Commons.Models
         public string Note { get; set; }
 
         // Relationship
-        public int StaffId { get; set; }
+        public string StaffId { get; set; }
         public Staff Staff { get; set; }
     }
 
