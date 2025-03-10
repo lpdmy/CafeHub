@@ -36,9 +36,7 @@ D:\CafeHub\Code\CafeHub\CafeHub.Repository\bin\Debug\net8.0\CafeHub.Repository.d
 D:\CafeHub\Code\CafeHub\CafeHub.Repository\bin\Debug\net8.0\CafeHub.Repository.dll
 D:\CafeHub\Code\CafeHub\CafeHub.Repository\bin\Debug\net8.0\CafeHub.Repository.pdb
 D:\CafeHub\Code\CafeHub\CafeHub.Repository\bin\Debug\net8.0\CafeHub.Commons.dll
-D:\CafeHub\Code\CafeHub\CafeHub.Repository\bin\Debug\net8.0\CafeHub.DAO.dll
 D:\CafeHub\Code\CafeHub\CafeHub.Repository\bin\Debug\net8.0\CafeHub.Commons.pdb
-D:\CafeHub\Code\CafeHub\CafeHub.Repository\bin\Debug\net8.0\CafeHub.DAO.pdb
 D:\CafeHub\Code\CafeHub\CafeHub.Repository\obj\Debug\net8.0\CafeHub.Repository.csproj.AssemblyReference.cache
 D:\CafeHub\Code\CafeHub\CafeHub.Repository\obj\Debug\net8.0\CafeHub.Repository.GeneratedMSBuildEditorConfig.editorconfig
 D:\CafeHub\Code\CafeHub\CafeHub.Repository\obj\Debug\net8.0\CafeHub.Repository.AssemblyInfoInputs.cache

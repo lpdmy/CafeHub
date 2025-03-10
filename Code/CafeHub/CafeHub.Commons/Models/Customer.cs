@@ -9,11 +9,7 @@ namespace CafeHub.Commons.Models
 {
     public class Customer : User
     {
-        [Key]
-        public int Id { get; set; }
         public int LoyaltyPoints { get; set; }
-        public string UserId { get; set; }
-        public User User { get; set; }
     }
 
 }
