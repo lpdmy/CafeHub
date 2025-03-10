@@ -8,5 +8,9 @@ namespace CafeHub.Commons.Enums
 {
     public enum PositionEnum
     {
+        Manager = 1,
+        Barista = 2,
+        Waiter = 3,
+        Cashier = 4
     }
 }
