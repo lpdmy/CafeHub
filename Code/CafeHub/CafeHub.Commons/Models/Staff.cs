@@ -10,13 +10,9 @@ namespace CafeHub.Commons.Models
 {
     public class Staff : User
     {
-        [Key]
-        public int Id { get; set; }
         public PositionEnum Position { get; set; }
         public decimal FixedSalary { get; set; }
         public SalaryTypeEnum SalaryType { get; set; }
-        public string UserId { get; set; }
-        public User User { get; set; }
     }
 
 }

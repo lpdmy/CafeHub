@@ -47,10 +47,8 @@ namespace CafeHub.Commons.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("CustomerId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("CustomerId1")
+                    b.Property<string>("CustomerId")
+                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime>("OrderDate")
@@ -65,7 +63,7 @@ namespace CafeHub.Commons.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CustomerId1");
+                    b.HasIndex("CustomerId");
 
                     b.ToTable("Orders");
                 });
@@ -114,15 +112,13 @@ namespace CafeHub.Commons.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("StaffId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("StaffId1")
+                    b.Property<string>("StaffId")
+                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("StaffId1");
+                    b.HasIndex("StaffId");
 
                     b.ToTable("Payments");
                 });
@@ -246,10 +242,7 @@ namespace CafeHub.Commons.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("StaffId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("StaffId1")
+                    b.Property<string>("StaffId")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
@@ -261,7 +254,7 @@ namespace CafeHub.Commons.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("StaffId1");
+                    b.HasIndex("StaffId");
 
                     b.ToTable("WorkShifts");
                 });
@@ -346,10 +339,12 @@ namespace CafeHub.Commons.Migrations
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
                     b.Property<string>("LoginProvider")
-                        .HasColumnType("nvarchar(450)");
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
 
                     b.Property<string>("ProviderKey")
-                        .HasColumnType("nvarchar(450)");
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
 
                     b.Property<string>("ProviderDisplayName")
                         .HasColumnType("nvarchar(max)");
@@ -386,10 +381,12 @@ namespace CafeHub.Commons.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("LoginProvider")
-                        .HasColumnType("nvarchar(450)");
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
 
                     b.Property<string>("Name")
-                        .HasColumnType("nvarchar(450)");
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
 
                     b.Property<string>("Value")
                         .HasColumnType("nvarchar(max)");
@@ -405,18 +402,6 @@ namespace CafeHub.Commons.Migrations
 
                     b.Property<int>("LoyaltyPoints")
                         .HasColumnType("int");
-
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("AspNetUsers", t =>
-                        {
-                            t.Property("UserId")
-                                .HasColumnName("Customer_UserId");
-                        });
 
                     b.HasDiscriminator().HasValue("Customer");
                 });
@@ -434,12 +419,6 @@ namespace CafeHub.Commons.Migrations
                     b.Property<int>("SalaryType")
                         .HasColumnType("int");
 
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasIndex("UserId");
-
                     b.HasDiscriminator().HasValue("Staff");
                 });
 
@@ -447,7 +426,9 @@ namespace CafeHub.Commons.Migrations
                 {
                     b.HasOne("CafeHub.Commons.Models.Customer", "Customer")
                         .WithMany()
-                        .HasForeignKey("CustomerId1");
+                        .HasForeignKey("CustomerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Customer");
                 });
@@ -467,7 +448,9 @@ namespace CafeHub.Commons.Migrations
                 {
                     b.HasOne("CafeHub.Commons.Models.Staff", "Staff")
                         .WithMany()
-                        .HasForeignKey("StaffId1");
+                        .HasForeignKey("StaffId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Staff");
                 });
@@ -476,7 +459,7 @@ namespace CafeHub.Commons.Migrations
                 {
                     b.HasOne("CafeHub.Commons.Models.Staff", "Staff")
                         .WithMany()
-                        .HasForeignKey("StaffId1")
+                        .HasForeignKey("StaffId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -532,28 +515,6 @@ namespace CafeHub.Commons.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("CafeHub.Commons.Models.Customer", b =>
-                {
-                    b.HasOne("CafeHub.Commons.Models.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("CafeHub.Commons.Models.Staff", b =>
-                {
-                    b.HasOne("CafeHub.Commons.Models.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
                 });
 #pragma warning restore 612, 618
         }
