@@ -9,7 +9,7 @@ namespace CafeHub.Commons.Models
     public class Salary
     {
         public int Id { get; set; }
-        public int StaffId { get; set; }
+        public string StaffId { get; set; }
         public decimal Amount { get; set; }
         public string PaymentData { get; set; }
         public Staff Staff { get; set; }

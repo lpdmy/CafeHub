@@ -8,5 +8,9 @@ namespace CafeHub.Commons.Enums
 {
     public enum SalaryTypeEnum
     {
+        Monthly = 1,
+        Hourly = 2,
+        Commission = 3
     }
+
 }
