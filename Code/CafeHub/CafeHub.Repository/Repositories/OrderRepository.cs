@@ -20,13 +20,11 @@ namespace CafeHub.Repository.Repositories
         public async Task<IEnumerable<Order>> GetAllOrdersAsync()
         {
             return await _context.Orders
-                .Include(o => o.Customer)
                 .ToListAsync();
         }
         public async Task<Order> GetOrderByIdAsync(int id)
         {
             var OrderByID = await _context.Orders
-                .Include(o => o.Customer)
                 .FirstOrDefaultAsync(o => o.Id == id);
             if (OrderByID == null) { return null; }
             return OrderByID;
