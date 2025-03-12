@@ -64,3 +64,19 @@ D:\PRN222\CafeHub\Code\CafeHub\CafeHub.Repository\obj\Debug\net8.0\CafeHub.Repos
 D:\PRN222\CafeHub\Code\CafeHub\CafeHub.Repository\obj\Debug\net8.0\refint\CafeHub.Repository.dll
 D:\PRN222\CafeHub\Code\CafeHub\CafeHub.Repository\obj\Debug\net8.0\CafeHub.Repository.pdb
 D:\PRN222\CafeHub\Code\CafeHub\CafeHub.Repository\obj\Debug\net8.0\ref\CafeHub.Repository.dll
+D:\fpt\Kì 7\prn222\PRJ_PRN\CafeHub\Code\CafeHub\CafeHub.Repository\bin\Debug\net8.0\CafeHub.Repository.deps.json
+D:\fpt\Kì 7\prn222\PRJ_PRN\CafeHub\Code\CafeHub\CafeHub.Repository\bin\Debug\net8.0\CafeHub.Repository.dll
+D:\fpt\Kì 7\prn222\PRJ_PRN\CafeHub\Code\CafeHub\CafeHub.Repository\bin\Debug\net8.0\CafeHub.Repository.pdb
+D:\fpt\Kì 7\prn222\PRJ_PRN\CafeHub\Code\CafeHub\CafeHub.Repository\bin\Debug\net8.0\CafeHub.Commons.dll
+D:\fpt\Kì 7\prn222\PRJ_PRN\CafeHub\Code\CafeHub\CafeHub.Repository\bin\Debug\net8.0\CafeHub.Commons.pdb
+D:\fpt\Kì 7\prn222\PRJ_PRN\CafeHub\Code\CafeHub\CafeHub.Repository\obj\Debug\net8.0\CafeHub.Repository.csproj.AssemblyReference.cache
+D:\fpt\Kì 7\prn222\PRJ_PRN\CafeHub\Code\CafeHub\CafeHub.Repository\obj\Debug\net8.0\CafeHub.Repository.GeneratedMSBuildEditorConfig.editorconfig
+D:\fpt\Kì 7\prn222\PRJ_PRN\CafeHub\Code\CafeHub\CafeHub.Repository\obj\Debug\net8.0\CafeHub.Repository.AssemblyInfoInputs.cache
+D:\fpt\Kì 7\prn222\PRJ_PRN\CafeHub\Code\CafeHub\CafeHub.Repository\obj\Debug\net8.0\CafeHub.Repository.AssemblyInfo.cs
+D:\fpt\Kì 7\prn222\PRJ_PRN\CafeHub\Code\CafeHub\CafeHub.Repository\obj\Debug\net8.0\CafeHub.Repository.csproj.CoreCompileInputs.cache
+D:\fpt\Kì 7\prn222\PRJ_PRN\CafeHub\Code\CafeHub\CafeHub.Repository\obj\Debug\net8.0\CafeHub.Repository.sourcelink.json
+D:\fpt\Kì 7\prn222\PRJ_PRN\CafeHub\Code\CafeHub\CafeHub.Repository\obj\Debug\net8.0\CafeHub..22634E1C.Up2Date
+D:\fpt\Kì 7\prn222\PRJ_PRN\CafeHub\Code\CafeHub\CafeHub.Repository\obj\Debug\net8.0\CafeHub.Repository.dll
+D:\fpt\Kì 7\prn222\PRJ_PRN\CafeHub\Code\CafeHub\CafeHub.Repository\obj\Debug\net8.0\refint\CafeHub.Repository.dll
+D:\fpt\Kì 7\prn222\PRJ_PRN\CafeHub\Code\CafeHub\CafeHub.Repository\obj\Debug\net8.0\CafeHub.Repository.pdb
+D:\fpt\Kì 7\prn222\PRJ_PRN\CafeHub\Code\CafeHub\CafeHub.Repository\obj\Debug\net8.0\ref\CafeHub.Repository.dll
