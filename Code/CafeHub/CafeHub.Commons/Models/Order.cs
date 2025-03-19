@@ -16,6 +16,8 @@ namespace CafeHub.Commons.Models
         public string Status { get; set; }
         public decimal TotalAmount { get; set; }
         public Customer Customer { get; set; }
+
+        public IEnumerable<OrderDetail> OrderDetails { get; set; } = new List<OrderDetail>();
         public decimal CalculateTotal() => TotalAmount;
     }
 

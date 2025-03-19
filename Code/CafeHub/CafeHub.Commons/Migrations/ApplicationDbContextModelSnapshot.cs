@@ -68,6 +68,35 @@ namespace CafeHub.Commons.Migrations
                     b.ToTable("Orders");
                 });
 
+            modelBuilder.Entity("CafeHub.Commons.Models.OrderDetail", b =>
+                {
+                    b.Property<int>("OrderId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("OrderId"));
+
+                    b.Property<int>("OrderId1")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("UnitPrice")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.HasKey("OrderId");
+
+                    b.HasIndex("OrderId1");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("OrderDetails");
+                });
+
             modelBuilder.Entity("CafeHub.Commons.Models.Product", b =>
                 {
                     b.Property<int>("Id")
@@ -433,6 +462,25 @@ namespace CafeHub.Commons.Migrations
                     b.Navigation("Customer");
                 });
 
+            modelBuilder.Entity("CafeHub.Commons.Models.OrderDetail", b =>
+                {
+                    b.HasOne("CafeHub.Commons.Models.Order", "Order")
+                        .WithMany("OrderDetails")
+                        .HasForeignKey("OrderId1")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("CafeHub.Commons.Models.Product", "Product")
+                        .WithMany("OrderDetails")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Order");
+
+                    b.Navigation("Product");
+                });
+
             modelBuilder.Entity("CafeHub.Commons.Models.Product", b =>
                 {
                     b.HasOne("CafeHub.Commons.Models.Category", "Category")
@@ -515,6 +563,16 @@ namespace CafeHub.Commons.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("CafeHub.Commons.Models.Order", b =>
+                {
+                    b.Navigation("OrderDetails");
+                });
+
+            modelBuilder.Entity("CafeHub.Commons.Models.Product", b =>
+                {
+                    b.Navigation("OrderDetails");
                 });
 #pragma warning restore 612, 618
         }

@@ -12,6 +12,59 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="wwwroot\images\about-restaurant-bg-image.svg" />
+    <None Include="wwwroot\images\asterisk-icon.svg" />
+    <None Include="wwwroot\images\author-signature.svg" />
+    <None Include="wwwroot\images\footer-logo.svg" />
+    <None Include="wwwroot\images\header-sidebar-btn.svg" />
+    <None Include="wwwroot\images\icon-about-body-item-1.svg" />
+    <None Include="wwwroot\images\icon-about-body-item-2.svg" />
+    <None Include="wwwroot\images\icon-blockquote.svg" />
+    <None Include="wwwroot\images\icon-clock-accent.svg" />
+    <None Include="wwwroot\images\icon-coffee-beans.svg" />
+    <None Include="wwwroot\images\icon-intro-video-counter-1.svg" />
+    <None Include="wwwroot\images\icon-intro-video-counter-2.svg" />
+    <None Include="wwwroot\images\icon-intro-video-counter-3.svg" />
+    <None Include="wwwroot\images\icon-intro-video-counter-4.svg" />
+    <None Include="wwwroot\images\icon-location-accent.svg" />
+    <None Include="wwwroot\images\icon-location.svg" />
+    <None Include="wwwroot\images\icon-mail-accent.svg" />
+    <None Include="wwwroot\images\icon-mail.svg" />
+    <None Include="wwwroot\images\icon-member-content-1.svg" />
+    <None Include="wwwroot\images\icon-member-content-2.svg" />
+    <None Include="wwwroot\images\icon-our-mission.svg" />
+    <None Include="wwwroot\images\icon-our-value.svg" />
+    <None Include="wwwroot\images\icon-our-vision.svg" />
+    <None Include="wwwroot\images\icon-phone-accent.svg" />
+    <None Include="wwwroot\images\icon-phone.svg" />
+    <None Include="wwwroot\images\icon-project-detail-1.svg" />
+    <None Include="wwwroot\images\icon-project-detail-2.svg" />
+    <None Include="wwwroot\images\icon-project-detail-3.svg" />
+    <None Include="wwwroot\images\icon-project-detail-4.svg" />
+    <None Include="wwwroot\images\icon-project-detail-5.svg" />
+    <None Include="wwwroot\images\icon-service-1.svg" />
+    <None Include="wwwroot\images\icon-service-2.svg" />
+    <None Include="wwwroot\images\icon-service-3.svg" />
+    <None Include="wwwroot\images\icon-service-4.svg" />
+    <None Include="wwwroot\images\icon-service-5.svg" />
+    <None Include="wwwroot\images\icon-service-6.svg" />
+    <None Include="wwwroot\images\icon-story-1.svg" />
+    <None Include="wwwroot\images\icon-story-2.svg" />
+    <None Include="wwwroot\images\icon-story-3.svg" />
+    <None Include="wwwroot\images\icon-sub-heading.svg" />
+    <None Include="wwwroot\images\icon-why-choose-1.svg" />
+    <None Include="wwwroot\images\icon-why-choose-2.svg" />
+    <None Include="wwwroot\images\icon-why-choose-3.svg" />
+    <None Include="wwwroot\images\icon-why-choose-4.svg" />
+    <None Include="wwwroot\images\icon-why-choose-5.svg" />
+    <None Include="wwwroot\images\icon-why-choose-6.svg" />
+    <None Include="wwwroot\images\loader.svg" />
+    <None Include="wwwroot\images\logo.svg" />
+    <None Include="wwwroot\images\service-entry-box-1.svg" />
+    <None Include="wwwroot\images\service-entry-box-2.svg" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="8.0.6" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.11" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="8.0.11" />
