@@ -9,6 +9,9 @@
 bin/
 obj/
 out/
+# Bỏ qua thư mục bin và obj trong tất cả các thư mục con
+**/bin/
+**/obj/
 
 # Dependencies
 packages/
