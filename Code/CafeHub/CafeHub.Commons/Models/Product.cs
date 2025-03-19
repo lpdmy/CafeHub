@@ -18,6 +18,8 @@ namespace CafeHub.Commons.Models
         // Foreign Key
         public int CategoryId { get; set; }
         public Category Category { get; set; }
+
+        public IEnumerable<OrderDetail> OrderDetails { get; set; } = new List<OrderDetail>();
     }
 
     public class Category
