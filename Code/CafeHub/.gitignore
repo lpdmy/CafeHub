@@ -1,11 +1,4 @@
-# Visual Studio
-.vs/
-*.user
-*.suo
-*.cache
-*.csproj.user
-
-# Build outputs
+# Thư mục build
 bin/
 obj/
 out/
@@ -13,30 +6,56 @@ out/
 **/bin/
 **/obj/
 
-# Dependencies
+# Các thư mục và tệp cấu hình của Visual Studio
+.vs/
+.vscode/
+.idea/
+
+# Tệp cá nhân của người dùng
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Thư mục chứa các tệp tạm
+tmp/
+*.tmp
+
+# Các tệp .NET không cần thiết
 packages/
 *.nupkg
+*.nuspec
 project.lock.json
-project.assets.json
-.nuget/
+project.fragment.lock.json
 
-# Logs & Debugging
+# Các tệp cấu hình môi trường ASP.NET (không nên chia sẻ)
+appsettings.json
+appsettings.Development.json
+appsettings.Production.json
+
+# Các tệp nhật ký
+logs/
 *.log
-*.tlog
-*.pdb
 
-# User-specific settings
-*.rsuser
-*.userprefs
+# Các tệp cơ sở dữ liệu tạm thời (ví dụ: SQL Server)
+*.mdf
+*.ldf
 
-# ASP.NET Core
-appsettings.dev.json
-appsettings.Local.json
-secrets.json
+# Các thư mục biên dịch (frontend, nếu có)
+dist/
+build/
 
-# Entity Framework
-Migrations/
+# Tệp cấu hình hệ điều hành
+.DS_Store
+Thumbs.db
 
-# Rider / JetBrains
-.idea/
-*.sln.iml
+# Các thư mục node_modules hoặc bower_components (nếu có)
+node_modules/
+bower_components/
+
+# Thư mục publish của ASP.NET
+publish/
+
+# Các tệp và thư mục tạm khác
+*.swp
+*.swo
