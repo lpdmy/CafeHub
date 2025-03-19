@@ -5,7 +5,6 @@ out/
 # Bỏ qua thư mục bin và obj trong tất cả các thư mục con
 **/bin/
 **/obj/
-
 # Các thư mục và tệp cấu hình của Visual Studio
 .vs/
 .vscode/
