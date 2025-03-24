@@ -10,16 +10,27 @@ namespace CafeHub.Commons.Models
 {
     public class WorkShift
     {
+       
         [Key]
         public int Id { get; set; }
-        public DateTime StartTime { get; set; }
-        public DateTime EndTime { get; set; }
-        public ShiftStatusEnum Status { get; set; }
-        public string Note { get; set; }
 
-        // Relationship
-        public string StaffId { get; set; }
-        public Staff Staff { get; set; }
+        [Required]
+        public string ShiftName { get; set; } = string.Empty;
+
+        [Required]
+        public DateTime StartTime { get; set; }
+
+        [Required]
+        public DateTime EndTime { get; set; }
+
+        [Required]
+        public DateTime ShiftDate { get; set; }
+
+        public string? Description { get; set; }
+
+        public virtual ICollection<WorkShiftDetail> WorkShiftDetails { get; set; } = new List<WorkShiftDetail>();
+
+        public string GetInfo() => $"{ShiftName} ({ShiftDate:yyyy-MM-dd})";
     }
 
 }

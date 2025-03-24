@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace CafeHub.Repository.Interfaces
 {
-    public interface IAccountRepository
+    public interface IAccountRepository : IGenericRepository<User>
     {
         Task<User> GetUserByIdAsync(string userId);
         Task<User> GetUserByEmailAsync(string email);

@@ -7,12 +7,7 @@ using System.Threading.Tasks;
 
 namespace CafeHub.Repository.Interfaces
 {
-    public interface IOrderRepository
+    public interface IOrderRepository : IGenericRepository<Order>
     {
-        Task<IEnumerable<Order>> GetAllOrdersAsync();
-        Task<Order> GetOrderByIdAsync(int id);
-        Task<Order> CreateOrderAsync(Order order);
-        Task<Order> UpdateOrderAsync(Order order);
-        Task<Order> DeleteOrderAsync(int id);
     }
 }
