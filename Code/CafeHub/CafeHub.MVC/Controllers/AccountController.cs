@@ -1,5 +1,7 @@
 ﻿using CafeHub.Commons.Models;
+using CafeHub.MVC.Models;
 using CafeHub.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
@@ -21,37 +23,59 @@ namespace CafeHub.MVC.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Register(User model, string password)
+        public async Task<IActionResult> Register(RegisterViewModel model)
         {
-
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                model.UserName = model.Email;
-                var result = await _accountService.RegisterAsync(model, password);
-                if (result.Succeeded)
-                {
-                    return RedirectToAction("Login");
-                }
-
-                foreach (var error in result.Errors)
-                {
-                    ModelState.AddModelError("", error.Description);
-                }
+                return View(model);
             }
+
+            var user = new Customer
+            {
+                UserName = model.Email, 
+                Email = model.Email,
+                FullName = model.FullName,
+                PhoneNumber = model.Phone,
+                DateOfBirth = model.DateOfBirth,
+                Gender = model.Gender,
+                Address = model.Address,
+                ProfilePictureUrl = model.ProfilePictureUrl
+            };
+
+            var result = await _accountService.RegisterAsync(user, model.Password);
+
+            if (result.Succeeded)
+            {
+                TempData["SuccessMessage"] = "Registration successful! Please login.";
+                return RedirectToAction("Login");
+            }
+
+            // Hiển thị lỗi nếu đăng ký thất bại
+            foreach (var error in result.Errors)
+            {
+                ModelState.AddModelError("", error.Description);
+            }
+
             return View(model);
         }
+
 
         public IActionResult Login()
         {
             return View();
         }
 
+        public IActionResult Demo()
+        {
+            return View();
+        }
+
         [HttpPost]
-        public async Task<IActionResult> Login(string email, string password)
+        public async Task<IActionResult> Login(LoginViewModel viewModel)
         {
             if (ModelState.IsValid)
             {
-                var result = await _accountService.LoginAsync(email, password);
+                var result = await _accountService.LoginAsync(viewModel.Email, viewModel.Password);
                 if (result.Succeeded)
                 {
                     return RedirectToAction("Index", "Home");
