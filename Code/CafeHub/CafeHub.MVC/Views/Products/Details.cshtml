@@ -1,42 +1,55 @@
 ﻿@model CafeHub.Commons.Models.Product
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Product Details";
 }
 
-<h1>Details</h1>
+<h1 class="text-center">Product Details</h1>
 
-<div>
-    <h4>Product</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Name)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Price)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Price)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Description)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Description)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Category)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Category.Name)
-        </dd>
-    </dl>
+<hr />
+
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <dl class="row">
+            <!-- Name Field -->
+            <dt class="col-sm-4">
+                @Html.DisplayNameFor(model => model.Name)
+            </dt>
+            <dd class="col-sm-8">
+                @Html.DisplayFor(model => model.Name)
+            </dd>
+
+            <!-- Price Field -->
+            <dt class="col-sm-4">
+                @Html.DisplayNameFor(model => model.Price)
+            </dt>
+            <dd class="col-sm-8">
+                @Html.DisplayFor(model => model.Price)
+            </dd>
+
+            <!-- Description Field -->
+            <dt class="col-sm-4">
+                @Html.DisplayNameFor(model => model.Description)
+            </dt>
+            <dd class="col-sm-8">
+                @Html.DisplayFor(model => model.Description)
+            </dd>
+
+            <!-- Category Field -->
+            <dt class="col-sm-4">
+                @Html.DisplayNameFor(model => model.Category)
+            </dt>
+            <dd class="col-sm-8">
+                @Html.DisplayFor(model => model.Category.Name)
+            </dd>
+        </dl>
+    </div>
 </div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+
+<hr />
+
+<div class="text-center">
+    <!-- Edit and Back to List Links -->
+    <a asp-action="Edit" asp-route-id="@Model?.Id" class="btn btn-warning btn-lg">Edit Product</a>
+    <a asp-action="Index" class="btn btn-outline-primary btn-lg">Back to Product List</a>
 </div>
