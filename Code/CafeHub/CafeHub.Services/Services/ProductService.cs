@@ -21,12 +21,12 @@ namespace CafeHub.Services.Services
 
         public async Task<IEnumerable<Product>> GetAllProductsAsync()
         {
-            return await _productRepository.GetAllAsync();
+            return await _productRepository.GetAllAsync(); 
         }
 
         public async Task<Product> GetProductByIdAsync(int id)
         {
-            return await _productRepository.GetByIdAsync(id);
+            return await _productRepository.GetByIdAsync(id); 
         }
 
         public async Task CreateProductAsync(Product product)
@@ -50,7 +50,7 @@ namespace CafeHub.Services.Services
 
         public async Task<IEnumerable<Product>> GetProductsByCategoryAsync(int categoryId)
         {
-            return await _productRepository.GetProductsByCategoryAsync(categoryId);
+            return await _productRepository.GetProductsByCategoryAsync(categoryId); 
         }
     }
 

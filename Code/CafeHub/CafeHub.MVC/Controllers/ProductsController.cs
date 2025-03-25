@@ -44,23 +44,23 @@ namespace CafeHub.MVC.Controllers
         // GET: Products/Details/5
         public async Task<IActionResult> Details(int id)
         {
-            var product = await _productService.GetProductByIdAsync(id);
-            var categories = await _categoryService.GetAllCategoriesAsync();
+            var product = await _productService.GetProductByIdAsync(id); 
+            var categories = await _categoryService.GetAllCategoriesAsync();  
 
             if (product == null)
             {
-                return NotFound();
+                return NotFound();  
             }
 
             ViewBag.Categories = categories;
-            return View(product);
+            return View(product);  
         }
 
         // GET: Products/Create
         public async Task<IActionResult> Create()
         {
-            var categories = await _categoryService.GetAllCategoriesAsync();
-            ViewData["CategoryId"] = new SelectList(categories, "Id", "Name");
+            var categories = await _categoryService.GetAllCategoriesAsync();  
+            ViewData["CategoryId"] = new SelectList(categories, "Id", "Name");  
             return View();
         }
 
@@ -79,27 +79,27 @@ namespace CafeHub.MVC.Controllers
                     CategoryId = model.CategoryId
                 };
 
-                await _productService.CreateProductAsync(product);
-                return RedirectToAction(nameof(Index));
+                await _productService.CreateProductAsync(product); 
+                return RedirectToAction(nameof(Index));  
             }
 
             var categories = await _categoryService.GetAllCategoriesAsync();
-            ViewData["CategoryId"] = new SelectList(categories, "Id", "Name", model.CategoryId);
-            return View(model);
+            ViewData["CategoryId"] = new SelectList(categories, "Id", "Name", model.CategoryId); 
+            return View(model);  
         }
 
         // GET: Products/Edit/5
         public async Task<IActionResult> Edit(int id)
         {
-            var product = await _productService.GetProductByIdAsync(id);
+            var product = await _productService.GetProductByIdAsync(id); 
             if (product == null)
             {
-                return NotFound();
+                return NotFound();  
             }
 
-            var categories = await _categoryService.GetAllCategoriesAsync();
-            ViewData["CategoryId"] = new SelectList(categories, "Id", "Name", product.CategoryId);
-            return View(product);
+            var categories = await _categoryService.GetAllCategoriesAsync(); 
+            ViewData["CategoryId"] = new SelectList(categories, "Id", "Name", product.CategoryId);  
+            return View(product);  
         }
 
         // POST: Products/Edit/5
@@ -118,22 +118,22 @@ namespace CafeHub.MVC.Controllers
                     CategoryId = model.CategoryId
                 };
 
-                await _productService.UpdateProductAsync(product);
-                return RedirectToAction(nameof(Index));
+                await _productService.UpdateProductAsync(product); 
+                return RedirectToAction(nameof(Index));  
             }
 
             var categories = await _categoryService.GetAllCategoriesAsync();
-            ViewData["CategoryId"] = new SelectList(categories, "Id", "Name", model.CategoryId);
-            return View(model);
+            ViewData["CategoryId"] = new SelectList(categories, "Id", "Name", model.CategoryId); 
+            return View(model);  
         }
 
         // GET: Products/Delete/5
         public async Task<IActionResult> Delete(int id)
         {
-            var product = await _productService.GetProductByIdAsync(id);
+            var product = await _productService.GetProductByIdAsync(id);  
             if (product == null)
             {
-                return NotFound();
+                return NotFound();  
             }
             return View(product);
         }
@@ -143,8 +143,8 @@ namespace CafeHub.MVC.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            await _productService.DeleteProductAsync(id);
-            return RedirectToAction(nameof(Index));
+            await _productService.DeleteProductAsync(id);  
+            return RedirectToAction(nameof(Index));  
         }
     }
 }

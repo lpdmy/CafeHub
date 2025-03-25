@@ -1,4 +1,6 @@
 ﻿using CafeHub.Commons.Models;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace CafeHub.Services.Interfaces
 {
