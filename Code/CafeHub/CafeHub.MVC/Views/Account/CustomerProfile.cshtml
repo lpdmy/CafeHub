@@ -1,0 +1,122 @@
+﻿@model CustomerViewModel
+<div class="page-contact-us">
+    <div class="container">
+<div class="contact-information">
+    <div class="section-title">
+        <h3 class="wow fadeInUp">Customer Profile</h3>
+        <h2 class="text-anime-style-3" data-cursor="-opaque">Welcome, @Model.FullName</h2>
+        <p class="wow fadeInUp" data-wow-delay="0.2s">Here are your profile details. Keep your information up to date for a better experience.</p>
+    </div>
+
+    <div class="contact-info-body">
+        <div class="contact-info-box-1 wow fadeInUp" data-wow-delay="0.4s">
+            <div class="contact-info-item">
+                <div class="icon-box">
+                            @* @Model.ProfilePictureUrl *@
+                            <img src="https://i.pinimg.com/originals/0d/42/90/0d42905fc5e9d14fa032d8ea0282bf68.jpg" alt="Profile Picture" width="300" style="border-radius: 50%;" />
+                </div>
+                <div class="contact-item-content">
+                    <h3>Profile Picture</h3>
+                </div>
+            </div>
+
+            <div class="contact-info-item">
+                <div class="icon-box">
+                    <img src="~/images/icon-mail-accent.svg" alt="">
+                </div>
+                <div class="contact-item-content">
+                    <h3>Email Address</h3>
+                    <p><a href="mailto:@Model.Email">@Model.Email</a></p>
+                </div>
+            </div>
+
+            <div class="contact-info-item">
+                <div class="icon-box">
+                    <img src="~/images/icon-phone-accent.svg" alt="">
+                </div>
+                <div class="contact-item-content">
+                    <h3>Phone Number</h3>
+                    <p><a href="tel:+91123456789">+91 123 456 789</a></p> <!-- Cập nhật nếu có số điện thoại -->
+                </div>
+            </div>
+        </div>
+
+        <div class="contact-info-box-2 wow fadeInUp" data-wow-delay="0.6s">
+            <!-- Address -->
+            <div class="contact-info-item">
+                <div class="icon-box">
+                    <img src="~/images/icon-location-accent.svg" alt="">
+                </div>
+                <div class="contact-item-content">
+                    <h3>Address</h3>
+                    <p>@Model.Address</p>
+                </div>
+            </div>
+
+            <div class="contact-info-item mt-4">
+                <div class="icon-box">
+                    <img src="~/images/icon-gender-accent.svg" alt="">
+                </div>
+                <div class="contact-item-content">
+                    <h3>Gender</h3>
+                    <p>@Model.Gender</p>
+                </div>
+            </div>
+
+            <div class="contact-info-item mt-4">
+                <div class="icon-box">
+                    <img src="~/images/icon-calendar-accent.svg" alt="">
+                </div>
+                <div class="contact-item-content">
+                    <h3>Date of Birth</h3>
+                    <p>@(Model.DateOfBirth?.ToString("dd/MM/yyyy") ?? "N/A")</p>
+                </div>
+            </div>
+        </div>
+        <!-- Contact Info Box End -->
+
+        <!-- Contact Info Box Start -->
+        <div class="contact-info-box-1 wow fadeInUp" data-wow-delay="0.8s">
+            <!-- Loyalty Points -->
+            <div class="contact-info-item">
+                <div class="icon-box">
+                    <img src="~/images/icon-loyalty-accent.svg" alt="">
+                </div>
+                <div class="contact-item-content">
+                    <h3>Loyalty Points</h3>
+                    <p>@Model.LoyaltyPoints</p>
+                </div>
+            </div>
+
+            <!-- Membership Type -->
+            <div class="contact-info-item">
+                <div class="icon-box">
+                    <img src="~/images/icon-membership-accent.svg" alt="">
+                </div>
+                <div class="contact-item-content">
+                    <h3>Membership Type</h3>
+                    <p>@Model.MembershipType</p>
+                </div>
+            </div>
+
+            <!-- Join Date -->
+            <div class="contact-info-item">
+                <div class="icon-box">
+                    <img src="~/images/icon-join-date-accent.svg" alt="">
+                </div>
+                <div class="contact-item-content">
+                    <h3>Join Date</h3>
+                    <p>@Model.JoinDate.ToString("dd/MM/yyyy")</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="mt-4">
+            <a asp-controller="Account" asp-action="ChangePassword" class="btn-default">Login Here</a>
+            <a asp-controller="" class="btn-default">Edit Profile</a>
+</div>
+       
+    </div>
+</div>
+

@@ -10,10 +10,16 @@ namespace CafeHub.MVC.Controllers
     public class AccountController : Controller
     {
         private readonly IAccountService _accountService;
+        private readonly UserManager<User> _userManager;
+        private readonly SignInManager<User> _signInManager;
 
-        public AccountController(IAccountService accountService)
+        private readonly IEmailService _emailService;
+        public AccountController(UserManager<User> userManager, IAccountService accountService, IEmailService emailService, SignInManager<User> signInManager)
         {
             _accountService = accountService;
+            _userManager = userManager;
+            _emailService = emailService;
+            _signInManager = signInManager;
         }
 
 
@@ -32,7 +38,7 @@ namespace CafeHub.MVC.Controllers
 
             var user = new Customer
             {
-                UserName = model.Email, 
+                UserName = model.Email,
                 Email = model.Email,
                 FullName = model.FullName,
                 PhoneNumber = model.Phone,
@@ -151,7 +157,156 @@ namespace CafeHub.MVC.Controllers
             }
             return View("Error");
         }
+        [Authorize(Roles = "Customer")]
+        public async Task<IActionResult> CustomerProfile()
+        {
+            var user = await _userManager.GetUserAsync(User) as Customer; // Ép kiểu về Customer
+            if (user == null) return NotFound();
 
+            var customerViewModel = new CustomerViewModel
+            {
+                Id = user.Id,
+                FullName = user.FullName,
+                Email = user.Email,
+                DateOfBirth = user.DateOfBirth,
+                Gender = user.Gender,
+                Address = user.Address,
+                ProfilePictureUrl = user.ProfilePictureUrl,
+                LoyaltyPoints = user.LoyaltyPoints,
+                MembershipType = user.MembershipType,
+                JoinDate = user.JoinDate,
+            };
+
+            return View(customerViewModel);
+        }
+
+        [Authorize(Roles = "Staff")]
+        public async Task<IActionResult> StaffProfile()
+        {
+            var user = await _userManager.GetUserAsync(User) as Staff;
+            if (user == null)
+                return RedirectToAction("Login", "Account");
+
+            var model = new StaffProfileViewModel
+            {
+                Name = user.Name,
+                Email = user.Email,
+                EmployeeCode = user.EmployeeCode,
+                Position = user.Position,
+                HireDate = user.HireDate,
+                Salary = user.Salary,
+                CreatedAt = user.CreatedAt,
+                IsLocked = user.IsLocked
+            };
+
+            return View(model);
+        }
+        public async Task<IActionResult> SendTestEmail()
+        {
+            await _emailService.SendEmailAsync("mylpdde180283@fpt.edu.vn", "Test Email", "<h1>Hello from ASP.NET</h1>");
+            return Content("Email Sent Successfully!");
+        }
+
+        public async Task<IActionResult> ChangePassword()
+        {
+            return View();
+        }
+        [Authorize]
+        [HttpPost]
+        public async Task<IActionResult> ChangePassword(ChangePasswordViewModel model)
+        {
+            if (!ModelState.IsValid)
+                return View(model);
+
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+                return RedirectToAction("Login", "Account");
+
+            var result = await _userManager.ChangePasswordAsync(user, model.OldPassword, model.NewPassword);
+            if (!result.Succeeded)
+            {
+                foreach (var error in result.Errors)
+                {
+                    ModelState.AddModelError("", error.Description);
+                }
+                return View(model);
+            }
+
+            await _signInManager.RefreshSignInAsync(user); // Keep user logged in
+            TempData["SuccessMessage"] = "Password changed successfully!";
+            if (await _userManager.IsInRoleAsync(user, "Customer"))
+            {
+                return RedirectToAction("CustomerProfile", "Account"); // Redirect to profile page
+            }
+            return RedirectToAction("StaffProfile", "Account"); // Redirect to profile page
+
+        }
+
+        public async Task<IActionResult> Forgot()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Forgot(ForgotPasswordViewModel model)
+        {
+            if (!ModelState.IsValid)
+                return View(model);
+
+            var user = await _userManager.FindByEmailAsync(model.Email);
+            if (user == null)
+            {
+                TempData["ErrorMessage"] = "No account found with this email.";
+                return View();
+            }
+
+            var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+            var resetLink = Url.Action("ResetPassword", "Account", new { token, email = user.Email }, Request.Scheme);
+
+            await _emailService.SendEmailAsync(user.Email, "Reset Password", $"Click here to reset your password: <a href='{resetLink}'>Reset Password</a>");
+
+            TempData["SuccessMessage"] = "Password reset link has been sent to your email.";
+            return RedirectToAction("Login");
+        }
+
+        public async Task<IActionResult> ResetPassword(string token, string email)
+        {
+            if (string.IsNullOrEmpty(token) || string.IsNullOrEmpty(email))
+            {
+                TempData["ErrorMessage"] = "Invalid password reset request.";
+                return RedirectToAction("Login");
+            }
+
+            var model = new ResetPasswordViewModel { Token = token, Email = email };
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ResetPassword(ResetPasswordViewModel model)
+        {
+            if (!ModelState.IsValid)
+                return View(model);
+
+            var user = await _userManager.FindByEmailAsync(model.Email);
+            if (user == null)
+            {
+                TempData["ErrorMessage"] = "No account found with this email.";
+                return RedirectToAction("Forgot");
+            }
+
+            var resetResult = await _userManager.ResetPasswordAsync(user, model.Token, model.NewPassword);
+            if (!resetResult.Succeeded)
+            {
+                foreach (var error in resetResult.Errors)
+                {
+                    ModelState.AddModelError(string.Empty, error.Description);
+                }
+                return View(model);
+            }
+
+            TempData["SuccessMessage"] = "Password has been reset successfully! You can now log in.";
+            return RedirectToAction("Login");
+        }
 
     }
 }
