@@ -9,7 +9,7 @@ using CafeHub.Web.Models;
 using Microsoft.AspNetCore.Authorization;
 namespace CafeHub.MVC.Controllers
 {
-    [Authorize(Roles = "Admin")]
+    
     public class AdminUserDashboard : Controller
     {
         private readonly UserManager<User> _userManager;
@@ -20,6 +20,8 @@ namespace CafeHub.MVC.Controllers
             _userManager = userManager;
             _accountService = accountService;
         }
+
+        [Authorize(Roles = "Admin")] // Customer/ Staff
 
         public async Task<IActionResult> Index()
         {
