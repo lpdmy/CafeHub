@@ -20,7 +20,6 @@
             <tr>
                 <td>@user.Name</td>
                 <td>@user.Email</td>
-                <td>@user.Role</td>
                 <td>
                     <a href="@Url.Action("Details", "Admin", new { id = user.Id })" class="btn btn-info">Details</a>
                     <a href="@Url.Action("Edit", "Admin", new { id = user.Id })" class="btn btn-warning">Edit</a>
