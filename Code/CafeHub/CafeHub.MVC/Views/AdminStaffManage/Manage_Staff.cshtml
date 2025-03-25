@@ -1,4 +1,5 @@
-﻿@model IEnumerable<UserViewModel?>
+﻿@using CafeHub.Web.Models
+ @model IEnumerable<StaffViewModel?> 
 
 <div class="page-service-single">
     <div class="container">
@@ -8,9 +9,9 @@
                     <div class="page-category-list wow fadeInUp">
                         <h3>Admin Panel</h3>
                         <ul>
-                            <li><a asp-controller="#" asp-action="Dashboard">Dashboard</a></li>
+                            <li><a asp-controller="AdminUserDashboard" asp-action="Index">Dashboard</a></li>
                             <li><a asp-controller="#" asp-action="Users">Manage Users</a></li>
-                            <li><a asp-controller="AdminStaffManage" asp-action="Manage_Staff">Manage Staffs</a></li>
+                            <li><a asp-controller="AdminStaffManage" asp-action="Index">Manage Staffs</a></li>
                             <li><a asp-controller="#" asp-action="Settings">Settings</a></li>
                         </ul>
                     </div>
@@ -18,31 +19,34 @@
             </div>
             <div class="col-lg-8">
                 <div class="service-single-content">
-                    <h2 class="text-anime-style-3">User Management</h2>
+                    <h2 class="text-anime-style-3">Staff Management</h2>
                     <a asp-action="CreateStaff" class="btn btn-primary mb-3">Add New Staff</a>
-                    <input type="text" id="search" class="form-control mb-3" placeholder="Search users...">
+                    <input type="text" id="search" class="form-control mb-3" placeholder="Search staff...">
                     <div class="table-responsive">
                         <table class="table table-bordered border-primary">
                             <thead class="thead-dark">
                                 <tr>
                                     <th>Name</th>
                                     <th>Email</th>
-                                    <th>Role</th>
-                                    <th>Status</th>
-                                    <th>Actions</th>
+                                    <th>EmployeeCode</th>
+                                    <th>Position</th>
+                                    <th>HireDate</th>
+                                    <th>Salary</th>                                   
                                 </tr>
                             </thead>
-                            <tbody id="userTableBody">
-                                @foreach (var user in Model)
+                            <tbody id="staffTableBody">
+                                @foreach (var staff in Model)
                                 {
                                     <tr>
-                                        <td>@user.Name</td>
-                                        <td>@user.Email</td>
-                                        <td>@user.Role</td>
-                                        <td>@(user.IsActive ? "Active" : "Inactive")</td>
+                                        <td>@staff.Name</td>
+                                        <td>@staff.Email</td>
+                                        <td>@staff.EmployeeCode</td>
+                                        <td>@staff.Position</td>
+                                        <td>@staff.HireDate</td>
+                                        <td>@staff.Salary</td>
                                         <td>
-                                            <a asp-action="EditUser" asp-route-id="@user.Id" class="btn btn-warning btn-sm">Edit</a>
-                                            <a asp-action="DeleteUser" asp-route-id="@user.Id" class="btn btn-danger btn-sm">Delete</a>
+                                            <a asp-action="EditStaff" asp-route-id="@staff.Id" class="btn btn-warning btn-sm">Edit</a>
+                                            <a asp-action="DeleteStaff" asp-route-id="@staff.Id" class="btn btn-danger btn-sm">Delete</a>
                                         </td>
                                     </tr>
                                 }
@@ -68,7 +72,7 @@
     <script>
         document.getElementById("search").addEventListener("keyup", function () {
             let filter = this.value.toLowerCase();
-            let rows = document.querySelectorAll("#userTableBody tr");
+            let rows = document.querySelectorAll("#staffTableBody tr");
             rows.forEach(row => {
                 let text = row.textContent.toLowerCase();
                 row.style.display = text.includes(filter) ? "" : "none";
