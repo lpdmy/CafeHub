@@ -4,6 +4,7 @@ using CafeHub.MVC.Seeders;
 using CafeHub.Repository.Interfaces;
 using CafeHub.Repository.Repositories;
 using CafeHub.Services.Interfaces;
+using CafeHub.Services.Models;
 using CafeHub.Services.Services;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
@@ -21,7 +22,9 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 //add service and repository
+builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection("EmailSettings"));
 
+builder.Services.AddScoped<IEmailService, EmailService>();
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
 
 builder.Services.AddScoped<IAccountRepository, AccountRepository>();
