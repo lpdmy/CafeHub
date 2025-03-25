@@ -11,7 +11,7 @@
                         <ul>
                             <li><a asp-controller="AdminUserDashboard" asp-action="Index">Dashboard</a></li>
                             <li><a asp-controller="#" asp-action="Users">Manage Users</a></li>
-                            <li><a asp-controller="AdminStaffManage" asp-action="Index">Manage Staffs</a></li>
+                            <li><a asp-controller="AdminStaffManage" asp-action="Manage_Staff">Manage Staffs</a></li>
                             <li><a asp-controller="#" asp-action="Settings">Settings</a></li>
                         </ul>
                     </div>
@@ -31,12 +31,15 @@
                                     <th>EmployeeCode</th>
                                     <th>Position</th>
                                     <th>HireDate</th>
-                                    <th>Salary</th>                                   
+                                    <th>Salary</th> 
+                                    <th style="width: 150px;">Actions</th>
                                 </tr>
                             </thead>
                             <tbody id="staffTableBody">
                                 @foreach (var staff in Model)
                                 {
+                                    var staffId = ViewBag.StaffIds[staff.Email];
+
                                     <tr>
                                         <td>@staff.Name</td>
                                         <td>@staff.Email</td>
@@ -45,9 +48,9 @@
                                         <td>@staff.HireDate</td>
                                         <td>@staff.Salary</td>
                                         <td>
-                                            <a asp-action="EditStaff" asp-route-id="@staff.Id" class="btn btn-warning btn-sm">Edit</a>
-                                            <a asp-action="DeleteStaff" asp-route-id="@staff.Id" class="btn btn-danger btn-sm">Delete</a>
-                                        </td>
+                                            <a asp-action="EditStaff" asp-route-id="@staffId" class="btn btn-warning btn-sm">Edit</a>
+                                            <a asp-action="DeleteStaff" asp-route-id="@staffId" class="btn btn-danger btn-sm">Delete</a>
+                                        </td> 
                                     </tr>
                                 }
                             </tbody>

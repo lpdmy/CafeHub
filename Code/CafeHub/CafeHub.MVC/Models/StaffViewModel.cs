@@ -5,8 +5,7 @@ namespace CafeHub.Web.Models
 {
     public class StaffViewModel
     {
-        [Required]
-        public string Id { get; set; } = string.Empty;
+        
         [Required]
         public string Name { get; set; } = string.Empty;
 
