@@ -14,4 +14,3 @@ namespace CafeHub.Services.Interfaces
         Task<IEnumerable<Product>> GetProductsByCategoryAsync(int categoryId);
     }
 }
-

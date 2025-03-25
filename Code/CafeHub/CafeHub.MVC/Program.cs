@@ -35,6 +35,7 @@ builder.Services.AddScoped<ICategoryService, CategoryService>();
 
 
 
+
 builder.Services.AddIdentity<User, ApplicationRole>(options => options.SignIn.RequireConfirmedAccount = false)
     .AddEntityFrameworkStores<ApplicationDbContext>()
     .AddDefaultTokenProviders();

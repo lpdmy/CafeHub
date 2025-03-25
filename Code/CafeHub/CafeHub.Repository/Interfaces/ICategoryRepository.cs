@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CafeHub.Repository.Interfaces
 {
-    public interface IProductService
+    public interface ICategoryRepository : IGenericRepository<Category>
     {
         Task<IEnumerable<Category>> GetCategoriesByNameAsync(string name);
     }

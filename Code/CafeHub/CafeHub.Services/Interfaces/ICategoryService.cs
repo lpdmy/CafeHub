@@ -13,4 +13,3 @@ namespace CafeHub.Services.Interfaces
         Task DeleteCategoryAsync(int id);
     }
 }
-
