@@ -1,7 +1,7 @@
-﻿@model CafeHub.Commons.Models.Product
+﻿@model CafeHub.MVC.Models.CategoryViewModel
 
 @{
-    ViewData["Title"] = "Delete Product";
+    ViewData["Title"] = "Delete Category";
 }
 
 <div class="page-contact-us">
@@ -10,8 +10,8 @@
             <div class="col-lg-6">
                 <div class="contact-information">
                     <div class="section-title">
-                        <h3 class="wow fadeInUp">Delete Product</h3>
-                        <h2 class="text-anime-style-3" data-cursor="-opaque">Are you sure you want to delete this product?</h2>
+                        <h3 class="wow fadeInUp">Delete Category</h3>
+                        <h2 class="text-anime-style-3" data-cursor="-opaque">Are you sure you want to delete this category?</h2>
                     </div>
                 </div>
             </div>
@@ -19,13 +19,13 @@
             <div class="col-lg-6">
                 <div class="contact-us-form">
                     <div class="contact-form-content">
-                        <h3 class="wow fadeInUp">Product Details</h3>
-                        <p class="wow fadeInUp" data-wow-delay="0.2s">You are about to delete the following product.</p>
+                        <h3 class="wow fadeInUp">Category Details</h3>
+                        <p class="wow fadeInUp" data-wow-delay="0.2s">You are about to delete the following category.</p>
                     </div>
 
                     <div class="contact-form">
                         <dl class="row">
-                            <!-- Product Name -->
+                            <!-- Category Name -->
                             <dt class="col-sm-4">
                                 @Html.DisplayNameFor(model => model.Name)
                             </dt>
@@ -33,15 +33,7 @@
                                 @Html.DisplayFor(model => model.Name)
                             </dd>
 
-                            <!-- Product Price -->
-                            <dt class="col-sm-4">
-                                @Html.DisplayNameFor(model => model.Price)
-                            </dt>
-                            <dd class="col-sm-8">
-                                @Html.DisplayFor(model => model.Price)
-                            </dd>
-
-                            <!-- Product Description -->
+                            <!-- Category Description -->
                             <dt class="col-sm-4">
                                 @Html.DisplayNameFor(model => model.Description)
                             </dt>
@@ -49,19 +41,19 @@
                                 @Html.DisplayFor(model => model.Description)
                             </dd>
 
-                            <!-- Product Category -->
+                            <!-- Category IsActive -->
                             <dt class="col-sm-4">
-                                @Html.DisplayNameFor(model => model.Category)
+                                @Html.DisplayNameFor(model => model.IsActive)
                             </dt>
                             <dd class="col-sm-8">
-                                @Html.DisplayFor(model => model.Category.Name)
+                                @(Model.IsActive ? "Yes" : "No")
                             </dd>
                         </dl>
 
                         <!-- Delete Form -->
                         <form asp-action="Delete" asp-route-id="@Model.Id" method="post" class="wow fadeInUp" data-wow-delay="0.4s">
                             <div class="form-group text-center">
-                                <button type="submit" class="btn btn-danger btn-lg">Delete Product</button>
+                                <button type="submit" class="btn btn-danger btn-lg">Delete Category</button>
                                 <a asp-action="Index" class="btn btn-outline-primary btn-lg">Cancel</a>
                             </div>
                         </form>

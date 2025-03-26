@@ -1,56 +1,69 @@
 ﻿@model CafeHub.Commons.Models.Product
 
-@{
-    ViewData["Title"] = "Edit Product";
-}
-
-<h1 class="text-center">Edit Product</h1>
-
-<hr />
-
-<div class="row justify-content-center">
-    <div class="col-md-6">
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-
-            <!-- Hidden Field for Product ID -->
-            <input type="hidden" asp-for="Id" />
-
-            <!-- Name Field -->
-            <div class="form-group">
-                <label asp-for="Name" class="control-label">Product Name</label>
-                <input asp-for="Name" class="form-control" placeholder="Enter product name" />
-                <span asp-validation-for="Name" class="text-danger"></span>
+<div class="page-contact-us">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6">
+                <div class="contact-information">
+                    <div class="section-title">
+                        <h3 class="wow fadeInUp">Edit Product</h3>
+                        <h2 class="text-anime-style-3" data-cursor="-opaque">Update Product Information</h2>
+                        <p class="wow fadeInUp" data-wow-delay="0.2s">Edit the details of your product below.</p>
+                    </div>
+                </div>
             </div>
 
-            <!-- Price Field -->
-            <div class="form-group">
-                <label asp-for="Price" class="control-label">Price</label>
-                <input asp-for="Price" class="form-control" placeholder="Enter price" />
-                <span asp-validation-for="Price" class="text-danger"></span>
-            </div>
+            <div class="col-lg-6">
+                <div class="contact-us-form">
+                    <div class="contact-form-content">
+                        <h3 class="wow fadeInUp">Product Information</h3>
+                        <p class="wow fadeInUp" data-wow-delay="0.2s">Please update the product details.</p>
+                    </div>
 
-            <!-- Description Field -->
-            <div class="form-group">
-                <label asp-for="Description" class="control-label">Description</label>
-                <textarea asp-for="Description" class="form-control" placeholder="Enter description"></textarea>
-                <span asp-validation-for="Description" class="text-danger"></span>
-            </div>
+                    <div class="contact-form">
+                        <form asp-action="Edit" asp-controller="Products" method="post" class="wow fadeInUp" data-wow-delay="0.4s">
+                            <div class="row">
+                                <!-- Hidden Field for Product ID -->
+                                <input type="hidden" asp-for="Id" />
 
-            <!-- Category Field -->
-            <div class="form-group">
-                <label asp-for="CategoryId" class="control-label">Category</label>
-                <select asp-for="CategoryId" class="form-control" asp-items="ViewBag.CategoryId">
-                    <option value="">Select Category</option>
-                </select>
-                <span asp-validation-for="CategoryId" class="text-danger"></span>
-            </div>
+                                <!-- Product Name Field -->
+                                <div class="form-group col-md-12 mb-5">
+                                    <input asp-for="Name" class="form-control" id="productName" placeholder="Product Name" required>
+                                    <span asp-validation-for="Name" class="text-danger"></span>
+                                </div>
 
-            <!-- Save Button -->
-            <div class="form-group text-center">
-                <input type="submit" value="Save Changes" class="btn btn-success btn-lg" />
+                                <!-- Product Price Field -->
+                                <div class="form-group col-md-12 mb-5">
+                                    <input asp-for="Price" type="number" class="form-control" id="productPrice" placeholder="Product Price" required>
+                                    <span asp-validation-for="Price" class="text-danger"></span>
+                                </div>
+
+                                <!-- Product Description Field -->
+                                <div class="form-group col-md-12 mb-5">
+                                    <textarea asp-for="Description" class="form-control" id="productDescription" placeholder="Product Description" required></textarea>
+                                    <span asp-validation-for="Description" class="text-danger"></span>
+                                </div>
+
+                                <!-- Product Category Field -->
+                                <div class="form-group col-md-12 mb-5">
+                                    <select asp-for="CategoryId" class="form-control" asp-items="ViewBag.CategoryId" required>
+                                        <option value="">Select Category</option>
+                                    </select>
+                                    <span asp-validation-for="CategoryId" class="text-danger"></span>
+                                </div>
+
+                                <!-- Submit Button -->
+                                <div class="col-lg-12">
+                                    <div class="contact-form-btn">
+                                        <button type="submit" class="btn-default">Save Changes</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
             </div>
-        </form>
+        </div>
     </div>
 </div>
 

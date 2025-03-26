@@ -1,7 +1,7 @@
-﻿@model IEnumerable<CafeHub.Commons.Models.Product>
+﻿@model IEnumerable<CafeHub.MVC.Models.CategoryViewModel>
 
 @{
-    ViewData["Title"] = "Product Management";
+    ViewData["Title"] = "Manage Categories";
 }
 
 <div class="container">
@@ -13,48 +13,32 @@
                     <h3>Admin Panel</h3>
                     <ul>
                         <li><a asp-controller="AdminUserDashboard" asp-action="Index">Dashboard</a></li>
-                        <li><a asp-controller="#" asp-action="Users">Manage Users</a></li>
-                        <li><a asp-controller="AdminStaffManage" asp-action="Manage_Staff">Manage Staffs</a></li>
+                        <li><a asp-controller="AdminStaffManage" asp-action="Manage_Staff">Manage Staff</a></li>
                         <li><a asp-controller="Products" asp-action="Index">Manage Products</a></li>
-                        <li><a asp-controller="AdminCategoryManage" asp-action="Index">Manage Category</a></li>
-                        <li><a asp-controller="#" asp-action="Settings">Settings</a></li>
+                        <li><a asp-controller="AdminCategoryManage" asp-action="Index">Manage Categories</a></li>
+                        <li><a asp-controller="AdminSettings" asp-action="Index">Settings</a></li>
                     </ul>
                 </div>
             </div>
         </div>
 
-        <!-- Main Content - Product Management -->
+        <!-- Main Content - Manage Categories -->
         <div class="col-lg-9">
-            <h1 class="text-center">Product Management</h1>
+            <h1 class="text-center">Manage Categories</h1>
 
-            <!-- Search Form -->
-            <div class="row justify-content-center mb-4">
-                <div class="col-md-8">
-                    <form method="get">
-                        <div class="form-row">
-                            <div class="col-md-10">
-                                <input type="text" name="search" class="form-control" placeholder="Search by Name or Description" value="@Context.Request.Query["search"]" />
-                            </div>
-                            
-                        </div>
-                    </form>
-                </div>
-            </div>
-
-            <!-- Create New Product Button -->
+            <!-- Create New Category Button -->
             <p>
-                <a asp-action="Create" class="btn btn-primary mb-3">Create New Product</a>
+                <a asp-action="Create" class="btn btn-primary mb-3">Create New Category</a>
             </p>
 
-            <!-- Product Table -->
+            <!-- Category Table -->
             <div class="table-responsive">
                 <table class="table table-bordered table-hover">
                     <thead class="thead-dark">
                         <tr>
                             <th>@Html.DisplayNameFor(model => model.Name)</th>
-                            <th>@Html.DisplayNameFor(model => model.Price)</th>
                             <th>@Html.DisplayNameFor(model => model.Description)</th>
-                            <th>@Html.DisplayNameFor(model => model.Category)</th>
+                            <th>@Html.DisplayNameFor(model => model.IsActive)</th>
                             <th class="text-center">Actions</th>
                         </tr>
                     </thead>
@@ -63,12 +47,10 @@
                         {
                             <tr>
                                 <td>@Html.DisplayFor(modelItem => item.Name)</td>
-                                <td>@Html.DisplayFor(modelItem => item.Price)</td>
                                 <td>@Html.DisplayFor(modelItem => item.Description)</td>
-                                <td>@Html.DisplayFor(modelItem => item.Category.Name)</td>
+                                <td>@(item.IsActive ? "Active" : "Inactive")</td>
                                 <td class="text-center">
                                     <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning btn-sm">Edit</a> |
-                                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info btn-sm">Details</a> |
                                     <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger btn-sm">Delete</a>
                                 </td>
                             </tr>
@@ -93,13 +75,6 @@
 
 @section Scripts {
     <script>
-        document.getElementById("search").addEventListener("keyup", function () {
-            let filter = this.value.toLowerCase();
-            let rows = document.querySelectorAll("tbody tr");
-            rows.forEach(row => {
-                let text = row.textContent.toLowerCase();
-                row.style.display = text.includes(filter) ? "" : "none";
-            });
-        });
+        // Optional JS code for handling search/filter functionality or other behaviors
     </script>
 }

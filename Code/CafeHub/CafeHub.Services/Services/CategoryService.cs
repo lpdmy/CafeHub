@@ -51,5 +51,11 @@ namespace CafeHub.Services.Services
                 await _categoryRepository.RemoveAsync(category);  
             }
         }
+
+        // Tìm kiếm danh mục theo tên
+        public async Task<IEnumerable<Category>> GetCategoriesByNameAsync(string name)
+        {
+            return await _categoryRepository.GetCategoriesByNameAsync(name);
+        }
     }
 }
