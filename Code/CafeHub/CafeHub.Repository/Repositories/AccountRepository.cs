@@ -1,4 +1,5 @@
-﻿using CafeHub.Commons.Models;
+﻿using CafeHub.Commons;
+using CafeHub.Commons.Models;
 using CafeHub.Repository.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -11,12 +12,12 @@ using System.Threading.Tasks;
 
 namespace CafeHub.Repository.Repositories
 {
-    public class AccountRepository : IAccountRepository
+    public class AccountRepository : GenericRepository<User>, IAccountRepository
     {
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
         private readonly IHttpContextAccessor _httpContextAccessor;
-        public AccountRepository(UserManager<User> userManager, SignInManager<User> signInManager, IHttpContextAccessor httpContextAccessor)
+        public AccountRepository(ApplicationDbContext context, UserManager<User> userManager, SignInManager<User> signInManager, IHttpContextAccessor httpContextAccessor) : base(context)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -50,7 +51,17 @@ namespace CafeHub.Repository.Repositories
 
         public async Task<IdentityResult> RegisterAsync(User user, string password)
         {
-            return await _userManager.CreateAsync(user, password);
+            var existingUser = await _userManager.FindByEmailAsync(user.Email);
+            if (existingUser != null)
+            {
+                return IdentityResult.Failed(new IdentityError { Description = "Email have been used." });
+            }
+            var result = await _userManager.CreateAsync(user, password);
+            if (result.Succeeded)
+            {
+                await _userManager.AddToRoleAsync(user, "Customer");
+            }
+            return result;
         }
 
         public async Task<SignInResult> LoginAsync(string email, string password)
