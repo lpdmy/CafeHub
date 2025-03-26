@@ -1,0 +1,16 @@
+﻿@model CafeHub.Web.Models.StaffViewModel
+
+@{
+    ViewData["Title"] = "Xóa nhân viên";
+}
+
+<h2>Xác nhận xóa nhân viên</h2>
+
+<div class="alert alert-danger">
+    <p>Bạn có chắc chắn muốn xóa nhân viên <strong>@Model.Name</strong>?</p>
+</div>
+
+<form asp-action="DeleteStaff" method="post">    
+    <button type="submit" asp-route-id="@ViewBag.StaffId" class="btn btn-danger">Xóa</button>
+    <a asp-action="Manage_Staff" class="btn btn-secondary">Hủy</a>
+</form>
