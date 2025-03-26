@@ -80,6 +80,7 @@
             </div>
         </div>
     </div>
+    <!--header-->
     <header class="main-header">
         <div class="header-sticky">
             <nav class="navbar navbar-expand-lg">
@@ -103,6 +104,7 @@
                                 </li>
                                 <li class="nav-item"><a class="nav-link" href="about.html">About Us</a></li>
                                 <li class="nav-item"><a class="nav-link" href="services.html">Services</a></li>
+
                                 
                                     @if (User.Identity.IsAuthenticated)
                                     {
@@ -119,11 +121,12 @@
                                     }
                                     else
                                     {
-                                    <li class="nav-item"><a class="nav-link" href="menu.html">Menu</a></li>
+                                     <li class="nav-item"><a class="nav-link" asp-controller="Menu" asp-action="Index">Menu</a></li>
                                     }
                                 
 
                                 
+
 
 
                                 <li class="nav-item submenu">
@@ -160,7 +163,7 @@
                                     <a asp-controller="Account" asp-action="Logout" class="btn-default btn-highlighted">Logout</a>
                                 } else
                                 {
-                                    <a asp-controller="Account" asp-action="Profile" class="btn-default btn-highlighted me-2">Profile</a>
+                                    <a asp-controller="Account" asp-action="CustomerProfile" class="btn-default btn-highlighted me-2">Profile</a>
                                     <a asp-controller="Account" asp-action="Logout" class="btn-default btn-highlighted">Logout</a>
                                 }
                             }
