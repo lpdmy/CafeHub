@@ -1,10 +1,7 @@
 ﻿using CafeHub.Commons;
 using CafeHub.Commons.Models;
 using CafeHub.Repository.Interfaces;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace CafeHub.Repository.Repositories
@@ -14,6 +11,10 @@ namespace CafeHub.Repository.Repositories
         public CategoryRepository(ApplicationDbContext context) : base(context)
         {
         }
-    }
 
+        public async Task<IEnumerable<Category>> GetCategoriesByNameAsync(string name)
+        {
+            return await FindAsync(c => c.Name.Contains(name));
+        }
+    }
 }
