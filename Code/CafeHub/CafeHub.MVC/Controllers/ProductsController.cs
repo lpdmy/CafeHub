@@ -22,103 +22,117 @@ namespace CafeHub.MVC.Controllers
         }
 
         // GET: Products
-        public IActionResult Index()
+        public async Task<IActionResult> Index(string search)
         {
-            var products = _productService.GetAllProducts();
-            var categories = _categoryService.GetAllCategories();
-
-            // Truyền danh sách Category vào ViewBag
+            var products = await _productService.GetAllProductsAsync();
+            var categories = await _categoryService.GetAllCategoriesAsync();
             ViewBag.Categories = categories;
 
+            if (!string.IsNullOrEmpty(search))
+            {
+                products = products.Where(p => p.Name.Contains(search, StringComparison.OrdinalIgnoreCase) ||
+                                                p.Description.Contains(search, StringComparison.OrdinalIgnoreCase))
+                                   .ToList();
+            }
             return View(products);
         }
 
 
+
+
         // GET: Products/Details/5
-        public IActionResult Details(int id)
+        public async Task<IActionResult> Details(int id)
         {
-            var product = _productService.GetProductById(id);
-            var categories = _categoryService.GetAllCategories();
+            var product = await _productService.GetProductByIdAsync(id); 
+            var categories = await _categoryService.GetAllCategoriesAsync();  
+
             if (product == null)
             {
-                return NotFound();
+                return NotFound();  
             }
+
             ViewBag.Categories = categories;
-            return View(product);
+            return View(product);  
         }
 
         // GET: Products/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            ViewData["CategoryId"] = new SelectList(_categoryService.GetAllCategories(), "Id", "Name");
+            var categories = await _categoryService.GetAllCategoriesAsync();  
+            ViewData["CategoryId"] = new SelectList(categories, "Id", "Name");  
             return View();
         }
 
         // POST: Products/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create(CreateProductViewModel model)
+        public async Task<IActionResult> Create(CreateProductViewModel model)
         {
             if (ModelState.IsValid)
             {
-                Product pro = new Product()
+                var product = new Product()
                 {
                     Name = model.Name,
                     Description = model.Description,
                     Price = model.Price,
                     CategoryId = model.CategoryId
                 };
-                _productService.CreateProduct(pro);
-                return RedirectToAction(nameof(Index));
+
+                await _productService.CreateProductAsync(product); 
+                return RedirectToAction(nameof(Index));  
             }
-            ViewData["CategoryId"] = new SelectList(_categoryService.GetAllCategories(), "Id", "Name", model.CategoryId);
-            return View(model);
+
+            var categories = await _categoryService.GetAllCategoriesAsync();
+            ViewData["CategoryId"] = new SelectList(categories, "Id", "Name", model.CategoryId); 
+            return View(model);  
         }
 
         // GET: Products/Edit/5
-        public IActionResult Edit(int id)
+        public async Task<IActionResult> Edit(int id)
         {
-            var product = _productService.GetProductById(id);
+            var product = await _productService.GetProductByIdAsync(id); 
             if (product == null)
             {
-                return NotFound();
+                return NotFound();  
             }
-            ViewData["CategoryId"] = new SelectList(_categoryService.GetAllCategories(), "Id", "Name", product.CategoryId);
-            return View(product);
+
+            var categories = await _categoryService.GetAllCategoriesAsync(); 
+            ViewData["CategoryId"] = new SelectList(categories, "Id", "Name", product.CategoryId);  
+            return View(product);  
         }
 
         // POST: Products/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(int id, EditProductViewModel model)
+        public async Task<IActionResult> Edit(int id, EditProductViewModel model)
         {
-            
-
             if (ModelState.IsValid)
             {
-                Product pro = new Product()
+                var product = new Product()
                 {
-                    
+                    Id = id,
                     Name = model.Name,
                     Description = model.Description,
                     Price = model.Price,
                     CategoryId = model.CategoryId
                 };
-                _productService.UpdateProduct(pro);
-                return RedirectToAction(nameof(Index));
+
+                await _productService.UpdateProductAsync(product); 
+                return RedirectToAction(nameof(Index));  
             }
-            ViewData["CategoryId"] = new SelectList(_categoryService.GetAllCategories(), "Id", "Name", model.CategoryId);
-            return View(model);
+
+            var categories = await _categoryService.GetAllCategoriesAsync();
+            ViewData["CategoryId"] = new SelectList(categories, "Id", "Name", model.CategoryId); 
+            return View(model);  
         }
 
-
         // GET: Products/Delete/5
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
-            var product = _productService.GetProductById(id);
+            var product = await _productService.GetProductByIdAsync(id);  
             if (product == null)
             {
-                return NotFound();
+                return NotFound();  
             }
             return View(product);
         }
@@ -126,10 +140,10 @@ namespace CafeHub.MVC.Controllers
         // POST: Products/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public IActionResult DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            _productService.DeleteProduct(id);
-            return RedirectToAction(nameof(Index));
+            await _productService.DeleteProductAsync(id);  
+            return RedirectToAction(nameof(Index));  
         }
     }
 }

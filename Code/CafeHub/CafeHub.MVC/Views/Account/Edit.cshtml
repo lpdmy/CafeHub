@@ -15,13 +15,7 @@
         <label>Email</label>
         <input type="email" class="form-control" asp-for="Email" required readonly />
     </div>
-    <div class="form-group">
-        <label>Role</label>
-        <select class="form-control" asp-for="Role">
-            <option value="Admin">Admin</option>
-            <option value="User">User</option>
-        </select>
-    </div>
+   
     <br>
     <button type="submit" class="btn btn-success">Save</button>
     <a href="@Url.Action("Index", "Admin")" class="btn btn-secondary">Cancel</a>
