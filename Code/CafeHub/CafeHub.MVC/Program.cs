@@ -3,6 +3,8 @@ using CafeHub.Commons.Models;
 using CafeHub.MVC.Seeders;
 using CafeHub.Repository.Interfaces;
 using CafeHub.Repository.Repositories;
+using CafeHub.Service.Interfaces;
+using CafeHub.Service.Services;
 using CafeHub.Services.Interfaces;
 using CafeHub.Services.Models;
 using CafeHub.Services.Services;
@@ -34,7 +36,8 @@ builder.Services.AddScoped<ISalaryRepository, SalaryRepository>();
 builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
 
-
+builder.Services.AddScoped<IDiscountService, DiscountService>();
+builder.Services.AddScoped<IDiscountRepository, DiscountRepository>();
 
 
 

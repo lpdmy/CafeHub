@@ -16,7 +16,18 @@ namespace CafeHub.Commons.Models
         public string Address { get; set; } = string.Empty;
         public string ProfilePictureUrl { get; set; } = string.Empty;
         public int LoyaltyPoints { get; set; } = 0;
-        public string MembershipType { get; set; } = "Standard";
+        // Computed property to determine rank
+        public string MembershipType
+        {
+            get
+            {
+                if (LoyaltyPoints >= 1000) return "Platinum";
+                if (LoyaltyPoints >= 500) return "Gold";
+                if (LoyaltyPoints >= 100) return "Silver";
+                return "Bronze";
+            }
+        }
+        
         public DateTime JoinDate { get; set; } = DateTime.UtcNow;
 
         public override string GetInfo() => $"Customer: {Name}, Role: Customer, Points: {LoyaltyPoints}";

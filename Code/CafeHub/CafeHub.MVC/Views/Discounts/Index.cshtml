@@ -1,0 +1,131 @@
+﻿@using CafeHub.MVC.Models
+@model IEnumerable<DiscountViewModel>
+
+<div class="page-service-single">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-4">
+                <div class="page-single-sidebar">
+                    <div class="page-category-list wow fadeInUp">
+                        <h3>Admin Panel</h3>
+                        <ul>
+                            <li><a asp-controller="AdminUserDashboard" asp-action="Index">Dashboard</a></li>
+                            <li><a asp-controller="#" asp-action="Users">Manage Users</a></li>
+                            <li><a asp-controller="AdminStaffManage" asp-action="Manage_Staff">Manage Staffs</a></li>
+                            <li><a asp-controller="Discounts" asp-action="Index">Manage Discounts</a></li>
+                            <li><a asp-controller="#" asp-action="Settings">Settings</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-8">
+                <div class="service-single-content">
+                    <h2 class="text-anime-style-3">Discount Management</h2>
+                    <a asp-action="Create" class="btn btn-primary mb-3">Add New Discount</a>
+
+                    <!-- Search and Filter Section -->
+                    <div class="mb-3">
+                        <input type="text" id="search" class="form-control mb-2" placeholder="Search discount by name...">
+                        <select id="filterType" class="form-control mb-2">
+                            <option value="">Filter by Discount Type</option>
+                            @foreach (var type in Model.Select(d => d.DiscountType).Distinct())
+                            {
+                                <option value="@type">@type</option>
+                            }
+                        </select>
+                        <select id="filterCondition" class="form-control mb-3">
+                            <option value="">Filter by Condition</option>
+                            @foreach (var condition in Model.Select(d => d.Condition).Distinct())
+                            {
+                                <option value="@condition">@condition</option>
+                            }
+                        </select>
+                    </div>
+
+                    <div class="table-responsive">
+                        <table class="table table-bordered border-primary">
+                            <thead class="thead-dark">
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Type</th>
+                                    <th>Value</th>
+                                    <th>Start Date</th>
+                                    <th>End Date</th>
+                                    <th>Condition</th>
+                                    <th>Image</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="discountTableBody">
+                                @foreach (var discount in Model)
+                                {
+                                    <tr>
+                                        <td>@discount.Name</td>
+                                        <td>@discount.DiscountType</td>
+                                        <td>@discount.DiscountValue%</td>
+                                        <td>@discount.StartDate.ToString("yyyy-MM-dd")</td>
+                                        <td>@discount.EndDate.ToString("yyyy-MM-dd")</td>
+                                        <td>@discount.Condition</td>
+                                        <td>
+                                            @if (!string.IsNullOrEmpty(discount.ImageUrl))
+                                            {
+                                                <img src="@Url.Content("~" + discount.ImageUrl)" alt="Discount Image" width="100" height="100">
+                                            }
+                                            else
+                                            {
+                                                <span>No Image</span>
+                                            }
+                                        </td>
+
+
+                                        <td>
+                                            <a asp-action="Edit" asp-route-id="@discount.Id" class="btn btn-warning btn-sm">Edit</a>
+                                            <a asp-action="Delete" asp-route-id="@discount.Id" class="btn btn-danger btn-sm">Delete</a>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        document.getElementById("search").addEventListener("keyup", function () {
+            let filter = this.value.toLowerCase();
+            let rows = document.querySelectorAll("#discountTableBody tr");
+            rows.forEach(row => {
+                let text = row.cells[0].textContent.toLowerCase(); // Name column
+                row.style.display = text.includes(filter) ? "" : "none";
+            });
+        });
+
+        document.getElementById("filterType").addEventListener("change", function () {
+            filterTable();
+        });
+
+        document.getElementById("filterCondition").addEventListener("change", function () {
+            filterTable();
+        });
+
+        function filterTable() {
+            let typeFilter = document.getElementById("filterType").value.toLowerCase();
+            let conditionFilter = document.getElementById("filterCondition").value.toLowerCase();
+            let rows = document.querySelectorAll("#discountTableBody tr");
+
+            rows.forEach(row => {
+                let typeText = row.cells[1].textContent.toLowerCase(); // Type column
+                let conditionText = row.cells[5].textContent.toLowerCase(); // Condition column
+
+                let typeMatch = !typeFilter || typeText.includes(typeFilter);
+                let conditionMatch = !conditionFilter || conditionText.includes(conditionFilter);
+
+                row.style.display = typeMatch && conditionMatch ? "" : "none";
+            });
+        }
+    </script>
+}

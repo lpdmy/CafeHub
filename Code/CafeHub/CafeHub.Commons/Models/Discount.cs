@@ -33,6 +33,13 @@ namespace CafeHub.Commons.Models
         [Required]
         public DateTime EndDate { get; set; }
 
+        // New Column: Specifies conditions like customer rank eligibility (Gold, Platinum, etc.)
+        [StringLength(50)]
+        public string Condition { get; set; } = string.Empty;
+
+        // New field to store the image URL
+        public string? ImageUrl { get; set; }
+
         public virtual ICollection<CustomerDiscount> CustomerDiscounts { get; set; } = new List<CustomerDiscount>();
 
         public string GetInfo() => $"{DiscountName} - {DiscountType}: {DiscountValue}% (Active: {IsActive})";
