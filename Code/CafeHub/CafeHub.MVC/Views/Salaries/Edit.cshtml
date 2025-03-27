@@ -1,0 +1,76 @@
+﻿@model CafeHub.Commons.Models.Salary
+
+@if (ViewBag.Errors != null && ViewBag.Errors.Count > 0)
+{
+    <div class="alert alert-danger">
+        <ul>
+            @foreach (var error in ViewBag.Errors)
+            {
+                <li>@error</li>
+            }
+        </ul>
+    </div>
+}
+
+
+<div class="container mt-4">
+    <h2 class="text-center text-primary">Edit Salary of @ViewBag.StaffName</h2>
+    <form asp-action="Edit">
+        <input type="hidden" asp-for="Id" />
+
+        <input type="hidden" asp-for="StaffId" value="@ViewBag.StaffID" />
+
+        <div class="mb-3">
+            <label class="form-label">Staff Name</label>
+            <input type="text" class="form-control" asp-for="StaffName" value="@ViewBag.StaffName" readonly />
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Base Salary</label>
+            <input type="number" class="form-control" asp-for="BaseSalary" required />
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Bonus</label>
+            <input type="number" class="form-control" asp-for="Bonus" />
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Deduction</label>
+            <input type="number" class="form-control" asp-for="Deduction" />
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Pay Date</label>
+            <input type="date" class="form-control" asp-for="PayDate" required />
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Month & Year</label>
+            <input type="text" class="form-control" asp-for="MonthYear" required />
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Total Hours Worked</label>
+            <input type="number" class="form-control" asp-for="TotalHoursWorked" required />
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Overtime Hours</label>
+            <input type="number" class="form-control" asp-for="OvertimeHours" />
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Hourly Rate</label>
+            <input type="number" class="form-control" asp-for="HourlyRate" required />
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Notes</label>
+            <textarea class="form-control" asp-for="Notes"></textarea>
+        </div>
+
+        <button type="submit" class="btn btn-success">Save Changes</button>
+        <a asp-action="All_Salaries" class="btn btn-secondary">Cancel</a>
+    </form>
+</div>

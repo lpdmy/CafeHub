@@ -175,6 +175,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\CafeHub.Commons\CafeHub.Commons.csproj" />
+    <ProjectReference Include="..\CafeHub.Repository\CafeHub.Repository.csproj" />
 	  <ProjectReference Include="..\CafeHub.Services\CafeHub.Services.csproj" />
 	  
 

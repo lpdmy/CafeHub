@@ -9,10 +9,11 @@ namespace CafeHub.Services.Interfaces
 {
     public interface ISalaryService
     {
-        Task<List<Salary>> GetAllSalariesAsync();
-        Task<List<Salary>> GetSalariesByStaffIdAsync(int staffId);
-        Task<Salary> CreateSalaryAsync(Salary salary);
-        Task<Salary> ModifySalaryAsync(Salary salary);
-        Task<Salary?> RemoveSalaryAsync(int id);
+        Task<List<Salary>> GetAllSalariesAsync(); //done
+        Task<Salary> GetSalariesStaffByIdAsync(int salaryId); //done
+        Task<Salary> GetSalaryOfStaff(string staffID);
+        Task CreateSalaryAsync(Salary salary); //done
+        Task<bool> ModifySalaryAsync(Salary salary);
+        Task<bool> RemoveSalaryAsync(string id);
     }
 }

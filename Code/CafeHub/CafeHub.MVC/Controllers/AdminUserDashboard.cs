@@ -15,11 +15,13 @@ namespace CafeHub.MVC.Controllers
     {
         private readonly UserManager<User> _userManager;
         private readonly IAccountService _accountService;
+        private readonly ISalaryService _isalaryService;
 
-        public AdminUserDashboard(UserManager<User> userManager, IAccountService accountService)
+        public AdminUserDashboard(UserManager<User> userManager, IAccountService accountService, ISalaryService isalaryService)
         {
             _userManager = userManager;
             _accountService = accountService;
+            _isalaryService = isalaryService;
         }
 
 
@@ -75,8 +77,18 @@ namespace CafeHub.MVC.Controllers
             var result = await _userManager.CreateAsync(staff, model.Password);
 
             if (result.Succeeded)
-            {
+            {               
                 await _userManager.AddToRoleAsync(staff, "Staff");
+
+                // Thêm thông tin lương vào bảng Salary
+                var salary = new Salary
+                {
+                    StaffId = staff.Id, // Lấy ID của nhân viên vừa tạo
+                    BaseSalary = model.Salary, // Lương cơ bản nhập từ form
+                };
+                await _isalaryService.CreateSalaryAsync(salary);
+
+
                 return RedirectToAction("Index"); // Redirect đến danh sách Staff
             }
 
@@ -84,6 +96,28 @@ namespace CafeHub.MVC.Controllers
                 ModelState.AddModelError("", error.Description);
 
             return View(model);
+        }
+
+        public async Task<IActionResult> DeleteUser(string id)
+        {
+            var user = await _userManager.FindByIdAsync(id);
+
+            if (user == null)
+            {
+                return NotFound();
+            }
+            var userRole = await _userManager.GetRolesAsync(user);
+            Console.WriteLine(userRole);
+            if (userRole.Contains("Staff"))
+            {
+                return RedirectToAction("DeleteStaff", "AdminStaffManage", new { id = user.Id });
+            }
+
+
+            //if delete user
+
+            return View();
+            
         }
     }
 
