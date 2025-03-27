@@ -28,6 +28,7 @@ namespace CafeHub.Commons.Models
 
         // Navigation Property: One-to-Many Relationship
         public virtual ICollection<Product> Products { get; set; } = new List<Product>();
+        public string? ImagePath { get; set; }
 
         public string GetInfo()
         {
