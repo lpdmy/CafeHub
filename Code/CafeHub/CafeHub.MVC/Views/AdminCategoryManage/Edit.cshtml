@@ -48,6 +48,14 @@
                                     <span asp-validation-for="IsActive" class="text-danger"></span>
                                 </div>
 
+                                @if (!string.IsNullOrEmpty(Model.ExistingImagePath))
+                                {
+                                    <div class="form-group col-md-12 mb-5">
+                                        <label>Current Image</label>
+                                        <br>
+                                        <img src="@Url.Content(Model.ExistingImagePath)" alt="Product Image" width="150" />
+                                    </div>
+                                }
                                 <!-- Submit Button -->
                                 <div class="col-lg-12 text-center">
                                     <button type="submit" class="btn btn-success btn-lg">Save Category</button>

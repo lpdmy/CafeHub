@@ -44,7 +44,7 @@ namespace CafeHub.Commons.Models
         public virtual Category? Category { get; set; }
         public virtual ICollection<ProductTopping> ProductToppings { get; set; } = new List<ProductTopping>();
 
-
+        public string? ImagePath { get; set; } 
     }
 
 }

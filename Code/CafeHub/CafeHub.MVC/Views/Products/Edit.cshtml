@@ -52,12 +52,30 @@
                                     <span asp-validation-for="CategoryId" class="text-danger"></span>
                                 </div>
 
+                                @if (!string.IsNullOrEmpty(Model.ImagePath))
+                                {
+                                    <div class="form-group col-md-12 mb-5">
+                                        <label>Current Image</label>
+                                        <br>
+                                        <img src="@Url.Content(Model.ImagePath)" alt="Product Image" width="150" />
+                                    </div>
+                                }
+
+                                <!-- Upload New Image -->
+                                <div class="form-group col-md-12 mb-5">
+                                    <label>Upload New Image</label>
+                                    <input asp-for="ImagePath" type="file" class="form-control" accept="image/*">
+                                    <span asp-validation-for="ImagePath" class="text-danger"></span>
+                                </div>
+
                                 <!-- Submit Button -->
                                 <div class="col-lg-12">
                                     <div class="contact-form-btn">
                                         <button type="submit" class="btn-default">Save Changes</button>
                                     </div>
                                 </div>
+
+
                             </div>
                         </form>
                     </div>
