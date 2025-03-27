@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("CafeHub.Services")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+53c313cc3cc2d8a607a88e5f2d63c0a6274e333f")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+311b63e2aac4060e1d20b46a32631ee7a3d748aa")]
 [assembly: System.Reflection.AssemblyProductAttribute("CafeHub.Services")]
 [assembly: System.Reflection.AssemblyTitleAttribute("CafeHub.Services")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

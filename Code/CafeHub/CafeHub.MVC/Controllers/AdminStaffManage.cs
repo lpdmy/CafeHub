@@ -14,11 +14,13 @@ namespace CafeHub.MVC.Controllers
     {
         private readonly UserManager<User> _userManager;
         private readonly IAccountService _accountService;
-
-        public AdminStaffManage(UserManager<User> userManager, IAccountService accountService)
+        private readonly ISalaryService _salaryService;
+        
+        public AdminStaffManage(UserManager<User> userManager, IAccountService accountService, ISalaryService salaryService)
         {
             _userManager = userManager;
             _accountService = accountService;
+            _salaryService = salaryService;
         }
         public async Task<IActionResult> Manage_Staff()
         {
@@ -91,17 +93,29 @@ namespace CafeHub.MVC.Controllers
                 return View(model);
             }
 
-            // Cập nhật thông tin từ model vào đối tượng staff đã lấy từ DB
-            staff.Name = model.Name;
-            staff.Email = model.Email;
-            staff.EmployeeCode = model.EmployeeCode;
-            staff.Position = model.Position;
-            staff.HireDate = model.HireDate;
-            staff.Salary = model.Salary;
+                // Cập nhật thông tin từ model vào đối tượng staff đã lấy từ DB
+                staff.Name = model.Name;
+                staff.Email = model.Email;
+                staff.EmployeeCode = model.EmployeeCode;
+                staff.Position = model.Position;
+                staff.HireDate = model.HireDate;
+                staff.Salary = model.Salary;
 
             var updateResult = await _userManager.UpdateAsync(staff);
             if (updateResult.Succeeded)
             {
+                var salaryOfStaff = await _salaryService.GetSalaryOfStaff(id);
+
+                if (salaryOfStaff == null) 
+                {
+                    ModelState.AddModelError("", "Can not update Salary.");
+                    return View(model); 
+                }
+                               
+                salaryOfStaff.BaseSalary = model.Salary;
+
+                await _salaryService.ModifySalaryAsync(salaryOfStaff);
+
                 return RedirectToAction("Manage_Staff");
             }
 
@@ -149,7 +163,12 @@ namespace CafeHub.MVC.Controllers
             }
             var deleteResult = await _userManager.DeleteAsync(staff);
             if (deleteResult.Succeeded)
-            {
+            {               
+                bool result = await _salaryService.RemoveSalaryAsync(staff.Id);
+                if (result == false)
+                {
+                    return RedirectToAction("Index", "AdminUserDashboard");
+                }
                 return RedirectToAction("Manage_Staff");
             }
             return View();
