@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CafeHub.Commons.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250324143441_AddIsLocked")]
-    partial class AddIsLocked
+    [Migration("20250326193108_UpdateDB")]
+    partial class UpdateDB
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -95,6 +95,11 @@ namespace CafeHub.Commons.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("Condition")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
                     b.Property<string>("DiscountName")
                         .IsRequired()
                         .HasMaxLength(100)
@@ -110,6 +115,9 @@ namespace CafeHub.Commons.Migrations
 
                     b.Property<DateTime>("EndDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("ImageUrl")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
@@ -347,72 +355,6 @@ namespace CafeHub.Commons.Migrations
                     b.HasIndex("StaffId");
 
                     b.ToTable("Salaries");
-                });
-
-            modelBuilder.Entity("CafeHub.Commons.Models.Staff", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<int>("AccessFailedCount")
-                        .HasColumnType("int");
-
-                    b.Property<string>("ConcurrencyStamp")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Email")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("EmailConfirmed")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("EmployeeCode")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("HireDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("LockoutEnabled")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTimeOffset?>("LockoutEnd")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<string>("NormalizedEmail")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("NormalizedUserName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PasswordHash")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PhoneNumber")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("PhoneNumberConfirmed")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Position")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<decimal>("Salary")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<string>("SecurityStamp")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("TwoFactorEnabled")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("UserName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Staffs");
                 });
 
             modelBuilder.Entity("CafeHub.Commons.Models.Topping", b =>
@@ -791,15 +733,32 @@ namespace CafeHub.Commons.Migrations
                     b.Property<int>("LoyaltyPoints")
                         .HasColumnType("int");
 
-                    b.Property<string>("MembershipType")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("ProfilePictureUrl")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasDiscriminator().HasValue("Customer");
+                });
+
+            modelBuilder.Entity("CafeHub.Commons.Models.Staff", b =>
+                {
+                    b.HasBaseType("CafeHub.Commons.Models.User");
+
+                    b.Property<string>("EmployeeCode")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("HireDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Position")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("Salary")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.HasDiscriminator().HasValue("Staff");
                 });
 
             modelBuilder.Entity("CafeHub.Commons.Models.ApplicationRole", b =>
@@ -1018,15 +977,6 @@ namespace CafeHub.Commons.Migrations
                     b.Navigation("ProductToppings");
                 });
 
-            modelBuilder.Entity("CafeHub.Commons.Models.Staff", b =>
-                {
-                    b.Navigation("OrdersProcessed");
-
-                    b.Navigation("Salaries");
-
-                    b.Navigation("WorkShiftDetails");
-                });
-
             modelBuilder.Entity("CafeHub.Commons.Models.Topping", b =>
                 {
                     b.Navigation("ProductToppings");
@@ -1047,6 +997,15 @@ namespace CafeHub.Commons.Migrations
                     b.Navigation("CustomerDiscounts");
 
                     b.Navigation("Orders");
+                });
+
+            modelBuilder.Entity("CafeHub.Commons.Models.Staff", b =>
+                {
+                    b.Navigation("OrdersProcessed");
+
+                    b.Navigation("Salaries");
+
+                    b.Navigation("WorkShiftDetails");
                 });
 #pragma warning restore 612, 618
         }

@@ -92,6 +92,11 @@ namespace CafeHub.Commons.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("Condition")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
                     b.Property<string>("DiscountName")
                         .IsRequired()
                         .HasMaxLength(100)
@@ -107,6 +112,9 @@ namespace CafeHub.Commons.Migrations
 
                     b.Property<DateTime>("EndDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("ImageUrl")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
@@ -721,10 +729,6 @@ namespace CafeHub.Commons.Migrations
 
                     b.Property<int>("LoyaltyPoints")
                         .HasColumnType("int");
-
-                    b.Property<string>("MembershipType")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ProfilePictureUrl")
                         .IsRequired()

@@ -9,7 +9,7 @@ using CafeHub.Web.Models;
 using Microsoft.AspNetCore.Authorization;
 namespace CafeHub.MVC.Controllers
 {
-   [Authorize(Roles = "Admin")] // Customer/ Staff
+    [Authorize(Roles = "Admin")] // Customer/ Staff
 
     public class AdminUserDashboard : Controller
     {
@@ -24,7 +24,7 @@ namespace CafeHub.MVC.Controllers
             _isalaryService = isalaryService;
         }
 
-
+        [Authorize(Roles = "Admin")] // Customer/ Staff
         public async Task<IActionResult> Index()
         {
             var UserId = await _accountService.GetCurrentUserIdAsync();

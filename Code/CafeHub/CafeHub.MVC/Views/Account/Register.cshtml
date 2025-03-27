@@ -38,9 +38,9 @@
                     </div>
 
                     <div class="contact-us-form">
-                       <form id="registerform" asp-action="Register" asp-controller="Account" method="post" class="wow fadeInUp" data-wow-delay="0.4s">
+                        <form id="registerform" asp-action="Register" asp-controller="Account" method="post" class="wow fadeInUp" data-wow-delay="0.4s">
                             <div class="row">
-                                <!-- Full Name -->
+                                <!-- Name -->
                                 <div class="form-group col-md-12 mb-4">
                                     <input asp-for="FullName" class="form-control" placeholder="Full Name">
                                     <span class="help-block with-errors" asp-validation-for="FullName"></span>
@@ -90,7 +90,7 @@
                                     <span class="help-block with-errors" asp-validation-for="Password"></span>
                                 </div>
 
-                                <!-- Confirm Password -->
+                                 <!-- Confirm Password -->
                                 <div class="form-group col-md-6 mb-4">
                                     <input asp-for="ConfirmPassword" type="password" class="form-control" placeholder="Confirm Password">
                                     <span class="help-block with-errors" asp-validation-for="ConfirmPassword"></span>
