@@ -8,10 +8,12 @@
                         <h3>Admin Panel</h3>
                         <ul>
                             <li><a asp-controller="AdminUserDashboard" asp-action="Index">Dashboard</a></li>
-                            <li><a asp-controller="#" asp-action="Users">Manage Users</a></li>
+                            <li><a asp-controller="AdminUserDashboard" asp-action="ManageUser">Manage Users</a></li>
                             <li><a asp-controller="AdminStaffManage" asp-action="Manage_Staff">Manage Staffs</a></li>
                             <li><a asp-controller="Salaries" asp-action="All_Salaries">Salary</a></li>
-                            <li><a asp-controller="#" asp-action="Settings">Settings</a></li>
+                            <li><a asp-controller="Discounts" asp-action="Index">Manage Discounts</a></li>
+                            <li><a asp-controller="Products" asp-action="Index">Manage Products</a></li>
+                            <li><a asp-controller="AdminCategoryManage" asp-action="Index">Manage Category</a></li>
                         </ul>
                     </div>
                 </div>

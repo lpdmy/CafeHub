@@ -21,6 +21,7 @@
 
                     <div class="contact-us-form wow fadeInUp" data-wow-delay="0.6s">
                         <form id="createStaffForm" asp-controller="AdminUserDashboard" asp-action="CreateStaff" method="post">
+                            <input type="hidden" name="returnUrl" value="@ViewBag.ReturnUrl" />
                             <div class="row">
                                 <!-- Name -->
                                 <div class="form-group col-md-12 mb-4">
@@ -67,7 +68,7 @@
                                     <span class="help-block with-errors" asp-validation-for="Password"></span>
                                 </div>
 
-                              
+                                
                                 <div class="col-lg-12">
                                     <div class="book-table-btn">
                                         <button type="submit" class="btn-default">Create Staff</button>
@@ -78,7 +79,8 @@
                         <p class="mt-3">
                             Need to manage staff?
                             <div class="book-table-btn">
-                                <a asp-controller="AdminUserDashboard" asp-action="Index" class="btn-default ml-2">View Staff List</a>
+                                <a asp-controller="AdminUserDashboard" asp-action="ManageUser" class="btn-default ml-2">View Staff List</a>
+                            </div>
                         </p>
                     </div>
                 </div>
