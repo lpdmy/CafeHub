@@ -1,6 +1,11 @@
-﻿using CafeHub.Commons.Models;
-using CafeHub.Repository.Interfaces;
-using CafeHub.Services.Interfaces;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using global::CafeHub.Commons.Models;
+using global::CafeHub.Repository.Interfaces;
+using global::CafeHub.Services.Interfaces;
 using System.Collections.Generic;
 
 namespace CafeHub.Services.Services
@@ -14,29 +19,39 @@ namespace CafeHub.Services.Services
             _productRepository = productRepository;
         }
 
-        public IEnumerable<Product> GetAllProducts()
+        public async Task<IEnumerable<Product>> GetAllProductsAsync()
         {
-            return _productRepository.GetAll();
+            return await _productRepository.GetAllAsync(); 
         }
 
-        public Product GetProductById(int id)
+        public async Task<Product> GetProductByIdAsync(int id)
         {
-            return _productRepository.GetById(id);
+            return await _productRepository.GetByIdAsync(id); 
         }
 
-        public void CreateProduct(Product product)
+        public async Task CreateProductAsync(Product product)
         {
-            _productRepository.Add(product);
+            await _productRepository.AddAsync(product);
         }
 
-        public void UpdateProduct(Product product)
+        public async Task UpdateProductAsync(Product product)
         {
-            _productRepository.Update(product);
+            await _productRepository.UpdateAsync(product);
         }
 
-        public void DeleteProduct(int id)
+        public async Task DeleteProductAsync(int id)
         {
-            _productRepository.Delete(id);
+            var product = await _productRepository.GetByIdAsync(id);
+            if (product != null)
+            {
+                await _productRepository.RemoveAsync(product);
+            }
+        }
+
+        public async Task<IEnumerable<Product>> GetProductsByCategoryAsync(int categoryId)
+        {
+            return await _productRepository.GetProductsByCategoryAsync(categoryId); 
         }
     }
+
 }

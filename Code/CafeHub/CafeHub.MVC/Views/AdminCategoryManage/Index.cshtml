@@ -1,0 +1,83 @@
+﻿@model IEnumerable<CafeHub.MVC.Models.CategoryViewModel>
+
+@{
+    ViewData["Title"] = "Manage Categories";
+}
+
+<div class="container">
+    <div class="row">
+        <!-- Sidebar - Admin Panel -->
+        <div class="col-lg-3">
+            <div class="page-single-sidebar">
+                <div class="page-category-list wow fadeInUp">
+                    <h3>Admin Panel</h3>
+                    <ul>
+                        <li><a asp-controller="AdminUserDashboard" asp-action="Index">Dashboard</a></li>
+                        <li><a asp-controller="AdminUserDashboard" asp-action="ManageUser">Manage Users</a></li>
+                        <li><a asp-controller="AdminStaffManage" asp-action="Manage_Staff">Manage Staffs</a></li>
+                        <li><a asp-controller="Salaries" asp-action="All_Salaries">Salary</a></li>
+                        <li><a asp-controller="Discounts" asp-action="Index">Manage Discounts</a></li>
+                        <li><a asp-controller="Products" asp-action="Index">Manage Products</a></li>
+                        <li><a asp-controller="AdminCategoryManage" asp-action="Index">Manage Category</a></li>
+
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content - Manage Categories -->
+        <div class="col-lg-9">
+            <h1 class="text-center">Manage Categories</h1>
+
+            <!-- Create New Category Button -->
+            <p>
+                <a asp-action="Create" class="btn btn-primary mb-3">Create New Category</a>
+            </p>
+
+            <!-- Category Table -->
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th>@Html.DisplayNameFor(model => model.Name)</th>
+                            <th>@Html.DisplayNameFor(model => model.Description)</th>
+                            <th>@Html.DisplayNameFor(model => model.IsActive)</th>
+                            <th class="text-center">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>@Html.DisplayFor(modelItem => item.Name)</td>
+                                <td>@Html.DisplayFor(modelItem => item.Description)</td>
+                                <td>@(item.IsActive ? "Active" : "Inactive")</td>
+                                <td class="text-center">
+                                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning btn-sm">Edit</a> |
+                                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger btn-sm">Delete</a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Pagination -->
+            <nav>
+                <ul class="pagination justify-content-center">
+                    <li class="page-item disabled"><a class="page-link" href="#">Previous</a></li>
+                    <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                    <li class="page-item"><a class="page-link" href="#">2</a></li>
+                    <li class="page-item"><a class="page-link" href="#">3</a></li>
+                    <li class="page-item"><a class="page-link" href="#">Next</a></li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // Optional JS code for handling search/filter functionality or other behaviors
+    </script>
+}

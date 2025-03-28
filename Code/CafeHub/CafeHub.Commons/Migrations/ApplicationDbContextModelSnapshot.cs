@@ -30,13 +30,136 @@ namespace CafeHub.Commons.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<string>("ImagePath")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
                     b.ToTable("Categories");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CreatedAt = new DateTime(2025, 3, 27, 18, 39, 18, 806, DateTimeKind.Utc).AddTicks(8355),
+                            Description = "All coffee-based drinks",
+                            ImagePath = "/images/menu-image-1.jpg",
+                            IsActive = true,
+                            Name = "Our original coffee",
+                            UpdatedAt = new DateTime(2025, 3, 27, 18, 39, 18, 806, DateTimeKind.Utc).AddTicks(8356)
+                        },
+                        new
+                        {
+                            Id = 2,
+                            CreatedAt = new DateTime(2025, 3, 27, 18, 39, 18, 806, DateTimeKind.Utc).AddTicks(8360),
+                            Description = "A variety of tea options",
+                            ImagePath = "/images/menu-image-2.jpg",
+                            IsActive = true,
+                            Name = "Our tea & bread",
+                            UpdatedAt = new DateTime(2025, 3, 27, 18, 39, 18, 806, DateTimeKind.Utc).AddTicks(8361)
+                        },
+                        new
+                        {
+                            Id = 3,
+                            CreatedAt = new DateTime(2025, 3, 27, 18, 39, 18, 806, DateTimeKind.Utc).AddTicks(8364),
+                            Description = "Delicious bakery items",
+                            ImagePath = "/images/menu-image-3.jpg",
+                            IsActive = true,
+                            Name = "Our pastries & cravings",
+                            UpdatedAt = new DateTime(2025, 3, 27, 18, 39, 18, 806, DateTimeKind.Utc).AddTicks(8364)
+                        });
+                });
+
+            modelBuilder.Entity("CafeHub.Commons.Models.CustomerDiscount", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("CustomerId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("DateGranted")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("DiscountId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CustomerId");
+
+                    b.HasIndex("DiscountId");
+
+                    b.ToTable("CustomerDiscounts");
+                });
+
+            modelBuilder.Entity("CafeHub.Commons.Models.Discount", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Condition")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("DiscountName")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("DiscountType")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<float>("DiscountValue")
+                        .HasColumnType("real");
+
+                    b.Property<DateTime>("EndDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("ImageUrl")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Discounts");
                 });
 
             modelBuilder.Entity("CafeHub.Commons.Models.Order", b =>
@@ -51,12 +174,22 @@ namespace CafeHub.Commons.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<DateTime?>("EndDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<DateTime>("OrderDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("StaffId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime?>("StartDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Status")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<decimal>("TotalAmount")
                         .HasColumnType("decimal(18,2)");
@@ -65,18 +198,23 @@ namespace CafeHub.Commons.Migrations
 
                     b.HasIndex("CustomerId");
 
+                    b.HasIndex("StaffId");
+
                     b.ToTable("Orders");
                 });
 
-            modelBuilder.Entity("CafeHub.Commons.Models.OrderDetail", b =>
+            modelBuilder.Entity("CafeHub.Commons.Models.OrderItem", b =>
                 {
-                    b.Property<int>("OrderId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("OrderId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("OrderId1")
+                    b.Property<DateTime?>("EndDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("OrderId")
                         .HasColumnType("int");
 
                     b.Property<int>("ProductId")
@@ -85,16 +223,54 @@ namespace CafeHub.Commons.Migrations
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
 
+                    b.Property<DateTime?>("StartDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("ToppingId")
+                        .HasColumnType("int");
+
                     b.Property<decimal>("UnitPrice")
                         .HasColumnType("decimal(18,2)");
 
-                    b.HasKey("OrderId");
+                    b.HasKey("Id");
 
-                    b.HasIndex("OrderId1");
+                    b.HasIndex("OrderId");
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("OrderDetails");
+                    b.HasIndex("ToppingId");
+
+                    b.ToTable("OrderItems");
+                });
+
+            modelBuilder.Entity("CafeHub.Commons.Models.Payment", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<decimal>("AmountPaid")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("OrderId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("PaymentDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("PaymentMethod")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OrderId")
+                        .IsUnique();
+
+                    b.ToTable("Payments");
                 });
 
             modelBuilder.Entity("CafeHub.Commons.Models.Product", b =>
@@ -108,22 +284,378 @@ namespace CafeHub.Commons.Migrations
                     b.Property<int>("CategoryId")
                         .HasColumnType("int");
 
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("Description")
                         .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<string>("ImagePath")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsAvailable")
+                        .HasColumnType("bit");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("Size")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
                     b.HasIndex("CategoryId");
 
                     b.ToTable("Products");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CategoryId = 1,
+                            CreatedAt = new DateTime(2025, 3, 27, 18, 39, 18, 806, DateTimeKind.Utc).AddTicks(8609),
+                            Description = "Freshly Brewed Coffee Blended with Rich, Velvety Steamed Milk for a Perfectly Balanced Cup.",
+                            ImagePath = "/images/original-coffee-img-1.png",
+                            IsAvailable = true,
+                            Name = "White Chocolate",
+                            Price = 26.00m,
+                            Size = "Medium",
+                            UpdatedAt = new DateTime(2025, 3, 27, 18, 39, 18, 806, DateTimeKind.Utc).AddTicks(8609)
+                        },
+                        new
+                        {
+                            Id = 2,
+                            CategoryId = 1,
+                            CreatedAt = new DateTime(2025, 3, 27, 18, 39, 18, 806, DateTimeKind.Utc).AddTicks(8616),
+                            Description = "Smooth Condensed Milk Combined with Chilled Ice Cubes and Bold, Flavorful Espresso for a Refreshing Treat.",
+                            ImagePath = "/images/original-coffee-img-2.png",
+                            IsAvailable = true,
+                            Name = "Colombia Dark Roast",
+                            Price = 20.00m,
+                            Size = "Large",
+                            UpdatedAt = new DateTime(2025, 3, 27, 18, 39, 18, 806, DateTimeKind.Utc).AddTicks(8617)
+                        },
+                        new
+                        {
+                            Id = 3,
+                            CategoryId = 1,
+                            CreatedAt = new DateTime(2025, 3, 27, 18, 39, 18, 806, DateTimeKind.Utc).AddTicks(8621),
+                            Description = "Rich Espresso Blended with Smooth Vanilla-Flavored Syrup and Creamy Milk, Creating a Perfectly Balanced Delight.",
+                            ImagePath = "/images/original-coffee-img-3.png",
+                            IsAvailable = true,
+                            Name = "Iced Caramel Latte",
+                            Price = 24.00m,
+                            Size = "Medium",
+                            UpdatedAt = new DateTime(2025, 3, 27, 18, 39, 18, 806, DateTimeKind.Utc).AddTicks(8621)
+                        },
+                        new
+                        {
+                            Id = 4,
+                            CategoryId = 1,
+                            CreatedAt = new DateTime(2025, 3, 27, 18, 39, 18, 806, DateTimeKind.Utc).AddTicks(8624),
+                            Description = "Freshly Brewed Coffee Combined with Bold Espresso, Delivering a Perfectly Balanced and Rich Flavor Experience.",
+                            ImagePath = "/images/original-coffee-img-4.png",
+                            IsAvailable = true,
+                            Name = "Espresso Macchiato",
+                            Price = 30.00m,
+                            Size = "Small",
+                            UpdatedAt = new DateTime(2025, 3, 27, 18, 39, 18, 806, DateTimeKind.Utc).AddTicks(8625)
+                        },
+                        new
+                        {
+                            Id = 5,
+                            CategoryId = 1,
+                            CreatedAt = new DateTime(2025, 3, 27, 18, 39, 18, 806, DateTimeKind.Utc).AddTicks(8628),
+                            Description = "A bold and intense coffee with deep flavors, perfect for those who enjoy a strong cup.",
+                            ImagePath = "/images/original-coffee-img-5.png",
+                            IsAvailable = true,
+                            Name = "Robusta",
+                            Price = 16.00m,
+                            Size = "Medium",
+                            UpdatedAt = new DateTime(2025, 3, 27, 18, 39, 18, 806, DateTimeKind.Utc).AddTicks(8629)
+                        },
+                        new
+                        {
+                            Id = 6,
+                            CategoryId = 1,
+                            CreatedAt = new DateTime(2025, 3, 27, 18, 39, 18, 806, DateTimeKind.Utc).AddTicks(8639),
+                            Description = "Smooth and aromatic coffee, known for its balanced taste and delightful fragrance.",
+                            ImagePath = "/images/original-coffee-img-6.png",
+                            IsAvailable = true,
+                            Name = "Arabica Coffee",
+                            Price = 20.00m,
+                            Size = "Large",
+                            UpdatedAt = new DateTime(2025, 3, 27, 18, 39, 18, 806, DateTimeKind.Utc).AddTicks(8639)
+                        },
+                        new
+                        {
+                            Id = 7,
+                            CategoryId = 1,
+                            CreatedAt = new DateTime(2025, 3, 27, 18, 39, 18, 806, DateTimeKind.Utc).AddTicks(8643),
+                            Description = "Rich, full-bodied coffee with a deep roast, bringing out a smoky and chocolatey essence.",
+                            ImagePath = "/images/original-coffee-img-7.png",
+                            IsAvailable = true,
+                            Name = "Colombia Dark Roast",
+                            Price = 22.00m,
+                            Size = "Medium",
+                            UpdatedAt = new DateTime(2025, 3, 27, 18, 39, 18, 806, DateTimeKind.Utc).AddTicks(8643)
+                        },
+                        new
+                        {
+                            Id = 8,
+                            CategoryId = 1,
+                            CreatedAt = new DateTime(2025, 3, 27, 18, 39, 18, 806, DateTimeKind.Utc).AddTicks(8647),
+                            Description = "A smooth, light-bodied coffee with a rich espresso base, perfect for those who enjoy a milder taste.",
+                            ImagePath = "/images/original-coffee-img-8.png",
+                            IsAvailable = true,
+                            Name = "Americano Coffee",
+                            Price = 32.00m,
+                            Size = "Large",
+                            UpdatedAt = new DateTime(2025, 3, 27, 18, 39, 18, 806, DateTimeKind.Utc).AddTicks(8647)
+                        },
+                        new
+                        {
+                            Id = 9,
+                            CategoryId = 2,
+                            CreatedAt = new DateTime(2025, 3, 27, 18, 39, 18, 806, DateTimeKind.Utc).AddTicks(8650),
+                            Description = "A rich blend of mocha and green tea, balancing sweetness and earthiness for a delightful taste.",
+                            ImagePath = "/images/tea-bread-image-1.png",
+                            IsAvailable = true,
+                            Name = "Mocha Green Tea",
+                            Price = 26.00m,
+                            Size = "Medium",
+                            UpdatedAt = new DateTime(2025, 3, 27, 18, 39, 18, 806, DateTimeKind.Utc).AddTicks(8651)
+                        },
+                        new
+                        {
+                            Id = 10,
+                            CategoryId = 2,
+                            CreatedAt = new DateTime(2025, 3, 27, 18, 39, 18, 806, DateTimeKind.Utc).AddTicks(8656),
+                            Description = "Bold and aromatic with a hint of spice, often enjoyed with milk for a creamy finish.",
+                            ImagePath = "/images/tea-bread-image-2.png",
+                            IsAvailable = true,
+                            Name = "Black Thai Tea",
+                            Price = 20.00m,
+                            Size = "Medium",
+                            UpdatedAt = new DateTime(2025, 3, 27, 18, 39, 18, 806, DateTimeKind.Utc).AddTicks(8657)
+                        },
+                        new
+                        {
+                            Id = 11,
+                            CategoryId = 2,
+                            CreatedAt = new DateTime(2025, 3, 27, 18, 39, 18, 806, DateTimeKind.Utc).AddTicks(8660),
+                            Description = "A sweet, comforting tea with a rich caramel flavor, offering a velvety and warm experience.",
+                            ImagePath = "/images/tea-bread-image-3.png",
+                            IsAvailable = true,
+                            Name = "Cold Brew Tea",
+                            Price = 18.00m,
+                            Size = "Large",
+                            UpdatedAt = new DateTime(2025, 3, 27, 18, 39, 18, 806, DateTimeKind.Utc).AddTicks(8660)
+                        },
+                        new
+                        {
+                            Id = 12,
+                            CategoryId = 2,
+                            CreatedAt = new DateTime(2025, 3, 27, 18, 39, 18, 806, DateTimeKind.Utc).AddTicks(8663),
+                            Description = "A crispy, golden loaf with a rich caramel flavor and a touch of herbs, perfect as a side or snack.",
+                            ImagePath = "/images/tea-bread-image-4.png",
+                            IsAvailable = true,
+                            Name = "Caramel Tea",
+                            Price = 12.00m,
+                            Size = "Small",
+                            UpdatedAt = new DateTime(2025, 3, 27, 18, 39, 18, 806, DateTimeKind.Utc).AddTicks(8664)
+                        },
+                        new
+                        {
+                            Id = 13,
+                            CategoryId = 2,
+                            CreatedAt = new DateTime(2025, 3, 27, 18, 39, 18, 806, DateTimeKind.Utc).AddTicks(8667),
+                            Description = "A classic French bread with a golden, crunchy crust and a soft, airy interior, ideal for sandwiches or serving with soup.",
+                            ImagePath = "/images/tea-bread-image-5.png",
+                            IsAvailable = true,
+                            Name = "Garlic Bread",
+                            Price = 15.00m,
+                            Size = "Large",
+                            UpdatedAt = new DateTime(2025, 3, 27, 18, 39, 18, 806, DateTimeKind.Utc).AddTicks(8668)
+                        },
+                        new
+                        {
+                            Id = 14,
+                            CategoryId = 2,
+                            CreatedAt = new DateTime(2025, 3, 27, 18, 39, 18, 806, DateTimeKind.Utc).AddTicks(8671),
+                            Description = "A sweet, spiced loaf filled with cinnamon swirls, offering a comforting aroma, perfect for breakfast or a treat.",
+                            ImagePath = "/images/tea-bread-image-6.png",
+                            IsAvailable = true,
+                            Name = "Baguette",
+                            Price = 16.00m,
+                            Size = "Large",
+                            UpdatedAt = new DateTime(2025, 3, 27, 18, 39, 18, 806, DateTimeKind.Utc).AddTicks(8671)
+                        },
+                        new
+                        {
+                            Id = 15,
+                            CategoryId = 2,
+                            CreatedAt = new DateTime(2025, 3, 27, 18, 39, 18, 806, DateTimeKind.Utc).AddTicks(8674),
+                            Description = "A perfect pairing of crispy, freshly made chips and rich, flavorful dips that bring a burst of taste in every bite.",
+                            ImagePath = "/images/tea-bread-image-7.png",
+                            IsAvailable = true,
+                            Name = "Cinnamon Bread",
+                            Price = 22.00m,
+                            Size = "Medium",
+                            UpdatedAt = new DateTime(2025, 3, 27, 18, 39, 18, 806, DateTimeKind.Utc).AddTicks(8675)
+                        },
+                        new
+                        {
+                            Id = 16,
+                            CategoryId = 2,
+                            CreatedAt = new DateTime(2025, 3, 27, 18, 39, 18, 806, DateTimeKind.Utc).AddTicks(8678),
+                            Description = "A hearty, wholesome bread made from whole wheat flour, rich in fiber and nutrients for a healthy option.",
+                            ImagePath = "/images/tea-bread-image-8.png",
+                            IsAvailable = true,
+                            Name = "Whole Wheat Bread",
+                            Price = 28.00m,
+                            Size = "Medium",
+                            UpdatedAt = new DateTime(2025, 3, 27, 18, 39, 18, 806, DateTimeKind.Utc).AddTicks(8679)
+                        },
+                        new
+                        {
+                            Id = 17,
+                            CategoryId = 3,
+                            CreatedAt = new DateTime(2025, 3, 27, 18, 39, 18, 806, DateTimeKind.Utc).AddTicks(8682),
+                            Description = "A perfect pairing of crispy, freshly made chips and rich, flavorful dips.",
+                            ImagePath = "/images/dessert-image-3.png",
+                            IsAvailable = true,
+                            Name = "Almond Croissant",
+                            Price = 22.00m,
+                            Size = "Medium",
+                            UpdatedAt = new DateTime(2025, 3, 27, 18, 39, 18, 806, DateTimeKind.Utc).AddTicks(8682)
+                        },
+                        new
+                        {
+                            Id = 18,
+                            CategoryId = 3,
+                            CreatedAt = new DateTime(2025, 3, 27, 18, 39, 18, 806, DateTimeKind.Utc).AddTicks(8725),
+                            Description = "A light, flaky pastry topped with fresh mixed berries.",
+                            ImagePath = "/images/dessert-image-2.png",
+                            IsAvailable = true,
+                            Name = "Berry Danish",
+                            Price = 20.00m,
+                            Size = "Medium",
+                            UpdatedAt = new DateTime(2025, 3, 27, 18, 39, 18, 806, DateTimeKind.Utc).AddTicks(8726)
+                        },
+                        new
+                        {
+                            Id = 19,
+                            CategoryId = 3,
+                            CreatedAt = new DateTime(2025, 3, 27, 18, 39, 18, 806, DateTimeKind.Utc).AddTicks(8729),
+                            Description = "A classic French pastry filled with creamy custard and chocolate.",
+                            ImagePath = "/images/dessert-image-3.png",
+                            IsAvailable = true,
+                            Name = "Chocolate Eclair",
+                            Price = 24.00m,
+                            Size = "Medium",
+                            UpdatedAt = new DateTime(2025, 3, 27, 18, 39, 18, 806, DateTimeKind.Utc).AddTicks(8729)
+                        },
+                        new
+                        {
+                            Id = 20,
+                            CategoryId = 3,
+                            CreatedAt = new DateTime(2025, 3, 27, 18, 39, 18, 806, DateTimeKind.Utc).AddTicks(8733),
+                            Description = "A warm, soft bun swirled with cinnamon and sugar.",
+                            ImagePath = "/images/dessert-image-4.png",
+                            IsAvailable = true,
+                            Name = "Cinnamon Bun",
+                            Price = 30.00m,
+                            Size = "Large",
+                            UpdatedAt = new DateTime(2025, 3, 27, 18, 39, 18, 806, DateTimeKind.Utc).AddTicks(8733)
+                        },
+                        new
+                        {
+                            Id = 21,
+                            CategoryId = 3,
+                            CreatedAt = new DateTime(2025, 3, 27, 18, 39, 18, 806, DateTimeKind.Utc).AddTicks(8736),
+                            Description = "Rich, fudgy brownies swirled with creamy caramel.",
+                            ImagePath = "/images/dessert-image-5.png",
+                            IsAvailable = true,
+                            Name = "Caramel Brownie",
+                            Price = 26.00m,
+                            Size = "Medium",
+                            UpdatedAt = new DateTime(2025, 3, 27, 18, 39, 18, 806, DateTimeKind.Utc).AddTicks(8737)
+                        },
+                        new
+                        {
+                            Id = 22,
+                            CategoryId = 3,
+                            CreatedAt = new DateTime(2025, 3, 27, 18, 39, 18, 806, DateTimeKind.Utc).AddTicks(8740),
+                            Description = "Classic soft cookies loaded with gooey chocolate chips.",
+                            ImagePath = "/images/dessert-image-6.png",
+                            IsAvailable = true,
+                            Name = "Choco Chip Cookies",
+                            Price = 22.00m,
+                            Size = "Small",
+                            UpdatedAt = new DateTime(2025, 3, 27, 18, 39, 18, 806, DateTimeKind.Utc).AddTicks(8740)
+                        },
+                        new
+                        {
+                            Id = 23,
+                            CategoryId = 3,
+                            CreatedAt = new DateTime(2025, 3, 27, 18, 39, 18, 806, DateTimeKind.Utc).AddTicks(8743),
+                            Description = "A tangy and creamy cheesecake with zesty lemon flavor.",
+                            ImagePath = "/images/dessert-image-7.png",
+                            IsAvailable = true,
+                            Name = "Lemon Cheesecake",
+                            Price = 32.00m,
+                            Size = "Large",
+                            UpdatedAt = new DateTime(2025, 3, 27, 18, 39, 18, 806, DateTimeKind.Utc).AddTicks(8744)
+                        },
+                        new
+                        {
+                            Id = 24,
+                            CategoryId = 3,
+                            CreatedAt = new DateTime(2025, 3, 27, 18, 39, 18, 806, DateTimeKind.Utc).AddTicks(8747),
+                            Description = "A crisp tart filled with sweet peach filling.",
+                            ImagePath = "/images/dessert-image-8.png",
+                            IsAvailable = true,
+                            Name = "Peach Tart",
+                            Price = 20.00m,
+                            Size = "Medium",
+                            UpdatedAt = new DateTime(2025, 3, 27, 18, 39, 18, 806, DateTimeKind.Utc).AddTicks(8747)
+                        });
+                });
+
+            modelBuilder.Entity("CafeHub.Commons.Models.ProductTopping", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ToppingId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductId");
+
+                    b.HasIndex("ToppingId");
+
+                    b.ToTable("ProductToppings");
                 });
 
             modelBuilder.Entity("CafeHub.Commons.Models.Salary", b =>
@@ -134,22 +666,44 @@ namespace CafeHub.Commons.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<decimal>("Amount")
+                    b.Property<decimal>("BaseSalary")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<string>("PaymentData")
+                    b.Property<decimal>("Bonus")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("Deduction")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("HourlyRate")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("MonthYear")
                         .IsRequired()
+                        .HasMaxLength(7)
+                        .HasColumnType("nvarchar(7)");
+
+                    b.Property<string>("Notes")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<double>("OvertimeHours")
+                        .HasColumnType("float");
+
+                    b.Property<DateTime>("PayDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("StaffId")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<double>("TotalHoursWorked")
+                        .HasColumnType("float");
+
                     b.HasKey("Id");
 
                     b.HasIndex("StaffId");
 
-                    b.ToTable("Payments");
+                    b.ToTable("Salaries");
                 });
 
             modelBuilder.Entity("CafeHub.Commons.Models.Topping", b =>
@@ -160,12 +714,22 @@ namespace CafeHub.Commons.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsAvailable")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
@@ -180,12 +744,12 @@ namespace CafeHub.Commons.Migrations
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
 
-                    b.Property<bool>("Authenticate")
-                        .HasColumnType("bit");
-
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Discriminator")
                         .IsRequired()
@@ -197,6 +761,9 @@ namespace CafeHub.Commons.Migrations
                         .HasColumnType("nvarchar(256)");
 
                     b.Property<bool>("EmailConfirmed")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsLocked")
                         .HasColumnType("bit");
 
                     b.Property<bool>("LockoutEnabled")
@@ -226,14 +793,14 @@ namespace CafeHub.Commons.Migrations
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("bit");
 
-                    b.Property<int>("Role")
-                        .HasColumnType("int");
-
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("TwoFactorEnabled")
                         .HasColumnType("bit");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("UserName")
                         .HasMaxLength(256)
@@ -264,28 +831,68 @@ namespace CafeHub.Commons.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime>("EndTime")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("Note")
+                    b.Property<DateTime>("ShiftDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("ShiftName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("StartTime")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("WorkShifts");
+                });
+
+            modelBuilder.Entity("CafeHub.Commons.Models.WorkShiftDetail", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("AttendanceStatus")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("CheckInTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("CheckOutTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long>("HoursContributed")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("Notes")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("OvertimeHours")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("StaffId")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<DateTime>("StartTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("Status")
+                    b.Property<int>("WorkShiftId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.HasIndex("StaffId");
 
-                    b.ToTable("WorkShifts");
+                    b.HasIndex("WorkShiftId");
+
+                    b.ToTable("WorkShiftDetails");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -296,6 +903,11 @@ namespace CafeHub.Commons.Migrations
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Discriminator")
+                        .IsRequired()
+                        .HasMaxLength(21)
+                        .HasColumnType("nvarchar(21)");
 
                     b.Property<string>("Name")
                         .HasMaxLength(256)
@@ -313,6 +925,10 @@ namespace CafeHub.Commons.Migrations
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("AspNetRoles", (string)null);
+
+                    b.HasDiscriminator().HasValue("IdentityRole");
+
+                    b.UseTphMappingStrategy();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -368,12 +984,10 @@ namespace CafeHub.Commons.Migrations
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
                     b.Property<string>("LoginProvider")
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("ProviderKey")
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("ProviderDisplayName")
                         .HasColumnType("nvarchar(max)");
@@ -397,9 +1011,14 @@ namespace CafeHub.Commons.Migrations
                     b.Property<string>("RoleId")
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<string>("UserId1")
+                        .HasColumnType("nvarchar(450)");
+
                     b.HasKey("UserId", "RoleId");
 
                     b.HasIndex("RoleId");
+
+                    b.HasIndex("UserId1");
 
                     b.ToTable("AspNetUserRoles", (string)null);
                 });
@@ -410,12 +1029,10 @@ namespace CafeHub.Commons.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("LoginProvider")
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Name")
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Value")
                         .HasColumnType("nvarchar(max)");
@@ -425,12 +1042,49 @@ namespace CafeHub.Commons.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("CafeHub.Commons.Models.Admin", b =>
+                {
+                    b.HasBaseType("CafeHub.Commons.Models.User");
+
+                    b.Property<string>("AccessLevel")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("AdminRole")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasDiscriminator().HasValue("Admin");
+                });
+
             modelBuilder.Entity("CafeHub.Commons.Models.Customer", b =>
                 {
                     b.HasBaseType("CafeHub.Commons.Models.User");
 
+                    b.Property<string>("Address")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("DateOfBirth")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("FullName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Gender")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("JoinDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<int>("LoyaltyPoints")
                         .HasColumnType("int");
+
+                    b.Property<string>("ProfilePictureUrl")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasDiscriminator().HasValue("Customer");
                 });
@@ -439,52 +1093,106 @@ namespace CafeHub.Commons.Migrations
                 {
                     b.HasBaseType("CafeHub.Commons.Models.User");
 
-                    b.Property<decimal>("FixedSalary")
+                    b.Property<string>("EmployeeCode")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("HireDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Position")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("Salary")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<int>("Position")
-                        .HasColumnType("int");
-
-                    b.Property<int>("SalaryType")
-                        .HasColumnType("int");
-
                     b.HasDiscriminator().HasValue("Staff");
+                });
+
+            modelBuilder.Entity("CafeHub.Commons.Models.ApplicationRole", b =>
+                {
+                    b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityRole");
+
+                    b.HasDiscriminator().HasValue("ApplicationRole");
+                });
+
+            modelBuilder.Entity("CafeHub.Commons.Models.CustomerDiscount", b =>
+                {
+                    b.HasOne("CafeHub.Commons.Models.Customer", "Customer")
+                        .WithMany("CustomerDiscounts")
+                        .HasForeignKey("CustomerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("CafeHub.Commons.Models.Discount", "Discount")
+                        .WithMany("CustomerDiscounts")
+                        .HasForeignKey("DiscountId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Customer");
+
+                    b.Navigation("Discount");
                 });
 
             modelBuilder.Entity("CafeHub.Commons.Models.Order", b =>
                 {
                     b.HasOne("CafeHub.Commons.Models.Customer", "Customer")
-                        .WithMany()
+                        .WithMany("Orders")
                         .HasForeignKey("CustomerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("CafeHub.Commons.Models.Staff", "Staff")
+                        .WithMany("OrdersProcessed")
+                        .HasForeignKey("StaffId");
+
                     b.Navigation("Customer");
+
+                    b.Navigation("Staff");
                 });
 
-            modelBuilder.Entity("CafeHub.Commons.Models.OrderDetail", b =>
+            modelBuilder.Entity("CafeHub.Commons.Models.OrderItem", b =>
                 {
                     b.HasOne("CafeHub.Commons.Models.Order", "Order")
-                        .WithMany("OrderDetails")
-                        .HasForeignKey("OrderId1")
+                        .WithMany("OrderItems")
+                        .HasForeignKey("OrderId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("CafeHub.Commons.Models.Product", "Product")
-                        .WithMany("OrderDetails")
+                        .WithMany()
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("CafeHub.Commons.Models.Topping", "Topping")
+                        .WithMany()
+                        .HasForeignKey("ToppingId");
+
                     b.Navigation("Order");
 
                     b.Navigation("Product");
+
+                    b.Navigation("Topping");
+                });
+
+            modelBuilder.Entity("CafeHub.Commons.Models.Payment", b =>
+                {
+                    b.HasOne("CafeHub.Commons.Models.Order", "Order")
+                        .WithOne("Payment")
+                        .HasForeignKey("CafeHub.Commons.Models.Payment", "OrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Order");
                 });
 
             modelBuilder.Entity("CafeHub.Commons.Models.Product", b =>
                 {
                     b.HasOne("CafeHub.Commons.Models.Category", "Category")
-                        .WithMany()
+                        .WithMany("Products")
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -492,10 +1200,29 @@ namespace CafeHub.Commons.Migrations
                     b.Navigation("Category");
                 });
 
+            modelBuilder.Entity("CafeHub.Commons.Models.ProductTopping", b =>
+                {
+                    b.HasOne("CafeHub.Commons.Models.Product", "Product")
+                        .WithMany("ProductToppings")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("CafeHub.Commons.Models.Topping", "Topping")
+                        .WithMany("ProductToppings")
+                        .HasForeignKey("ToppingId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Product");
+
+                    b.Navigation("Topping");
+                });
+
             modelBuilder.Entity("CafeHub.Commons.Models.Salary", b =>
                 {
                     b.HasOne("CafeHub.Commons.Models.Staff", "Staff")
-                        .WithMany()
+                        .WithMany("Salaries")
                         .HasForeignKey("StaffId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -503,15 +1230,23 @@ namespace CafeHub.Commons.Migrations
                     b.Navigation("Staff");
                 });
 
-            modelBuilder.Entity("CafeHub.Commons.Models.WorkShift", b =>
+            modelBuilder.Entity("CafeHub.Commons.Models.WorkShiftDetail", b =>
                 {
                     b.HasOne("CafeHub.Commons.Models.Staff", "Staff")
-                        .WithMany()
+                        .WithMany("WorkShiftDetails")
                         .HasForeignKey("StaffId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("CafeHub.Commons.Models.WorkShift", "WorkShift")
+                        .WithMany("WorkShiftDetails")
+                        .HasForeignKey("WorkShiftId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Staff");
+
+                    b.Navigation("WorkShift");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -554,6 +1289,10 @@ namespace CafeHub.Commons.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("CafeHub.Commons.Models.User", null)
+                        .WithMany("UserRoles")
+                        .HasForeignKey("UserId1");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
@@ -565,14 +1304,57 @@ namespace CafeHub.Commons.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("CafeHub.Commons.Models.Category", b =>
+                {
+                    b.Navigation("Products");
+                });
+
+            modelBuilder.Entity("CafeHub.Commons.Models.Discount", b =>
+                {
+                    b.Navigation("CustomerDiscounts");
+                });
+
             modelBuilder.Entity("CafeHub.Commons.Models.Order", b =>
                 {
-                    b.Navigation("OrderDetails");
+                    b.Navigation("OrderItems");
+
+                    b.Navigation("Payment");
                 });
 
             modelBuilder.Entity("CafeHub.Commons.Models.Product", b =>
                 {
-                    b.Navigation("OrderDetails");
+                    b.Navigation("ProductToppings");
+                });
+
+            modelBuilder.Entity("CafeHub.Commons.Models.Topping", b =>
+                {
+                    b.Navigation("ProductToppings");
+                });
+
+            modelBuilder.Entity("CafeHub.Commons.Models.User", b =>
+                {
+                    b.Navigation("UserRoles");
+                });
+
+            modelBuilder.Entity("CafeHub.Commons.Models.WorkShift", b =>
+                {
+                    b.Navigation("WorkShiftDetails");
+                });
+
+            modelBuilder.Entity("CafeHub.Commons.Models.Customer", b =>
+                {
+                    b.Navigation("CustomerDiscounts");
+
+                    b.Navigation("Orders");
+                });
+
+            modelBuilder.Entity("CafeHub.Commons.Models.Staff", b =>
+                {
+                    b.Navigation("OrdersProcessed");
+
+                    b.Navigation("Salaries");
+
+                    b.Navigation("WorkShiftDetails");
                 });
 #pragma warning restore 612, 618
         }

@@ -1,0 +1,83 @@
+﻿@model IEnumerable<UserViewModel?>
+
+<div class="page-service-single">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-4">
+                <div class="page-single-sidebar">
+                    <div class="page-category-list wow fadeInUp">
+                        <h3>Admin Panel</h3>
+                        <ul>
+                            <li><a asp-controller="AdminUserDashboard" asp-action="Index">Dashboard</a></li>
+                            <li><a asp-controller="AdminUserDashboard" asp-action="ManageUser">Manage Users</a></li>
+                            <li><a asp-controller="AdminStaffManage" asp-action="Manage_Staff">Manage Staffs</a></li>
+                            <li><a asp-controller="Salaries" asp-action="All_Salaries">Salary</a></li>
+                            <li><a asp-controller="Discounts" asp-action="Index">Manage Discounts</a></li>
+                            <li><a asp-controller="Products" asp-action="Index">Manage Products</a></li>
+                            <li><a asp-controller="AdminCategoryManage" asp-action="Index">Manage Category</a></li>
+
+                            <li><a asp-controller="#" asp-action="Settings">Settings</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-8">
+                <div class="service-single-content">
+                    <h2 class="text-anime-style-3" style="margin-bottom:5px; color:#C9A581;">User Management</h2>
+                    <a asp-action="CreateStaff" class="btn btn-primary mb-3">Add New Staff</a>
+                    <input type="text" id="search" class="form-control mb-3" placeholder="Search users...">
+                    <div class="table-responsive">
+                        <table class="table table-bordered border-primary">
+                            <thead class="thead-dark">
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Email</th>
+                                    <th>Role</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="userTableBody">
+                                @foreach (var user in Model)
+                                {
+                                    <tr>
+                                        <td>@user.Name</td>
+                                        <td>@user.Email</td>
+                                        <td>@user.Role</td>
+                                        <td>@(user.IsActive ? "Active" : "Inactive")</td>
+                                        <td>
+                                            <a asp-action="EditUser" asp-route-id="@user.Id" class="btn btn-warning btn-sm">Edit</a>
+                                            <a asp-action="DeleteUser" asp-route-id="@user.Id" class="btn btn-danger btn-sm">Delete</a>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                    <nav>
+                        <ul class="pagination justify-content-center">
+                            <li class="page-item disabled"><a class="page-link" href="#">Previous</a></li>
+                            <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                            <li class="page-item"><a class="page-link" href="#">2</a></li>
+                            <li class="page-item"><a class="page-link" href="#">3</a></li>
+                            <li class="page-item"><a class="page-link" href="#">Next</a></li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        document.getElementById("search").addEventListener("keyup", function () {
+            let filter = this.value.toLowerCase();
+            let rows = document.querySelectorAll("#userTableBody tr");
+            rows.forEach(row => {
+                let text = row.textContent.toLowerCase();
+                row.style.display = text.includes(filter) ? "" : "none";
+            });
+        });
+    </script>
+}
