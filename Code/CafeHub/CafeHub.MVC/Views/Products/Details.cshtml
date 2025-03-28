@@ -47,6 +47,15 @@
                                     <input class="form-control" value="@Model.Category.Name" disabled />
                                 </div>
 
+                                @if (!string.IsNullOrEmpty(Model.ImagePath))
+                                {
+                                    <div class="form-group col-md-12 mb-5">
+                                        <label>Current Image</label>
+                                        <br>
+                                        <img src="@Url.Content(Model.ImagePath)" alt="Product Image" width="150" />
+                                    </div>
+                                }
+
                                 <!-- Edit and Back to List Links -->
                                 <div class="col-lg-12 text-center">
                                     <a asp-action="Edit" asp-route-id="@Model?.Id" class="btn btn-warning btn-lg">Edit Product</a>

@@ -25,7 +25,7 @@ namespace CafeHub.MVC.Controllers
         }
 
         [Authorize(Roles = "Admin")] // Customer/ Staff
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> ManageUser()
         {
             var UserId = await _accountService.GetCurrentUserIdAsync();
             var usersList = await _userManager.Users.ToListAsync();

@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace CafeHub.Commons.Migrations
 {
     /// <inheritdoc />
-    public partial class UpdateDB : Migration
+    public partial class FixMigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

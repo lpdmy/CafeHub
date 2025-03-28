@@ -9,10 +9,11 @@ namespace CafeHub.MVC.Controllers
     public class AdminCategoryManageController : Controller
     {
         private readonly ICategoryService _categoryService;
-
-        public AdminCategoryManageController(ICategoryService categoryService)
+        private readonly IWebHostEnvironment _webHostEnvironment;
+        public AdminCategoryManageController(ICategoryService categoryService, IWebHostEnvironment webHostEnvironment)
         {
             _categoryService = categoryService;
+            _webHostEnvironment = webHostEnvironment;
         }
 
         // GET: Categories
@@ -48,11 +49,31 @@ namespace CafeHub.MVC.Controllers
         {
             if (ModelState.IsValid)
             {
+                string? uniqueFileName = null;
+
+                // Handle Image Upload
+                if (model.Image != null)
+                {
+                    string uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "uploads/categories");
+                    Directory.CreateDirectory(uploadsFolder); // Ensure directory exists
+
+                    uniqueFileName = Guid.NewGuid().ToString() + "_" + model.Image.FileName;
+                    string filePath = Path.Combine(uploadsFolder, uniqueFileName);
+
+                    using (var fileStream = new FileStream(filePath, FileMode.Create))
+                    {
+                        await model.Image.CopyToAsync(fileStream);
+                    }
+                }
+
                 var category = new Category
                 {
                     Name = model.Name,
                     Description = model.Description,
-                    IsActive = model.IsActive
+                    IsActive = model.IsActive,
+                    ImagePath = uniqueFileName != null ? "/uploads/categories/" + uniqueFileName : null,
+                    CreatedAt = DateTime.UtcNow,
+                    UpdatedAt = DateTime.UtcNow
                 };
 
                 await _categoryService.CreateCategoryAsync(category);

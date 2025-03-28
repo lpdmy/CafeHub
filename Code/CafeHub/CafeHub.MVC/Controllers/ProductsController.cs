@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using CafeHub.Commons.Models;
 using CafeHub.Services.Interfaces;
 using CafeHub.MVC.Models;
+using Microsoft.AspNetCore.Hosting;
 
 namespace CafeHub.MVC.Controllers
 {
@@ -14,11 +15,13 @@ namespace CafeHub.MVC.Controllers
     {
         private readonly IProductService _productService;
         private readonly ICategoryService _categoryService;
+        private readonly IWebHostEnvironment _webHostEnvironment;
 
-        public ProductsController(IProductService productService, ICategoryService categoryService)
+        public ProductsController(IProductService productService, ICategoryService categoryService, IWebHostEnvironment webHostEnvironment)
         {
             _productService = productService;
             _categoryService = categoryService;
+            _webHostEnvironment = webHostEnvironment;
         }
 
         // GET: Products
@@ -70,12 +73,35 @@ namespace CafeHub.MVC.Controllers
         {
             if (ModelState.IsValid)
             {
-                var product = new Product()
+
+                // xử lí ảnh 
+
+                string filePath = null;
+
+                if (model.Image != null)
+                {
+                    string uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "uploads");
+                    Directory.CreateDirectory(uploadsFolder); // Ensure directory exists
+
+                    string uniqueFileName = Guid.NewGuid().ToString() + "_" + model.Image.FileName;
+                    filePath = Path.Combine(uploadsFolder, uniqueFileName);
+
+                    using (var fileStream = new FileStream(filePath, FileMode.Create))
+                    {
+                        await model.Image.CopyToAsync(fileStream);
+                    }
+                }
+
+                var product = new Product
                 {
                     Name = model.Name,
-                    Description = model.Description,
                     Price = model.Price,
-                    CategoryId = model.CategoryId
+                    Description = model.Description,
+                    CategoryId = model.CategoryId,
+                    IsAvailable = model.IsAvailable,
+                    CreatedAt = DateTime.UtcNow,
+                    UpdatedAt = DateTime.UtcNow,
+                    ImagePath = "/uploads/" + Path.GetFileName(filePath)
                 };
 
                 await _productService.CreateProductAsync(product); 
