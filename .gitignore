@@ -1,0 +1,33 @@
+# Build Folders
+**/bin/
+**/obj/
+
+# Visual Studio
+.vs/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Rider
+.idea/
+
+# VS Code
+.vscode/
+
+# Auto-generated files
+*.dll
+*.exe
+*.pdb
+*.cache
+*.db
+*.log
+
+# Others
+*.env
+*.swp
+*.tmp
+
+# OS generated
+.DS_Store
+Thumbs.db
