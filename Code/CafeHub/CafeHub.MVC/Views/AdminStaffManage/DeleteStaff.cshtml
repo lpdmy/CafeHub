@@ -11,6 +11,7 @@
 </div>
 
 <form asp-action="DeleteStaff" method="post">    
+    <input type="hidden" name="returnUrl" value="@ViewBag.ReturnUrl" />
     <button type="submit" asp-route-id="@ViewBag.StaffId" class="btn btn-danger">Xóa</button>
     <a asp-action="Manage_Staff" class="btn btn-secondary">Hủy</a>
 </form>

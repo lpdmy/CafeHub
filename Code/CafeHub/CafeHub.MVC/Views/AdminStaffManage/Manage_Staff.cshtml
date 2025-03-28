@@ -24,7 +24,8 @@
             <div class="col-lg-8">
                 <div class="service-single-content">
                     <h2 class="text-anime-style-3" style="margin-bottom:5px; color:#C9A581;">Staff Management</h2>
-                    <a asp-action="CreateStaff" class="btn btn-primary mb-3">Add New Staff</a>
+                    <a asp-action="CreateStaff" asp-controller="AdminStaffManage"
+                       asp-route-returnUrl="@Url.Action("Manage_Staff", "AdminStaffManage")" class="btn btn-primary mb-3">Add New Staff</a>
                     <input type="text" id="search" class="form-control mb-3" placeholder="Search staff...">
                     <div class="table-responsive">
                         <table class="table table-bordered border-primary">
@@ -49,11 +50,11 @@
                                         <td>@staff.Email</td>
                                         <td>@staff.EmployeeCode</td>
                                         <td>@staff.Position</td>
-                                        <td>@staff.HireDate</td>
+                                        <td>@staff.HireDate.ToString("dd-MM-yyyy")</td>
                                         <td>@staff.Salary</td>
                                         <td>
                                             <a asp-action="EditStaff" asp-route-id="@staffId" class="btn btn-warning btn-sm">Edit</a>
-                                            <a asp-action="DeleteStaff" asp-route-id="@staffId" class="btn btn-danger btn-sm">Delete</a>
+                                            <a asp-action="DeleteStaff" asp-route-id="@staffId" asp-route-returnUrl="@Url.Action("Manage_Staff", "AdminStaffManage")" class="btn btn-danger btn-sm">Delete</a>
                                         </td> 
                                     </tr>
                                 }
