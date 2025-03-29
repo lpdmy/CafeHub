@@ -46,9 +46,9 @@ namespace CafeHub.MVC.Controllers
 
             return View(staffsList);
         }
-        public IActionResult CreateStaff()
+        public IActionResult CreateStaff(string returnUrl)
         {
-            return RedirectToAction("CreateStaff", "AdminUserDashboard");
+            return RedirectToAction("CreateStaff", "AdminUserDashboard", new { returnUrl });
         }
         public async Task<IActionResult> EditStaff(string id)
         {
@@ -122,7 +122,7 @@ namespace CafeHub.MVC.Controllers
             return View(model);
         }
 
-        public async Task<IActionResult> DeleteStaff(string id)
+        public async Task<IActionResult> DeleteStaff(string id, string returnUrl)
         {
             if (string.IsNullOrEmpty(id))
             {
@@ -143,12 +143,13 @@ namespace CafeHub.MVC.Controllers
             };
 
             ViewBag.StaffId = id;
+            ViewBag.ReturnUrl = returnUrl;
             return View(model);
         }
 
         [HttpPost, ActionName("DeleteStaff")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteStaffConfirmed(string id)
+        public async Task<IActionResult> DeleteStaffConfirmed(string id, string returnUrl)
         {
             if (string.IsNullOrEmpty(id))
             {
@@ -163,13 +164,13 @@ namespace CafeHub.MVC.Controllers
             }
             var deleteResult = await _userManager.DeleteAsync(staff);
             if (deleteResult.Succeeded)
-            {               
-                bool result = await _salaryService.RemoveSalaryAsync(staff.Id);
-                if (result == false)
-                {
-                    return RedirectToAction("Index", "AdminUserDashboard");
-                }
-                return RedirectToAction("Manage_Staff");
+            {
+                //bool result = await _salaryService.RemoveSalaryAsync(staff.Id);
+                //if (result == false)
+                //{
+                //    return RedirectToAction("Index", "AdminUserDashboard");
+                //}
+                return Redirect(returnUrl ?? Url.Action("Manage_Staff", "AdminStaffManage"));
             }
             return View();
         }

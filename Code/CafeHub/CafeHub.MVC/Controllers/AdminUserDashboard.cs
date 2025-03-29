@@ -46,19 +46,20 @@ namespace CafeHub.MVC.Controllers
                     CreatedAt = u.CreatedAt
                 });
             }
-
             return View(users);
 
         }
         [HttpGet]
-        public IActionResult CreateStaff()
+        public IActionResult CreateStaff(string returnUrl)
         {
+            ViewBag.ReturnUrl = returnUrl;
             return View(new StaffViewModel());
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateStaff(StaffViewModel model)
+        public async Task<IActionResult> CreateStaff(StaffViewModel model, string returnUrl)
         {
+            var check = returnUrl;
             if (!ModelState.IsValid)
                 return View(model);
 
@@ -89,7 +90,8 @@ namespace CafeHub.MVC.Controllers
                 await _isalaryService.CreateSalaryAsync(salary);
 
 
-                return RedirectToAction("Index"); // Redirect đến danh sách Staff
+
+                return Redirect(returnUrl ?? Url.Action("ManageUser", "AdminUserDashboard")); // Redirect đến danh sách Staff
             }
 
             foreach (var error in result.Errors)
@@ -98,7 +100,7 @@ namespace CafeHub.MVC.Controllers
             return View(model);
         }
 
-        public async Task<IActionResult> DeleteUser(string id)
+        public async Task<IActionResult> DeleteUser(string id, string returnUrl)
         {
             var user = await _userManager.FindByIdAsync(id);
 
@@ -110,7 +112,7 @@ namespace CafeHub.MVC.Controllers
             Console.WriteLine(userRole);
             if (userRole.Contains("Staff"))
             {
-                return RedirectToAction("DeleteStaff", "AdminStaffManage", new { id = user.Id });
+                return RedirectToAction("DeleteStaff", "AdminStaffManage", new { id = user.Id , returnUrl});
             }
 
 
