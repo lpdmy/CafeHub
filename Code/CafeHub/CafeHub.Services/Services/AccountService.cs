@@ -62,5 +62,21 @@ namespace CafeHub.Services.Services
         {
             return await _accountRepository.GetCurrentUserId();
         }
+        public async Task<Customer?> GetCurrentCustomerAsync()
+        {
+            var userId = await GetCurrentUserIdAsync();
+            if (string.IsNullOrEmpty(userId)) return null;
+
+            var user = await GetUserByIdAsync(userId);
+
+            // Check if it's a Customer
+            if (user is Customer customer)
+            {
+                return customer;
+            }
+
+            return null;
+        }
+
     }
 }

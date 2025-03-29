@@ -1,0 +1,60 @@
+# Thư mục build
+bin/
+obj/
+out/
+# Bỏ qua thư mục bin và obj trong tất cả các thư mục con
+**/bin/
+**/obj/
+# Các thư mục và tệp cấu hình của Visual Studio
+.vs/
+.vscode/
+.idea/
+
+# Tệp cá nhân của người dùng
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Thư mục chứa các tệp tạm
+tmp/
+*.tmp
+
+# Các tệp .NET không cần thiết
+packages/
+*.nupkg
+*.nuspec
+project.lock.json
+project.fragment.lock.json
+
+# Các tệp cấu hình môi trường ASP.NET (không nên chia sẻ)
+appsettings.json
+appsettings.Development.json
+appsettings.Production.json
+
+# Các tệp nhật ký
+logs/
+*.log
+
+# Các tệp cơ sở dữ liệu tạm thời (ví dụ: SQL Server)
+*.mdf
+*.ldf
+
+# Các thư mục biên dịch (frontend, nếu có)
+dist/
+build/
+
+# Tệp cấu hình hệ điều hành
+.DS_Store
+Thumbs.db
+
+# Các thư mục node_modules hoặc bower_components (nếu có)
+node_modules/
+bower_components/
+
+# Thư mục publish của ASP.NET
+publish/
+
+# Các tệp và thư mục tạm khác
+*.swp
+*.swo

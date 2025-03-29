@@ -57,5 +57,9 @@ namespace CafeHub.Services.Services
         {
             return await _categoryRepository.GetCategoriesByNameAsync(name);
         }
+        public async Task<IEnumerable<Category>> GetCategoriesWithProductsAsync()
+        {
+            return await _categoryRepository.GetCategoriesWithProductsAsync();
+        }
     }
 }

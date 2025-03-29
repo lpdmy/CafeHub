@@ -17,13 +17,20 @@ namespace CafeHub.Commons.Models
         public int OrderId { get; set; }
 
         [Required]
-        public int ProductId { get; set; } 
+        public int ProductId { get; set; }
 
-        public int? ToppingId { get; set; } 
+       
 
         [Required]
         [Range(1, 1000)]
         public int Quantity { get; set; }
+
+        [Required]
+        public string Size { get; set; } = "Medium";
+        [Required]
+        public int SugarAmount { get; set; } = 100;
+        [Required]
+        public int IceAmount { get; set; } = 100;
 
         [Required]
         [Column(TypeName = "decimal(18,2)")]
@@ -39,9 +46,7 @@ namespace CafeHub.Commons.Models
         [ForeignKey("ProductId")]
         public virtual Product? Product { get; set; }
 
-        [ForeignKey("ToppingId")]
-        public virtual Topping? Topping { get; set; }
-
+   
         public decimal CalculateItemTotal() => UnitPrice * Quantity;
 
         public string GetInfo()

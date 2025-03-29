@@ -9,169 +9,100 @@ using CafeHub.Commons;
 using CafeHub.Commons.Models;
 using CafeHub.Services.Interfaces;
 using CafeHub.Services.Services;
+using CafeHub.MVC.Models;
+using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.Blazor;
 
 namespace CafeHub.MVC.Controllers
 {
     public class OrdersController : Controller
     {
         private readonly ApplicationDbContext _context;
-        private readonly IOrderService _iorderService;
-        public OrdersController(ApplicationDbContext context, IOrderService iorderService)
+        private readonly IAccountService _accountService;
+        private readonly ICartService _cartService;
+        private readonly IOrderService _orderService;
+        public OrdersController(ApplicationDbContext context, IAccountService accountService, ICartService cartService, IOrderService orderService)
         {
             _context = context;
-            _iorderService = iorderService;
+            _accountService = accountService;
+            _cartService = cartService;
+            _orderService = orderService;
         }
-
-        // GET: Orders
-        public async Task<IActionResult> Index()
+        // GET: Order/Create (Checkout Page)
+        public async Task<IActionResult> Create()
         {
-            var ListOrders = await _iorderService.GetAllOrdersAsync();
-            return View(ListOrders);
-            //var applicationDbContext = _context.Orders.Include(o => o.Customer);
-            //return View(await applicationDbContext.ToListAsync());
-        }
+            var customer = await _accountService.GetCurrentCustomerAsync();
 
-        // GET: Orders/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null)
+            if (customer == null)
             {
-                return NotFound();
+                TempData["Error"] = "You are not a customer!";
+                return RedirectToAction("Index", "Cart");
             }
 
-            var order = await _iorderService.GetOrderByIdAsync(id.Value);
+            var cartItems = await _cartService.GetCartItemsByUserIdAsync(customer.Id);
 
-            //await _context.Orders
-            //.Include(o => o.Customer)
-            //.FirstOrDefaultAsync(m => m.Id == id);
-            if (order == null)
+            if (cartItems == null || !cartItems.Any())
             {
-                return NotFound();
+                TempData["Error"] = "Your cart is empty!";
+                return RedirectToAction("Index", "Cart");
             }
 
-            return View(order);
+            var model = new OrderViewModel
+            {
+                CustomerName = customer.FullName,
+                PhoneNumber = customer.PhoneNumber,
+                Address = customer.Address,
+                TotalAmount = cartItems.Sum(x => x.Quantity * x.Product.Price), // Adjust if size affects price
+                OrderItems = cartItems.Select(x => new OrderItemViewModel
+                {
+                    ProductId = x.ProductId,
+                    ProductName = x.Product.Name,
+                    Quantity = x.Quantity,
+                    Size = x.Size,
+                    SugarAmount = x.SugarAmount,
+                    IceAmount = x.IceAmount
+                }).ToList()
+            };
+
+            return View(model);
         }
 
-        // GET: Orders/Create
-        public IActionResult Create()
-        {
-            ViewData["CustomerId"] = new SelectList(_context.Customers, "Id", "UserId");
-            return View();
-        }
-
-        // POST: Orders/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        // POST: Order/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,CustomerId,OrderDate,Status,TotalAmount")] Order order)
+        public async Task<IActionResult> Create(OrderViewModel model)
         {
-            if (ModelState.IsValid)
-            {
-                await _iorderService.CreateOrderAsync(order);
-                //_context.Add(order);
-                //await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            ViewData["CustomerId"] = new SelectList(_context.Customers, "Id", "UserId", order.CustomerId);
-            return View(order);
-        }
+            var userId = await _accountService.GetCurrentUserIdAsync();
+            var user = await _accountService.GetUserByIdAsync(userId);
 
-        // GET: Orders/Edit/5
-        public async Task<IActionResult> Edit(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            if (!ModelState.IsValid)
+                return View(model);
 
-            var order = await _iorderService.GetOrderByIdAsync(id.Value);  //_context.Orders.FindAsync(id);
-            if (order == null)
+            var order = new Order
             {
-                return NotFound();
-            }
-            ViewData["CustomerId"] = new SelectList(_context.Customers, "Id", "UserId", order.CustomerId);
-            return View(order);
-        }
-
-        // POST: Orders/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,CustomerId,OrderDate,Status,TotalAmount")] Order order)
-        {
-            if (id != order.Id)
-            {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                try
+                CustomerId = userId,
+                OrderDate = DateTime.Now,
+                TotalAmount = model.TotalAmount,
+                Status = "Pending",
+                StartDate = DateTime.Now,
+                EndDate = DateTime.Now.AddMinutes(5), // Optional
+                OrderItems = model.OrderItems.Select(x => new OrderItem
                 {
-                    await _iorderService.UpdateOrderAsync(order);
-                    //_context.Update(order);
-                    //await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!OrderExists(order.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
-            }
-            ViewData["CustomerId"] = new SelectList(_context.Customers, "Id", "UserId", order.CustomerId);
-            return View(order);
-        }
+                    ProductId = x.ProductId,
+                    Quantity = x.Quantity,
+                    Size = x.Size,
+                    SugarAmount = x.SugarAmount,
+                    IceAmount = x.IceAmount
+                }).ToList()
+            };
 
-        // GET: Orders/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            await _orderService.CreateOrderAsync(order);
 
-            var order = await _iorderService.GetOrderByIdAsync(id.Value);
+            // Optional: Clear cart
+            await _cartService.ClearCartByUserIdAsync(userId);
 
-            //_context.Orders
-            //.Include(o => o.Customer)
-            //.FirstOrDefaultAsync(m => m.Id == id);
-            if (order == null)
-            {
-                return NotFound();
-            }
-
-            return View(order);
-        }
-
-        // POST: Orders/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            var order = await _iorderService.DeleteOrderAsync(id);
-            //var order = await _context.Orders.FindAsync(id);
-            if (order == null)
-            {
-                //_context.Orders.Remove(order);
-                return NotFound();
-            }
-
-            //wait _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
-
-        private bool OrderExists(int id)
-        {
-            return _context.Orders.Any(e => e.Id == id);
+            return RedirectToAction(nameof(Details), new { id = order.Id });
         }
     }
+
 }
+
