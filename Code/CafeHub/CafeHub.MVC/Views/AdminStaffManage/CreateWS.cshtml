@@ -1,0 +1,126 @@
+﻿@model WorkShiftDetailViewModel
+
+<div class="page-contact-us">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6">
+                <div class="contact-information">
+                    <div class="section-title">
+                        <h3 class="wow fadeInUp">Create WorkShift Detail</h3>
+                        <h2 class="text-anime-style-3" data-cursor="-opaque">Add a new shift detail</h2>
+                        <p class="wow fadeInUp" data-wow-delay="0.2s">Fill in the details to track shift information.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-6">
+                <div class="contact-us-form">
+                    <div class="contact-form-content">
+                        <h3 class="wow fadeInUp">WorkShift Detail Information</h3>
+                        <p class="wow fadeInUp" data-wow-delay="0.2s">Please enter the shift details below.</p>
+                    </div>
+
+                    <div class="contact-form">
+                        <form asp-action="CreateWS" asp-controller="AdminStaffManage" method="post" class="wow fadeInUp" data-wow-delay="0.4s">
+                            <div class="row">
+                                @if (ViewBag.StaffId == null)
+                                {
+                                    <!-- Staff ID -->
+                                    <div class="form-group col-md-12 mb-5">
+                                        <select asp-for="StaffId" class="form-control" id="staffId" required>
+                                            <option value="">-- Staff --</option>
+                                            @foreach (var st in ViewBag.StaffList)
+                                            {
+                                                <option value="@st.Value">@st.Text</option>
+                                            }
+                                        </select>
+                                        <span asp-validation-for="StaffId" class="text-danger"></span>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <input type="hidden" asp-for="StaffId" value="@ViewBag.StaffId" />
+                                }
+                                <!-- Work Shift ID -->
+                                @* <div class="form-group col-md-12 mb-5">
+                                    <input asp-for="WorkShiftId" type="number" class="form-control" id="workShiftId" placeholder="Work Shift ID" required>
+                                    <span asp-validation-for="WorkShiftId" class="text-danger"></span>
+                                </div> *@
+                                <div class="form-group col-md-12 mb-5">
+                                    @* <label for="workShiftId">Choose WorkShift</label> *@
+                                    <select asp-for="WorkShiftId" class="form-control" id="workShiftId" required>
+                                        <option value="">-- WorkShift --</option>
+                                        @foreach (var shift in ViewBag.WorkShifts)
+                                        {
+                                            <option value="@shift.Value">@shift.Text</option>
+                                        }
+                                    </select>
+                                    <span asp-validation-for="WorkShiftId" class="text-danger"></span>
+                                </div>
+
+
+                                <!-- Attendance Status -->
+                                <div class="form-group col-md-12 mb-5">
+                                    <select asp-for="AttendanceStatus" class="form-control" id="attendanceStatus">
+                                        <option value="Present">Present</option>
+                                        <option value="Absent">Absent</option>
+                                        <option value="Late">Late</option>
+                                    </select>
+                                    <span asp-validation-for="AttendanceStatus" class="text-danger"></span>
+                                </div>
+
+                                <!-- Check-in Time -->
+                                <div class="form-group col-md-12 mb-5">
+                                    <input asp-for="CheckInTime" type="datetime-local" class="form-control" id="checkInTime">
+                                    <span asp-validation-for="CheckInTime" class="text-danger"></span>
+                                </div>
+
+                                <!-- Check-out Time -->
+                                <div class="form-group col-md-12 mb-5">
+                                    <input asp-for="CheckOutTime" type="datetime-local" class="form-control" id="checkOutTime">
+                                    <span asp-validation-for="CheckOutTime" class="text-danger"></span>
+                                </div>
+
+                                <!-- Overtime Hours -->
+                                <div class="form-group col-md-12 mb-5">
+                                    <input asp-for="OvertimeHours" type="number" step="0.1" class="form-control" id="overtimeHours" placeholder="Overtime Hours">
+                                    <span asp-validation-for="OvertimeHours" class="text-danger"></span>
+                                </div>
+
+                                <!-- Hours Contributed -->
+                                <div class="form-group col-md-12 mb-5">
+                                    <input asp-for="HoursContributed" type="number" class="form-control" id="hoursContributed" placeholder="Total Hours">
+                                    <span asp-validation-for="HoursContributed" class="text-danger"></span>
+                                </div>
+
+                                <!-- Notes -->
+                                <div class="form-group col-md-12 mb-5">
+                                    <textarea asp-for="Notes" class="form-control" id="notes" placeholder="Notes (optional)"></textarea>
+                                    <span asp-validation-for="Notes" class="text-danger"></span>
+                                </div>
+
+                                <!-- Submit Button -->
+                                <div class="col-lg-12">
+                                    <div class="contact-form-btn">
+                                        <button type="submit" class="btn-default">Create WorkShift Detail</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Back to List Link -->
+<div class="text-center">
+    <a asp-action="Manage_Staff" class="btn btn-outline-primary" style="margin-left:285px;">Back to List</a>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

@@ -5,9 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CafeHub.Repository.Interfaces
+namespace CafeHub.Services.Interfaces
 {
-    public interface IWorkShiftDetailRepository : IGenericRepository<WorkShiftDetail>
+    public interface IWorkShiftDetailService
     {
         Task<IEnumerable<WorkShiftDetail>> GetDetailOfWorkShift(int workShiftID);
         Task<bool> AddNewDetail(WorkShiftDetail ws);

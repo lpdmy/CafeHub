@@ -5,9 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CafeHub.Repository.Interfaces
+namespace CafeHub.Services.Interfaces
 {
-    public interface IWorkShiftRepository : IGenericRepository<WorkShift>
+    public interface IWorkShitService
     {
         Task<IEnumerable<WorkShift>> GetAllWorkShift();
 
@@ -16,7 +16,5 @@ namespace CafeHub.Repository.Interfaces
         Task<bool> UpdateWorkShift(WorkShift workShift);
 
         Task DeleteWorkShift(int id);
-
     }
-
 }
