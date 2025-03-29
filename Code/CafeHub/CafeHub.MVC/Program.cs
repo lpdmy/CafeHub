@@ -33,15 +33,16 @@ builder.Services.AddScoped<IAccountRepository, AccountRepository>();
 builder.Services.AddScoped<IAccountService, AccountService>();
 builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 builder.Services.AddScoped<ISalaryRepository, SalaryRepository>();
+builder.Services.AddScoped<IWorkShiftRepository, WorkShiftRepository>();
+builder.Services.AddScoped<IWorkShiftDetailRepository, WorkShiftDetailRepository>();
 
 builder.Services.AddScoped<ISalaryService, SalaryService>();
-
 builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
-
 builder.Services.AddScoped<IDiscountService, DiscountService>();
 builder.Services.AddScoped<IDiscountRepository, DiscountRepository>();
-
+builder.Services.AddScoped<IWorkShitService, WorkShiftService>();
+builder.Services.AddScoped<IWorkShiftDetailService, WorkShiftDetailService>();
 
 
 

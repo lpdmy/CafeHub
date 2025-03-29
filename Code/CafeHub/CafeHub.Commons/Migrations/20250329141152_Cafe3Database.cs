@@ -3,10 +3,12 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
 namespace CafeHub.Commons.Migrations
 {
     /// <inheritdoc />
-    public partial class FixMigration : Migration
+    public partial class Cafe3Database : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -79,7 +81,8 @@ namespace CafeHub.Commons.Migrations
                     Description = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
                     IsActive = table.Column<bool>(type: "bit", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ImagePath = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -323,7 +326,8 @@ namespace CafeHub.Commons.Migrations
                     CategoryId = table.Column<int>(type: "int", nullable: false),
                     IsAvailable = table.Column<bool>(type: "bit", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ImagePath = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -426,8 +430,10 @@ namespace CafeHub.Commons.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     OrderId = table.Column<int>(type: "int", nullable: false),
                     ProductId = table.Column<int>(type: "int", nullable: false),
-                    ToppingId = table.Column<int>(type: "int", nullable: true),
                     Quantity = table.Column<int>(type: "int", nullable: false),
+                    Size = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    SugarAmount = table.Column<int>(type: "int", nullable: false),
+                    IceAmount = table.Column<int>(type: "int", nullable: false),
                     UnitPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     StartDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     EndDate = table.Column<DateTime>(type: "datetime2", nullable: true)
@@ -447,11 +453,6 @@ namespace CafeHub.Commons.Migrations
                         principalTable: "Products",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_OrderItems_Toppings_ToppingId",
-                        column: x => x.ToppingId,
-                        principalTable: "Toppings",
-                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -478,6 +479,47 @@ namespace CafeHub.Commons.Migrations
                         principalTable: "Toppings",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.InsertData(
+                table: "Categories",
+                columns: new[] { "Id", "CreatedAt", "Description", "ImagePath", "IsActive", "Name", "UpdatedAt" },
+                values: new object[,]
+                {
+                    { 1, new DateTime(2025, 3, 29, 14, 11, 51, 840, DateTimeKind.Utc).AddTicks(5536), "All coffee-based drinks", "/images/menu-image-1.jpg", true, "Our original coffee", new DateTime(2025, 3, 29, 14, 11, 51, 840, DateTimeKind.Utc).AddTicks(5537) },
+                    { 2, new DateTime(2025, 3, 29, 14, 11, 51, 840, DateTimeKind.Utc).AddTicks(5539), "A variety of tea options", "/images/menu-image-2.jpg", true, "Our tea & bread", new DateTime(2025, 3, 29, 14, 11, 51, 840, DateTimeKind.Utc).AddTicks(5539) },
+                    { 3, new DateTime(2025, 3, 29, 14, 11, 51, 840, DateTimeKind.Utc).AddTicks(5541), "Delicious bakery items", "/images/menu-image-3.jpg", true, "Our pastries & cravings", new DateTime(2025, 3, 29, 14, 11, 51, 840, DateTimeKind.Utc).AddTicks(5541) }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Products",
+                columns: new[] { "Id", "CategoryId", "CreatedAt", "Description", "ImagePath", "IsAvailable", "Name", "Price", "Size", "UpdatedAt" },
+                values: new object[,]
+                {
+                    { 1, 1, new DateTime(2025, 3, 29, 14, 11, 51, 840, DateTimeKind.Utc).AddTicks(5666), "Freshly Brewed Coffee Blended with Rich, Velvety Steamed Milk for a Perfectly Balanced Cup.", "/images/original-coffee-img-1.png", true, "White Chocolate", 26.00m, "Medium", new DateTime(2025, 3, 29, 14, 11, 51, 840, DateTimeKind.Utc).AddTicks(5667) },
+                    { 2, 1, new DateTime(2025, 3, 29, 14, 11, 51, 840, DateTimeKind.Utc).AddTicks(5671), "Smooth Condensed Milk Combined with Chilled Ice Cubes and Bold, Flavorful Espresso for a Refreshing Treat.", "/images/original-coffee-img-2.png", true, "Colombia Dark Roast", 20.00m, "Large", new DateTime(2025, 3, 29, 14, 11, 51, 840, DateTimeKind.Utc).AddTicks(5671) },
+                    { 3, 1, new DateTime(2025, 3, 29, 14, 11, 51, 840, DateTimeKind.Utc).AddTicks(5674), "Rich Espresso Blended with Smooth Vanilla-Flavored Syrup and Creamy Milk, Creating a Perfectly Balanced Delight.", "/images/original-coffee-img-3.png", true, "Iced Caramel Latte", 24.00m, "Medium", new DateTime(2025, 3, 29, 14, 11, 51, 840, DateTimeKind.Utc).AddTicks(5674) },
+                    { 4, 1, new DateTime(2025, 3, 29, 14, 11, 51, 840, DateTimeKind.Utc).AddTicks(5676), "Freshly Brewed Coffee Combined with Bold Espresso, Delivering a Perfectly Balanced and Rich Flavor Experience.", "/images/original-coffee-img-4.png", true, "Espresso Macchiato", 30.00m, "Small", new DateTime(2025, 3, 29, 14, 11, 51, 840, DateTimeKind.Utc).AddTicks(5676) },
+                    { 5, 1, new DateTime(2025, 3, 29, 14, 11, 51, 840, DateTimeKind.Utc).AddTicks(5678), "A bold and intense coffee with deep flavors, perfect for those who enjoy a strong cup.", "/images/original-coffee-img-5.png", true, "Robusta", 16.00m, "Medium", new DateTime(2025, 3, 29, 14, 11, 51, 840, DateTimeKind.Utc).AddTicks(5678) },
+                    { 6, 1, new DateTime(2025, 3, 29, 14, 11, 51, 840, DateTimeKind.Utc).AddTicks(5694), "Smooth and aromatic coffee, known for its balanced taste and delightful fragrance.", "/images/original-coffee-img-6.png", true, "Arabica Coffee", 20.00m, "Large", new DateTime(2025, 3, 29, 14, 11, 51, 840, DateTimeKind.Utc).AddTicks(5694) },
+                    { 7, 1, new DateTime(2025, 3, 29, 14, 11, 51, 840, DateTimeKind.Utc).AddTicks(5696), "Rich, full-bodied coffee with a deep roast, bringing out a smoky and chocolatey essence.", "/images/original-coffee-img-7.png", true, "Colombia Dark Roast", 22.00m, "Medium", new DateTime(2025, 3, 29, 14, 11, 51, 840, DateTimeKind.Utc).AddTicks(5696) },
+                    { 8, 1, new DateTime(2025, 3, 29, 14, 11, 51, 840, DateTimeKind.Utc).AddTicks(5698), "A smooth, light-bodied coffee with a rich espresso base, perfect for those who enjoy a milder taste.", "/images/original-coffee-img-8.png", true, "Americano Coffee", 32.00m, "Large", new DateTime(2025, 3, 29, 14, 11, 51, 840, DateTimeKind.Utc).AddTicks(5699) },
+                    { 9, 2, new DateTime(2025, 3, 29, 14, 11, 51, 840, DateTimeKind.Utc).AddTicks(5701), "A rich blend of mocha and green tea, balancing sweetness and earthiness for a delightful taste.", "/images/tea-bread-image-1.png", true, "Mocha Green Tea", 26.00m, "Medium", new DateTime(2025, 3, 29, 14, 11, 51, 840, DateTimeKind.Utc).AddTicks(5701) },
+                    { 10, 2, new DateTime(2025, 3, 29, 14, 11, 51, 840, DateTimeKind.Utc).AddTicks(5704), "Bold and aromatic with a hint of spice, often enjoyed with milk for a creamy finish.", "/images/tea-bread-image-2.png", true, "Black Thai Tea", 20.00m, "Medium", new DateTime(2025, 3, 29, 14, 11, 51, 840, DateTimeKind.Utc).AddTicks(5704) },
+                    { 11, 2, new DateTime(2025, 3, 29, 14, 11, 51, 840, DateTimeKind.Utc).AddTicks(5706), "A sweet, comforting tea with a rich caramel flavor, offering a velvety and warm experience.", "/images/tea-bread-image-3.png", true, "Cold Brew Tea", 18.00m, "Large", new DateTime(2025, 3, 29, 14, 11, 51, 840, DateTimeKind.Utc).AddTicks(5707) },
+                    { 12, 2, new DateTime(2025, 3, 29, 14, 11, 51, 840, DateTimeKind.Utc).AddTicks(5709), "A crispy, golden loaf with a rich caramel flavor and a touch of herbs, perfect as a side or snack.", "/images/tea-bread-image-4.png", true, "Caramel Tea", 12.00m, "Small", new DateTime(2025, 3, 29, 14, 11, 51, 840, DateTimeKind.Utc).AddTicks(5709) },
+                    { 13, 2, new DateTime(2025, 3, 29, 14, 11, 51, 840, DateTimeKind.Utc).AddTicks(5711), "A classic French bread with a golden, crunchy crust and a soft, airy interior, ideal for sandwiches or serving with soup.", "/images/tea-bread-image-5.png", true, "Garlic Bread", 15.00m, "Large", new DateTime(2025, 3, 29, 14, 11, 51, 840, DateTimeKind.Utc).AddTicks(5711) },
+                    { 14, 2, new DateTime(2025, 3, 29, 14, 11, 51, 840, DateTimeKind.Utc).AddTicks(5714), "A sweet, spiced loaf filled with cinnamon swirls, offering a comforting aroma, perfect for breakfast or a treat.", "/images/tea-bread-image-6.png", true, "Baguette", 16.00m, "Large", new DateTime(2025, 3, 29, 14, 11, 51, 840, DateTimeKind.Utc).AddTicks(5715) },
+                    { 15, 2, new DateTime(2025, 3, 29, 14, 11, 51, 840, DateTimeKind.Utc).AddTicks(5717), "A perfect pairing of crispy, freshly made chips and rich, flavorful dips that bring a burst of taste in every bite.", "/images/tea-bread-image-7.png", true, "Cinnamon Bread", 22.00m, "Medium", new DateTime(2025, 3, 29, 14, 11, 51, 840, DateTimeKind.Utc).AddTicks(5717) },
+                    { 16, 2, new DateTime(2025, 3, 29, 14, 11, 51, 840, DateTimeKind.Utc).AddTicks(5719), "A hearty, wholesome bread made from whole wheat flour, rich in fiber and nutrients for a healthy option.", "/images/tea-bread-image-8.png", true, "Whole Wheat Bread", 28.00m, "Medium", new DateTime(2025, 3, 29, 14, 11, 51, 840, DateTimeKind.Utc).AddTicks(5720) },
+                    { 17, 3, new DateTime(2025, 3, 29, 14, 11, 51, 840, DateTimeKind.Utc).AddTicks(5722), "A perfect pairing of crispy, freshly made chips and rich, flavorful dips.", "/images/dessert-image-3.png", true, "Almond Croissant", 22.00m, "Medium", new DateTime(2025, 3, 29, 14, 11, 51, 840, DateTimeKind.Utc).AddTicks(5722) },
+                    { 18, 3, new DateTime(2025, 3, 29, 14, 11, 51, 840, DateTimeKind.Utc).AddTicks(5725), "A light, flaky pastry topped with fresh mixed berries.", "/images/dessert-image-2.png", true, "Berry Danish", 20.00m, "Medium", new DateTime(2025, 3, 29, 14, 11, 51, 840, DateTimeKind.Utc).AddTicks(5725) },
+                    { 19, 3, new DateTime(2025, 3, 29, 14, 11, 51, 840, DateTimeKind.Utc).AddTicks(5727), "A classic French pastry filled with creamy custard and chocolate.", "/images/dessert-image-3.png", true, "Chocolate Eclair", 24.00m, "Medium", new DateTime(2025, 3, 29, 14, 11, 51, 840, DateTimeKind.Utc).AddTicks(5727) },
+                    { 20, 3, new DateTime(2025, 3, 29, 14, 11, 51, 840, DateTimeKind.Utc).AddTicks(5729), "A warm, soft bun swirled with cinnamon and sugar.", "/images/dessert-image-4.png", true, "Cinnamon Bun", 30.00m, "Large", new DateTime(2025, 3, 29, 14, 11, 51, 840, DateTimeKind.Utc).AddTicks(5730) },
+                    { 21, 3, new DateTime(2025, 3, 29, 14, 11, 51, 840, DateTimeKind.Utc).AddTicks(5731), "Rich, fudgy brownies swirled with creamy caramel.", "/images/dessert-image-5.png", true, "Caramel Brownie", 26.00m, "Medium", new DateTime(2025, 3, 29, 14, 11, 51, 840, DateTimeKind.Utc).AddTicks(5732) },
+                    { 22, 3, new DateTime(2025, 3, 29, 14, 11, 51, 840, DateTimeKind.Utc).AddTicks(5734), "Classic soft cookies loaded with gooey chocolate chips.", "/images/dessert-image-6.png", true, "Choco Chip Cookies", 22.00m, "Small", new DateTime(2025, 3, 29, 14, 11, 51, 840, DateTimeKind.Utc).AddTicks(5734) },
+                    { 23, 3, new DateTime(2025, 3, 29, 14, 11, 51, 840, DateTimeKind.Utc).AddTicks(5736), "A tangy and creamy cheesecake with zesty lemon flavor.", "/images/dessert-image-7.png", true, "Lemon Cheesecake", 32.00m, "Large", new DateTime(2025, 3, 29, 14, 11, 51, 840, DateTimeKind.Utc).AddTicks(5737) },
+                    { 24, 3, new DateTime(2025, 3, 29, 14, 11, 51, 840, DateTimeKind.Utc).AddTicks(5739), "A crisp tart filled with sweet peach filling.", "/images/dessert-image-8.png", true, "Peach Tart", 20.00m, "Medium", new DateTime(2025, 3, 29, 14, 11, 51, 840, DateTimeKind.Utc).AddTicks(5739) }
                 });
 
             migrationBuilder.CreateIndex(
@@ -543,11 +585,6 @@ namespace CafeHub.Commons.Migrations
                 name: "IX_OrderItems_ProductId",
                 table: "OrderItems",
                 column: "ProductId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_OrderItems_ToppingId",
-                table: "OrderItems",
-                column: "ToppingId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Orders_CustomerId",
