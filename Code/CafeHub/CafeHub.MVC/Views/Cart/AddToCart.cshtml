@@ -1,0 +1,101 @@
+﻿@model List<CafeHub.Commons.Models.Category>
+
+@{
+    ViewBag.Title = "Add To Cart - CafeHub";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!-- Page Header Start -->
+<div class="page-header parallaxie">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-12">
+                <div class="page-header-box">
+                    <h1 class="text-anime-style-3">Add to Cart</h1>
+                    <nav class="wow fadeInUp">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item">
+                                <a asp-controller="Home" asp-action="Index">Home</a>
+                            </li>
+                            <li class="breadcrumb-item active" aria-current="page">Add To Cart</li>
+                        </ol>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Page Header End -->
+<!-- Page Menu Section Start -->
+<div class="page-menu">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="page-menu-box">
+                    @foreach (var category in Model)
+                    {
+                        <div class="page-menu-item">
+                            <div class="section-title">
+                                <h3 class="wow fadeInUp">Main menu</h3>
+                                <h2 class="text-anime-style-3">(@category.Name)</h2>
+                            </div>
+
+                            <div class="page-menu-list row">
+                                @foreach (var product in category.Products)
+                                {
+                                    <div class="col-lg-6 mb-4">
+                                        <div class="menu-list-item wow fadeInUp">
+                                            <div class="menu-list-image">
+                                                <figure>
+                                                    <img src="@product.ImagePath" alt="@product.Name">
+                                                </figure>
+                                            </div>
+                                            <div class="menu-item-body">
+                                                <div class="menu-item-title">
+                                                    <h3>@product.Name</h3>
+                                                    <hr>
+                                                    <span>$@product.Price</span>
+                                                </div>
+                                                <div class="menu-item-content">
+                                                    <p>@product.Description</p>
+                                                </div>
+
+                                                <!-- Add to Cart Form -->
+                                                <form asp-controller="Cart" asp-action="Add" method="post" class="mt-3">
+                                                    <input type="hidden" name="productId" value="@product.Id" />
+                                                    <div class="form-group mb-2">
+                                                        <label>Quantity:</label>
+                                                        <input type="number" name="quantity" value="1" min="1" class="form-control" required />
+                                                    </div>
+                                                    <div class="form-group mb-2">
+                                                        <label>Size:</label>
+                                                        <select name="size" class="form-control" required>
+                                                            <option value="Small">Small</option>
+                                                            <option value="Medium">Medium</option>
+                                                            <option value="Large">Large</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="form-group mb-2">
+                                                        <label>Sugar Amount:</label>
+                                                        <input type="number" name="sugarAmount" value="50" min="0" max="100" class="form-control" required />
+                                                    </div>
+                                                    <div class="form-group mb-2">
+                                                        <label>Ice Amount:</label>
+                                                        <input type="number" name="iceAmount" value="50" min="0" max="100" class="form-control" required />
+                                                    </div>
+                                                    <button type="submit" class="btn btn-primary w-100">Add to Cart</button>
+                                                </form>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Page Menu Section End -->

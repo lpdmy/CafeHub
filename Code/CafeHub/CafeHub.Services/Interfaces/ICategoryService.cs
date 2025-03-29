@@ -12,5 +12,6 @@ namespace CafeHub.Services.Interfaces
         Task UpdateCategoryAsync(Category category);
         Task DeleteCategoryAsync(int id);
         Task<IEnumerable<Category>> GetCategoriesByNameAsync(string name);
+        Task<IEnumerable<Category>> GetCategoriesWithProductsAsync();
     }
 }

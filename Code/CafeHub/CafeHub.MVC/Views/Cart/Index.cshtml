@@ -1,0 +1,42 @@
+﻿@model IEnumerable<OrderItemViewModel>
+
+<h2>Your Cart</h2>
+
+@if (Model != null && Model.Any())
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Product</th>
+                <th>Size</th>
+                <th>Quantity</th>
+                <th>Sugar</th>
+                <th>Ice</th>
+                <th>Price</th>
+                <th>Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.ProductName</td>
+                    <td>@item.Size</td>
+                    <td>@item.Quantity</td>
+                    <td>@item.SugarAmount%</td>
+                    <td>@item.IceAmount%</td>
+                    <td>@item.UnitPrice.ToString("C")</td>
+                    <td>@(item.UnitPrice * item.Quantity).ToString("C")</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <h4>Total: @Model.Sum(x => x.UnitPrice * x.Quantity).ToString("C")</h4>
+
+    <a asp-action="Create" asp-controller="Order" class="btn btn-success">Proceed to Checkout</a>
+}
+else
+{
+    <p>Your cart is empty.</p>
+}

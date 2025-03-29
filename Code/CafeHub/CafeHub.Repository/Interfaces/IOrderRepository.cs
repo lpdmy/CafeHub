@@ -9,5 +9,9 @@ namespace CafeHub.Repository.Interfaces
 {
     public interface IOrderRepository : IGenericRepository<Order>
     {
+        Task<Order?> GetOrderWithDetailsAsync(int id);
+        Task<IEnumerable<Order>> GetOrdersByCustomerAsync(string customerId);
+        Task<Order> GetDraftOrderByCustomerIdAsync(string customerId);
+
     }
 }

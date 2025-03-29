@@ -9,5 +9,6 @@ namespace CafeHub.Repository.Interfaces
     public interface ICategoryRepository : IGenericRepository<Category>
     {
         Task<IEnumerable<Category>> GetCategoriesByNameAsync(string name);
+        Task<IEnumerable<Category>> GetCategoriesWithProductsAsync();
     }
 }

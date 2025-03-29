@@ -19,5 +19,6 @@ namespace CafeHub.Services.Interfaces
         Task<SignInResult> LoginAsync(string email, string password);
         Task LogoutAsync();
         Task<string> GetCurrentUserIdAsync();
+        Task<Customer?> GetCurrentCustomerAsync();
     }
 }
