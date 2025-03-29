@@ -1,11 +1,16 @@
 ﻿using CafeHub.Commons.Models;
+using CafeHub.MVC.Models;
 using CafeHub.Services.Interfaces;
+using CafeHub.Services.Services;
 using CafeHub.Web.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection.Metadata.Ecma335;
 using System.Security.Policy;
+using System.Threading.Tasks;
 
 namespace CafeHub.MVC.Controllers
 {
@@ -15,12 +20,16 @@ namespace CafeHub.MVC.Controllers
         private readonly UserManager<User> _userManager;
         private readonly IAccountService _accountService;
         private readonly ISalaryService _salaryService;
-        
-        public AdminStaffManage(UserManager<User> userManager, IAccountService accountService, ISalaryService salaryService)
+        private readonly IWorkShiftDetailService _workShiftDetailService;
+        private readonly IWorkShitService _workShiftService;
+        public AdminStaffManage(UserManager<User> userManager, IAccountService accountService, ISalaryService salaryService, 
+            IWorkShiftDetailService workShiftDetailService, IWorkShitService workShiftService)
         {
             _userManager = userManager;
             _accountService = accountService;
             _salaryService = salaryService;
+            _workShiftDetailService = workShiftDetailService;
+            _workShiftService = workShiftService;
         }
         public async Task<IActionResult> Manage_Staff()
         {
@@ -116,7 +125,7 @@ namespace CafeHub.MVC.Controllers
 
                 await _salaryService.ModifySalaryAsync(salaryOfStaff);
 
-                return RedirectToAction("Manage_Staff");
+                return RedirectToAction(nameof(Manage_Staff)); //RedirectToAction("Manage_Staff"); 
             }
 
             return View(model);
@@ -173,6 +182,70 @@ namespace CafeHub.MVC.Controllers
                 return Redirect(returnUrl ?? Url.Action("Manage_Staff", "AdminStaffManage"));
             }
             return View();
+        }
+        public async Task<IActionResult> CreateWS(string id)
+        {
+            var dataWS = await _workShiftService.GetAllWorkShift();
+            var StaffID = id;
+            if(StaffID == null)
+            {
+                var staffs = await _userManager.GetUsersInRoleAsync("Staff");
+
+                var staffsList = staffs
+                     .OfType<Staff>().ToList();
+
+                ViewBag.StaffList = staffsList.Select(st => new SelectListItem
+                {
+                    Value = st.Id.ToString(),
+                    Text = st.Name,
+                });
+            }
+            ViewBag.StaffId = id;
+
+            ViewBag.WorkShifts = dataWS.Select(ws => new SelectListItem
+            {
+                Value = ws.Id.ToString(),
+                Text = ws.ShiftName
+            }).ToList();
+
+            return View();
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CreateWS(WorkShiftDetailViewModel model)
+        {
+
+            Console.WriteLine(model.Id);
+            Console.WriteLine(model.StaffId);
+            Console.WriteLine(model.WorkShiftId);
+            Console.WriteLine(model.AttendanceStatus);
+            Console.WriteLine(model.CheckInTime);
+            Console.WriteLine(model.CheckOutTime);
+            Console.WriteLine(model.OvertimeHours);
+            Console.WriteLine(model.HoursContributed);
+
+
+            var shift = new WorkShiftDetail
+            {
+                Id = model.Id,
+                StaffId = model.StaffId,
+                WorkShiftId = model.WorkShiftId,
+                AttendanceStatus = model.AttendanceStatus,
+                CheckInTime = model.CheckInTime,
+                CheckOutTime = model.CheckOutTime,
+                OvertimeHours = model.OvertimeHours,
+                HoursContributed = model.HoursContributed,
+            };
+
+            var success = await _workShiftDetailService.AddNewDetail(shift);
+
+            if (!success)
+            {
+                ModelState.AddModelError("", "Không thể tạo ca làm việc. Vui lòng thử lại!");
+                return View(model);
+            }
+
+            return RedirectToAction(nameof(Manage_Staff));
         }
     }
 }

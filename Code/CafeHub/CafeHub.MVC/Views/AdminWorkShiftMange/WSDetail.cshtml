@@ -1,6 +1,6 @@
-﻿@using CafeHub.Web.Models
- @model IEnumerable<StaffViewModel?> 
-
+﻿@* @model IEnumerable<CafeHub.Commons.Models.WorkShiftDetail>
+ *@
+ @model IEnumerable<WorkShiftDetailViewModel> 
 
 <div class="page-service-single">
     <div class="container">
@@ -10,7 +10,7 @@
                     <div class="page-category-list wow fadeInUp">
                         <h3>Admin Panel</h3>
                         <ul>
-                            <li><a asp-controller="AdminUserDashboard" asp-action="Index">Dashboard</a></li>
+                            <li><a asp-controller="AdminUserDashboard" asp-action="ManageUser">Dashboard</a></li>
                             <li><a asp-controller="AdminUserDashboard" asp-action="ManageUser">Manage Users</a></li>
                             <li><a asp-controller="AdminStaffManage" asp-action="Manage_Staff">Manage Staffs</a></li>
                             <li><a asp-controller="Salaries" asp-action="All_Salaries">Salary</a></li>
@@ -24,40 +24,39 @@
             </div>
             <div class="col-lg-8">
                 <div class="service-single-content">
-                    <h2 class="text-anime-style-3" style="margin-bottom:5px; color:#C9A581;">Staff Management</h2>
-                    <a asp-action="CreateStaff" asp-controller="AdminStaffManage"
-                       asp-route-returnUrl="@Url.Action("Manage_Staff", "AdminStaffManage")" class="btn btn-primary mb-3">Add New Staff</a>
-                    <input type="text" id="search" class="form-control mb-3" placeholder="Search staff...">
+                    <h2 class="text-anime-style-3" style="margin-bottom:5px; color:#C9A581;">WorkShift Management</h2>
+                    <a asp-action="CreateWS" class="btn btn-primary mb-3">Add New Shift</a>
+                    <input type="text" id="search" class="form-control mb-3" placeholder="Search ...">
                     <div class="table-responsive">
                         <table class="table table-bordered border-primary">
                             <thead class="thead-dark">
                                 <tr>
-                                    <th>Name</th>
-                                    <th>Email</th>
-                                    <th>EmployeeCode</th>
-                                    <th>Position</th>
-                                    <th>HireDate</th>
-                                    <th>Salary</th> 
-                                    <th>Actions</th>
+                                    <th>Staff</th>
+                                    <th>WorkShift</th>
+                                    <th>Attendance Status</th>
+                                    <th>Check In Time</th>
+                                    <th>Check Out Time</th>
+                                    <th>Overtime Hours</th>
+                                    <th>Hours Contributed</th>
+                                    <th>Actions</th>                                    
                                 </tr>
                             </thead>
-                            <tbody id="staffTableBody">
-                                @foreach (var staff in Model)
+                            <tbody id="workShiftDetailTableBody">
+                                @foreach (var wsd in Model)
                                 {
-                                    var staffId = ViewBag.StaffIds[staff.Email];
-
                                     <tr>
-                                        <td>@staff.Name</td>
-                                        <td>@staff.Email</td>
-                                        <td>@staff.EmployeeCode</td>
-                                        <td>@staff.Position</td>
-                                        <td>@staff.HireDate.ToString("dd-MM-yyyy")</td>
-                                        <td>@staff.Salary</td>
+                                        <td>@wsd.StaffName</td>
+                                        <td>@wsd.WorkShiftName</td>
+                                        <td>@wsd.AttendanceStatus</td>
+                                        <td>@wsd.CheckInTime</td>
+                                        <td>@wsd.CheckOutTime</td>
+                                        <td>@wsd.OvertimeHours</td>
+                                        <td>@wsd.HoursContributed</td>
                                         <td>
-                                            <a asp-action="EditStaff" asp-route-id="@staffId" class="btn btn-warning btn-sm">Edit</a>
-                                            <a asp-action="DeleteStaff" asp-route-id="@staffId" asp-route-returnUrl="@Url.Action("Manage_Staff", "AdminStaffManage")" class="btn btn-danger btn-sm">Delete</a>
-                                            <a asp-action="CreateWS" asp-route-id="@staffId" class="btn btn-outline-primary btn-sm">WS</a>
-                                        </td> 
+                                            <a asp-action="Edit" asp-route-id="@wsd.Id" class="btn btn-warning btn-sm">Edit</a>
+                                            <a asp-action="CreateWS" asp-route-id="@wsd.Id" class="btn btn-outline-primary btn-sm">Detail</a>
+                                            <a asp-action="Delete" asp-route-id="@wsd.Id" class="btn btn-danger btn-sm">Delete</a>
+                                        </td>
                                     </tr>
                                 }
                             </tbody>
@@ -82,7 +81,7 @@
     <script>
         document.getElementById("search").addEventListener("keyup", function () {
             let filter = this.value.toLowerCase();
-            let rows = document.querySelectorAll("#staffTableBody tr");
+            let rows = document.querySelectorAll("#workShiftDetailTableBody tr");
             rows.forEach(row => {
                 let text = row.textContent.toLowerCase();
                 row.style.display = text.includes(filter) ? "" : "none";
@@ -91,9 +90,9 @@
     </script>
 }
 
-            <style>
+<style>
     .table th, .table td {
         white-space: nowrap; /* Ngăn nội dung bị xuống dòng */
         text-align: center; /* Căn giữa nội dung */
     }
-    </style>
+</style>
