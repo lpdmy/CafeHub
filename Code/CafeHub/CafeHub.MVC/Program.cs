@@ -46,15 +46,15 @@ builder.Services.AddScoped<IWorkShitService, WorkShiftService>();
 builder.Services.AddScoped<IWorkShiftDetailService, WorkShiftDetailService>();
 builder.Services.AddScoped<INotificationService, NotificationService>();
 
-<<<<<<< HEAD
+
 builder.Services.AddScoped<IOrderService, OrderService>();
 
 
 
 
-=======
+
 builder.Services.AddSignalR();
->>>>>>> 4d3dffdc4f3c4854f771fcb66da7f7145ab48ad0
+
 
 
 builder.Services.AddIdentity<User, ApplicationRole>(options => options.SignIn.RequireConfirmedAccount = false)
