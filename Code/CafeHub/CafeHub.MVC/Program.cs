@@ -5,6 +5,7 @@ using CafeHub.Repository.Interfaces;
 using CafeHub.Repository.Repositories;
 using CafeHub.Service.Interfaces;
 using CafeHub.Service.Services;
+using CafeHub.Services.Hubs;
 using CafeHub.Services.Interfaces;
 using CafeHub.Services.Models;
 using CafeHub.Services.Services;
@@ -15,8 +16,8 @@ using Microsoft.EntityFrameworkCore;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection")
-                        ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+var connectionString = Environment.GetEnvironmentVariable("DefaultConnection")
+    ?? builder.Configuration.GetConnectionString("DefaultConnection");
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString));
@@ -33,20 +34,27 @@ builder.Services.AddScoped<IAccountRepository, AccountRepository>();
 builder.Services.AddScoped<IAccountService, AccountService>();
 builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 builder.Services.AddScoped<ISalaryRepository, SalaryRepository>();
+builder.Services.AddScoped<IWorkShiftRepository, WorkShiftRepository>();
+builder.Services.AddScoped<IWorkShiftDetailRepository, WorkShiftDetailRepository>();
 
 builder.Services.AddScoped<ISalaryService, SalaryService>();
-
 builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
-
 builder.Services.AddScoped<IDiscountService, DiscountService>();
 builder.Services.AddScoped<IDiscountRepository, DiscountRepository>();
+builder.Services.AddScoped<IWorkShitService, WorkShiftService>();
+builder.Services.AddScoped<IWorkShiftDetailService, WorkShiftDetailService>();
+builder.Services.AddScoped<INotificationService, NotificationService>();
 
+<<<<<<< HEAD
 builder.Services.AddScoped<IOrderService, OrderService>();
 
 
 
 
+=======
+builder.Services.AddSignalR();
+>>>>>>> 4d3dffdc4f3c4854f771fcb66da7f7145ab48ad0
 
 
 builder.Services.AddIdentity<User, ApplicationRole>(options => options.SignIn.RequireConfirmedAccount = false)
@@ -84,6 +92,7 @@ else
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
+app.MapHub<NotificationHub>("/notificationHub");
 
 app.UseRouting();
 

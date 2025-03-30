@@ -13,11 +13,13 @@ namespace CafeHub.Services.Services
 {
     public class AccountService : IAccountService
     {
+        private readonly INotificationService _notificationService;
         private readonly IAccountRepository _accountRepository;
 
-        public AccountService(IAccountRepository accountRepository)
+        public AccountService(IAccountRepository accountRepository, INotificationService notificationService)
         {
             _accountRepository = accountRepository;
+            _notificationService = notificationService;
         }
 
         public async Task<User> GetUserByIdAsync(string userId)
