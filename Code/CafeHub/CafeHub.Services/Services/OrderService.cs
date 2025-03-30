@@ -38,5 +38,15 @@ namespace CafeHub.Services.Services
         {
             return await _orderRepository.GetOrdersByCustomerAsync(customerId);
         }
+        public async Task<Order> UpdateOrderAsync(Order order)
+        {
+            _orderRepository.Update(order);
+            await _orderRepository.SaveChangesAsync();
+            return order;
+        }
+        public async Task<IEnumerable<Order>> GetAllOrdersAsync()
+        {
+            return await _orderRepository.GetAllAsync(); 
+        }
     }
 }

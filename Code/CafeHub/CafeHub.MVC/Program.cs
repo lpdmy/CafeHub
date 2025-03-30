@@ -42,6 +42,9 @@ builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<IDiscountService, DiscountService>();
 builder.Services.AddScoped<IDiscountRepository, DiscountRepository>();
 
+builder.Services.AddScoped<IOrderService, OrderService>();
+
+
 
 
 

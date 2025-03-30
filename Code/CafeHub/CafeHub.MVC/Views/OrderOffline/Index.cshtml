@@ -1,0 +1,61 @@
+﻿@model IEnumerable<CafeHub.Commons.Models.Order>
+
+<h1>Order Offline</h1>
+
+<p>
+    <a asp-action="Create" class="btn btn-primary">Create New Order</a>
+</p>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Order ID</th>
+            <th>Order Date</th>
+            <th>Total Amount</th>
+            <th>Status</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var order in Model)
+        {
+            <tr>
+                <td>@order.Id</td>
+                <td>@order.OrderDate</td>
+                <td>@order.TotalAmount</td>
+                <td>@order.Status</td>
+                <td>
+                    <form asp-action="ChangeStatus" method="post">
+                        <input type="hidden" name="id" value="@order.Id" />
+                        <select name="status">
+                            <option value="Pending" selected="@(order.Status == "Pending")">Pending</option>
+                            <option value="Completed" selected="@(order.Status == "Completed")">Completed</option>
+                            <option value="Cancelled" selected="@(order.Status == "Cancelled")">Cancelled</option>
+                        </select>
+                        <button type="submit" class="btn btn-sm btn-primary">Update Status</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $('form[asp-action="ChangeStatus"]').submit(function (e) {
+                e.preventDefault(); // Ngăn chặn form gửi đi mặc định
+
+                var form = $(this);
+                var url = form.attr('action');
+                var data = form.serialize();
+
+                $.post(url, data, function (response) {
+                    // Cập nhật trạng thái trên trang web mà không cần tải lại
+                    // Ví dụ: cập nhật text của td chứa trạng thái
+                    form.closest('tr').find('td:eq(4)').text(form.find('select').val());
+                });
+            });
+        });
+    </script>
+}
