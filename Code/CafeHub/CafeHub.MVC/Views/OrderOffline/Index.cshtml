@@ -33,6 +33,7 @@
                             <option value="Cancelled" selected="@(order.Status == "Cancelled")">Cancelled</option>
                         </select>
                         <button type="submit" class="btn btn-sm btn-primary">Update Status</button>
+                        <a href="@Url.Action("PrintBill", new { id = order.Id })" class="btn btn-sm btn-success">Print Bill</a>
                     </form>
                 </td>
             </tr>
