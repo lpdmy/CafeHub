@@ -35,27 +35,19 @@ namespace CafeHub.Services.Interfaces
                     {
                         var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
 
-                        for (int weekOffset = 0; weekOffset < 2; weekOffset++) // Generate for current & next week
+                        for (int weekOffset = 0; weekOffset < 5; weekOffset++) // Generate for current & next week
                         {
                             DateTime startOfWeek = GetStartOfWeek(DateTime.Now).AddDays(weekOffset * 7);
                             DateTime endOfWeek = startOfWeek.AddDays(6);
 
                             _logger.LogInformation($"🔍 Checking WorkShifts for the week: {startOfWeek:yyyy-MM-dd} - {endOfWeek:yyyy-MM-dd}");
 
-                            bool exists = dbContext.WorkShifts.Any(ws => ws.ShiftDate >= startOfWeek && ws.ShiftDate <= endOfWeek);
-
-                            if (!exists)
-                            {
-                                var shifts = GenerateWorkShifts(startOfWeek);
+                                var shifts = GenerateWorkShifts(startOfWeek, endOfWeek, dbContext);
                                 dbContext.WorkShifts.AddRange(shifts);
                                 await dbContext.SaveChangesAsync();
 
                                 _logger.LogInformation($"✅ Created {shifts.Count} WorkShifts for the week {startOfWeek:yyyy-MM-dd} - {endOfWeek:yyyy-MM-dd}");
-                            }
-                            else
-                            {
-                                _logger.LogWarning($"⚠ WorkShifts for the week {startOfWeek:yyyy-MM-dd} already exist. Skipping.");
-                            }
+                          
                         }
                     }
                 }
@@ -75,35 +67,46 @@ namespace CafeHub.Services.Interfaces
             return date.AddDays(-diff).Date;
         }
 
-        private static List<WorkShift> GenerateWorkShifts(DateTime startOfWeek)
+        private  static List<WorkShift> GenerateWorkShifts(DateTime startDate, DateTime endDate, ApplicationDbContext dbContext)
         {
             var workShifts = new List<WorkShift>();
             string[] shiftNames = { "Morning Shift", "Afternoon Shift" };
 
-            for (int i = 0; i < 7; i++) // 7 days from Sunday to Saturday
+            for (DateTime shiftDate = startDate; shiftDate <= endDate; shiftDate = shiftDate.AddDays(1))
             {
-                DateTime shiftDate = startOfWeek.AddDays(i);
+                var morningShiftExists = dbContext.WorkShifts.Any(ws =>
+                    ws.ShiftDate == shiftDate && ws.StartTime == shiftDate.AddHours(7) && ws.EndTime == shiftDate.AddHours(12));
 
-                workShifts.Add(new WorkShift
-                {
-                    ShiftName = shiftNames[0], // Morning Shift
-                    StartTime = shiftDate.AddHours(7),   // 07:00 AM
-                    EndTime = shiftDate.AddHours(12),   // 12:00 PM
-                    ShiftDate = shiftDate,
-                    Description = "Morning shift for the day"
-                });
+                var afternoonShiftExists = dbContext.WorkShifts.Any(ws =>
+                    ws.ShiftDate == shiftDate && ws.StartTime == shiftDate.AddHours(13) && ws.EndTime == shiftDate.AddHours(18));
 
-                workShifts.Add(new WorkShift
+                if (!morningShiftExists)
                 {
-                    ShiftName = shiftNames[1], // Afternoon Shift
-                    StartTime = shiftDate.AddHours(13),  // 01:00 PM
-                    EndTime = shiftDate.AddHours(18),  // 06:00 PM
-                    ShiftDate = shiftDate,
-                    Description = "Afternoon shift for the day"
-                });
+                    workShifts.Add(new WorkShift
+                    {
+                        ShiftName = shiftNames[0], // Morning Shift
+                        StartTime = shiftDate.AddHours(7),   // 07:00 AM
+                        EndTime = shiftDate.AddHours(12),   // 12:00 PM
+                        ShiftDate = shiftDate,
+                        Description = "Morning shift for the day"
+                    });
+                }
+
+                if (!afternoonShiftExists)
+                {
+                    workShifts.Add(new WorkShift
+                    {
+                        ShiftName = shiftNames[1], // Afternoon Shift
+                        StartTime = shiftDate.AddHours(13),  // 01:00 PM
+                        EndTime = shiftDate.AddHours(18),  // 06:00 PM
+                        ShiftDate = shiftDate,
+                        Description = "Afternoon shift for the day"
+                    });
+                }
             }
 
             return workShifts;
         }
+
     }
 }

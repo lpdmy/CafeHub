@@ -1,10 +1,13 @@
-﻿using CafeHub.Commons.Models;
+﻿using CafeHub.Commons;
+using CafeHub.Commons.Models;
 using CafeHub.MVC.Models;
 using CafeHub.Services.Interfaces;
 using CafeHub.Services.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using System.Globalization;
 
 namespace CafeHub.MVC.Controllers
 {
@@ -13,12 +16,52 @@ namespace CafeHub.MVC.Controllers
         private readonly IWorkShitService _workShitService;
         private readonly UserManager<User> _userManager;
         private readonly IWorkShiftDetailService _workShiftDetailService;
-        public AdminWorkShiftMangeController(IWorkShitService workShitService, UserManager<User> userManager, IWorkShiftDetailService workShiftDetailService)
+        private readonly ApplicationDbContext _dbContext;
+        public AdminWorkShiftMangeController(IWorkShitService workShitService, UserManager<User> userManager, IWorkShiftDetailService workShiftDetailService, ApplicationDbContext dbContext)
         {
             _workShitService = workShitService;
             _userManager = userManager;
             _workShiftDetailService = workShiftDetailService;
+            _dbContext = dbContext;
         }
+        public IActionResult Index(string? weekStart)
+        {
+            DateTime currentWeekStart;
+
+            if (string.IsNullOrEmpty(weekStart))
+            {
+                // Mặc định lấy ngày đầu tiên của tuần hiện tại (Chủ Nhật)
+                currentWeekStart = GetStartOfWeek(DateTime.Now);
+            }
+            else
+            {
+                // Nếu có tham số weekStart, chuyển về DateTime
+                currentWeekStart = DateTime.ParseExact(weekStart, "yyyy-MM-dd", CultureInfo.InvariantCulture);
+            }
+
+            // Lấy danh sách ca làm việc của tuần này
+            DateTime weekEnd = currentWeekStart.AddDays(6);
+            var workShifts = _dbContext.WorkShifts
+                .Where(s => s.ShiftDate >= currentWeekStart && s.ShiftDate <= weekEnd)
+                .OrderBy(s => s.ShiftDate)
+                .Include(s => s.WorkShiftDetails)
+                .ThenInclude(s => s.Staff)
+                .ToList();
+
+            ViewBag.WorkShifts = workShifts;
+            ViewBag.CurrentWeekStart = currentWeekStart;
+
+            return View();
+        }
+
+        // Hàm lấy ngày đầu tuần (Chủ Nhật)
+        private static DateTime GetStartOfWeek(DateTime date)
+        {
+            int diff = (7 + (date.DayOfWeek - DayOfWeek.Sunday)) % 7; 
+            return date.AddDays(-diff).Date;
+        }
+
+
 
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> AllWorkShift()
@@ -125,28 +168,28 @@ namespace CafeHub.MVC.Controllers
 
         public async Task<IActionResult> WSDetail(int id)
         {
-            if (id == null) return NotFound();
+            if (id == 0) return NotFound();
 
-            var GetDetail = await _workShiftDetailService.GetDetailOfWorkShift(id);
+            var getDetail = await _workShiftDetailService.GetDetailOfWorkShift(id);
 
-            if (GetDetail == null) return NotFound();
+            if (getDetail == null || !getDetail.Any())
+                return RedirectToAction("CreateWS", "AdminStaffManage");
 
-            var model = GetDetail.Select(n => new WorkShiftDetailViewModel
+            // Lấy danh sách Staff theo danh sách StaffIds
+            var allStaffs = await _userManager.GetUsersInRoleAsync("Staff");
+            var staffDict = allStaffs.OfType<Staff>().ToDictionary(s => s.Id, s => s.Name);
+
+            var model = getDetail.Select(n => new WorkShiftDetailViewModel
             {
                 Id = n.Id,
-                StaffId = n.StaffId,
                 WorkShiftId = n.WorkShiftId,
                 AttendanceStatus = n.AttendanceStatus,
-                CheckInTime = n.CheckInTime,
-                CheckOutTime = n.CheckOutTime,
-                OvertimeHours = n.OvertimeHours,
-                HoursContributed = n.HoursContributed,
                 Notes = n.Notes,
 
-                StaffName = n.Staff?.Name ?? "Unknown",
                 WorkShiftName = n.WorkShift?.ShiftName ?? "Unknown",
+                StaffId = n.StaffId
+            }).ToList();
 
-            });
             return View(model);
         }
 
@@ -180,5 +223,58 @@ namespace CafeHub.MVC.Controllers
             }
             return RedirectToAction(nameof(AllWorkShift));
         }
+
+        public async Task<IActionResult> WorkShiftDetail(int workshiftid)
+        {
+            var workShift = await _dbContext.WorkShifts
+                .Where(ws => ws.Id == workshiftid)
+                .Include(ws => ws.WorkShiftDetails)
+                    .ThenInclude(wd => wd.Staff) // Load thông tin nhân viên
+                .FirstOrDefaultAsync();
+
+            if (workShift == null)
+            {
+                return NotFound("Không tìm thấy ca làm việc.");
+            }
+
+            return View(workShift);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddStaffToWorkShift(int workshiftid, string staffId)
+        {
+            var workShift = await _dbContext.WorkShifts
+                .Include(ws => ws.WorkShiftDetails)
+                .FirstOrDefaultAsync(ws => ws.Id == workshiftid);
+
+            if (workShift == null)
+            {
+                return NotFound("Không tìm thấy ca làm việc.");
+            }
+
+            // Kiểm tra nếu nhân viên đã có trong ca làm việc
+            bool staffExists = workShift.WorkShiftDetails.Any(wd => wd.StaffId == staffId);
+            if (staffExists)
+            {
+                TempData["Message"] = "Nhân viên đã có trong ca làm việc!";
+                return RedirectToAction("WorkShiftDetail", new { workshiftid });
+            }
+
+            // Tạo WorkShiftDetail mới
+            var newWorkShiftDetail = new WorkShiftDetail
+            {
+                StaffId = staffId,
+                WorkShiftId = workshiftid,
+                AttendanceStatus = "Present",
+                Notes = ""
+            };
+
+            _dbContext.WorkShiftDetails.Add(newWorkShiftDetail);
+            await _dbContext.SaveChangesAsync();
+
+            TempData["Message"] = "Nhân viên đã được thêm vào ca làm việc.";
+            return RedirectToAction("WorkShiftDetail", new { workshiftid });
+        }
+
     }
 }

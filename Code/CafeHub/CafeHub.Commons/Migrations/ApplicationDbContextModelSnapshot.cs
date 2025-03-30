@@ -60,32 +60,32 @@ namespace CafeHub.Commons.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedAt = new DateTime(2025, 3, 30, 0, 11, 19, 858, DateTimeKind.Utc).AddTicks(4056),
+                            CreatedAt = new DateTime(2025, 3, 30, 11, 29, 23, 188, DateTimeKind.Utc).AddTicks(1716),
                             Description = "All coffee-based drinks",
                             ImagePath = "/images/menu-image-1.jpg",
                             IsActive = true,
                             Name = "Our original coffee",
-                            UpdatedAt = new DateTime(2025, 3, 30, 0, 11, 19, 858, DateTimeKind.Utc).AddTicks(4057)
+                            UpdatedAt = new DateTime(2025, 3, 30, 11, 29, 23, 188, DateTimeKind.Utc).AddTicks(1716)
                         },
                         new
                         {
                             Id = 2,
-                            CreatedAt = new DateTime(2025, 3, 30, 0, 11, 19, 858, DateTimeKind.Utc).AddTicks(4061),
+                            CreatedAt = new DateTime(2025, 3, 30, 11, 29, 23, 188, DateTimeKind.Utc).AddTicks(1720),
                             Description = "A variety of tea options",
                             ImagePath = "/images/menu-image-2.jpg",
                             IsActive = true,
                             Name = "Our tea & bread",
-                            UpdatedAt = new DateTime(2025, 3, 30, 0, 11, 19, 858, DateTimeKind.Utc).AddTicks(4061)
+                            UpdatedAt = new DateTime(2025, 3, 30, 11, 29, 23, 188, DateTimeKind.Utc).AddTicks(1720)
                         },
                         new
                         {
                             Id = 3,
-                            CreatedAt = new DateTime(2025, 3, 30, 0, 11, 19, 858, DateTimeKind.Utc).AddTicks(4064),
+                            CreatedAt = new DateTime(2025, 3, 30, 11, 29, 23, 188, DateTimeKind.Utc).AddTicks(1723),
                             Description = "Delicious bakery items",
                             ImagePath = "/images/menu-image-3.jpg",
                             IsActive = true,
                             Name = "Our pastries & cravings",
-                            UpdatedAt = new DateTime(2025, 3, 30, 0, 11, 19, 858, DateTimeKind.Utc).AddTicks(4065)
+                            UpdatedAt = new DateTime(2025, 3, 30, 11, 29, 23, 188, DateTimeKind.Utc).AddTicks(1723)
                         });
                 });
 
@@ -171,7 +171,6 @@ namespace CafeHub.Commons.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("CustomerId")
-                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime?>("EndDate")
@@ -330,313 +329,313 @@ namespace CafeHub.Commons.Migrations
                         {
                             Id = 1,
                             CategoryId = 1,
-                            CreatedAt = new DateTime(2025, 3, 30, 0, 11, 19, 858, DateTimeKind.Utc).AddTicks(4275),
+                            CreatedAt = new DateTime(2025, 3, 30, 11, 29, 23, 188, DateTimeKind.Utc).AddTicks(1957),
                             Description = "Freshly Brewed Coffee Blended with Rich, Velvety Steamed Milk for a Perfectly Balanced Cup.",
                             ImagePath = "/images/original-coffee-img-1.png",
                             IsAvailable = true,
                             Name = "White Chocolate",
                             Price = 26.00m,
                             Size = "Medium",
-                            UpdatedAt = new DateTime(2025, 3, 30, 0, 11, 19, 858, DateTimeKind.Utc).AddTicks(4276)
+                            UpdatedAt = new DateTime(2025, 3, 30, 11, 29, 23, 188, DateTimeKind.Utc).AddTicks(1957)
                         },
                         new
                         {
                             Id = 2,
                             CategoryId = 1,
-                            CreatedAt = new DateTime(2025, 3, 30, 0, 11, 19, 858, DateTimeKind.Utc).AddTicks(4283),
+                            CreatedAt = new DateTime(2025, 3, 30, 11, 29, 23, 188, DateTimeKind.Utc).AddTicks(1964),
                             Description = "Smooth Condensed Milk Combined with Chilled Ice Cubes and Bold, Flavorful Espresso for a Refreshing Treat.",
                             ImagePath = "/images/original-coffee-img-2.png",
                             IsAvailable = true,
                             Name = "Colombia Dark Roast",
                             Price = 20.00m,
                             Size = "Large",
-                            UpdatedAt = new DateTime(2025, 3, 30, 0, 11, 19, 858, DateTimeKind.Utc).AddTicks(4284)
+                            UpdatedAt = new DateTime(2025, 3, 30, 11, 29, 23, 188, DateTimeKind.Utc).AddTicks(1964)
                         },
                         new
                         {
                             Id = 3,
                             CategoryId = 1,
-                            CreatedAt = new DateTime(2025, 3, 30, 0, 11, 19, 858, DateTimeKind.Utc).AddTicks(4288),
+                            CreatedAt = new DateTime(2025, 3, 30, 11, 29, 23, 188, DateTimeKind.Utc).AddTicks(1967),
                             Description = "Rich Espresso Blended with Smooth Vanilla-Flavored Syrup and Creamy Milk, Creating a Perfectly Balanced Delight.",
                             ImagePath = "/images/original-coffee-img-3.png",
                             IsAvailable = true,
                             Name = "Iced Caramel Latte",
                             Price = 24.00m,
                             Size = "Medium",
-                            UpdatedAt = new DateTime(2025, 3, 30, 0, 11, 19, 858, DateTimeKind.Utc).AddTicks(4288)
+                            UpdatedAt = new DateTime(2025, 3, 30, 11, 29, 23, 188, DateTimeKind.Utc).AddTicks(1968)
                         },
                         new
                         {
                             Id = 4,
                             CategoryId = 1,
-                            CreatedAt = new DateTime(2025, 3, 30, 0, 11, 19, 858, DateTimeKind.Utc).AddTicks(4329),
+                            CreatedAt = new DateTime(2025, 3, 30, 11, 29, 23, 188, DateTimeKind.Utc).AddTicks(1971),
                             Description = "Freshly Brewed Coffee Combined with Bold Espresso, Delivering a Perfectly Balanced and Rich Flavor Experience.",
                             ImagePath = "/images/original-coffee-img-4.png",
                             IsAvailable = true,
                             Name = "Espresso Macchiato",
                             Price = 30.00m,
                             Size = "Small",
-                            UpdatedAt = new DateTime(2025, 3, 30, 0, 11, 19, 858, DateTimeKind.Utc).AddTicks(4330)
+                            UpdatedAt = new DateTime(2025, 3, 30, 11, 29, 23, 188, DateTimeKind.Utc).AddTicks(1971)
                         },
                         new
                         {
                             Id = 5,
                             CategoryId = 1,
-                            CreatedAt = new DateTime(2025, 3, 30, 0, 11, 19, 858, DateTimeKind.Utc).AddTicks(4334),
+                            CreatedAt = new DateTime(2025, 3, 30, 11, 29, 23, 188, DateTimeKind.Utc).AddTicks(1974),
                             Description = "A bold and intense coffee with deep flavors, perfect for those who enjoy a strong cup.",
                             ImagePath = "/images/original-coffee-img-5.png",
                             IsAvailable = true,
                             Name = "Robusta",
                             Price = 16.00m,
                             Size = "Medium",
-                            UpdatedAt = new DateTime(2025, 3, 30, 0, 11, 19, 858, DateTimeKind.Utc).AddTicks(4334)
+                            UpdatedAt = new DateTime(2025, 3, 30, 11, 29, 23, 188, DateTimeKind.Utc).AddTicks(1974)
                         },
                         new
                         {
                             Id = 6,
                             CategoryId = 1,
-                            CreatedAt = new DateTime(2025, 3, 30, 0, 11, 19, 858, DateTimeKind.Utc).AddTicks(4340),
+                            CreatedAt = new DateTime(2025, 3, 30, 11, 29, 23, 188, DateTimeKind.Utc).AddTicks(1979),
                             Description = "Smooth and aromatic coffee, known for its balanced taste and delightful fragrance.",
                             ImagePath = "/images/original-coffee-img-6.png",
                             IsAvailable = true,
                             Name = "Arabica Coffee",
                             Price = 20.00m,
                             Size = "Large",
-                            UpdatedAt = new DateTime(2025, 3, 30, 0, 11, 19, 858, DateTimeKind.Utc).AddTicks(4341)
+                            UpdatedAt = new DateTime(2025, 3, 30, 11, 29, 23, 188, DateTimeKind.Utc).AddTicks(1979)
                         },
                         new
                         {
                             Id = 7,
                             CategoryId = 1,
-                            CreatedAt = new DateTime(2025, 3, 30, 0, 11, 19, 858, DateTimeKind.Utc).AddTicks(4344),
+                            CreatedAt = new DateTime(2025, 3, 30, 11, 29, 23, 188, DateTimeKind.Utc).AddTicks(1982),
                             Description = "Rich, full-bodied coffee with a deep roast, bringing out a smoky and chocolatey essence.",
                             ImagePath = "/images/original-coffee-img-7.png",
                             IsAvailable = true,
                             Name = "Colombia Dark Roast",
                             Price = 22.00m,
                             Size = "Medium",
-                            UpdatedAt = new DateTime(2025, 3, 30, 0, 11, 19, 858, DateTimeKind.Utc).AddTicks(4345)
+                            UpdatedAt = new DateTime(2025, 3, 30, 11, 29, 23, 188, DateTimeKind.Utc).AddTicks(1983)
                         },
                         new
                         {
                             Id = 8,
                             CategoryId = 1,
-                            CreatedAt = new DateTime(2025, 3, 30, 0, 11, 19, 858, DateTimeKind.Utc).AddTicks(4348),
+                            CreatedAt = new DateTime(2025, 3, 30, 11, 29, 23, 188, DateTimeKind.Utc).AddTicks(1985),
                             Description = "A smooth, light-bodied coffee with a rich espresso base, perfect for those who enjoy a milder taste.",
                             ImagePath = "/images/original-coffee-img-8.png",
                             IsAvailable = true,
                             Name = "Americano Coffee",
                             Price = 32.00m,
                             Size = "Large",
-                            UpdatedAt = new DateTime(2025, 3, 30, 0, 11, 19, 858, DateTimeKind.Utc).AddTicks(4348)
+                            UpdatedAt = new DateTime(2025, 3, 30, 11, 29, 23, 188, DateTimeKind.Utc).AddTicks(1986)
                         },
                         new
                         {
                             Id = 9,
                             CategoryId = 2,
-                            CreatedAt = new DateTime(2025, 3, 30, 0, 11, 19, 858, DateTimeKind.Utc).AddTicks(4352),
+                            CreatedAt = new DateTime(2025, 3, 30, 11, 29, 23, 188, DateTimeKind.Utc).AddTicks(1988),
                             Description = "A rich blend of mocha and green tea, balancing sweetness and earthiness for a delightful taste.",
                             ImagePath = "/images/tea-bread-image-1.png",
                             IsAvailable = true,
                             Name = "Mocha Green Tea",
                             Price = 26.00m,
                             Size = "Medium",
-                            UpdatedAt = new DateTime(2025, 3, 30, 0, 11, 19, 858, DateTimeKind.Utc).AddTicks(4352)
+                            UpdatedAt = new DateTime(2025, 3, 30, 11, 29, 23, 188, DateTimeKind.Utc).AddTicks(1989)
                         },
                         new
                         {
                             Id = 10,
                             CategoryId = 2,
-                            CreatedAt = new DateTime(2025, 3, 30, 0, 11, 19, 858, DateTimeKind.Utc).AddTicks(4356),
+                            CreatedAt = new DateTime(2025, 3, 30, 11, 29, 23, 188, DateTimeKind.Utc).AddTicks(1993),
                             Description = "Bold and aromatic with a hint of spice, often enjoyed with milk for a creamy finish.",
                             ImagePath = "/images/tea-bread-image-2.png",
                             IsAvailable = true,
                             Name = "Black Thai Tea",
                             Price = 20.00m,
                             Size = "Medium",
-                            UpdatedAt = new DateTime(2025, 3, 30, 0, 11, 19, 858, DateTimeKind.Utc).AddTicks(4357)
+                            UpdatedAt = new DateTime(2025, 3, 30, 11, 29, 23, 188, DateTimeKind.Utc).AddTicks(1993)
                         },
                         new
                         {
                             Id = 11,
                             CategoryId = 2,
-                            CreatedAt = new DateTime(2025, 3, 30, 0, 11, 19, 858, DateTimeKind.Utc).AddTicks(4360),
+                            CreatedAt = new DateTime(2025, 3, 30, 11, 29, 23, 188, DateTimeKind.Utc).AddTicks(1996),
                             Description = "A sweet, comforting tea with a rich caramel flavor, offering a velvety and warm experience.",
                             ImagePath = "/images/tea-bread-image-3.png",
                             IsAvailable = true,
                             Name = "Cold Brew Tea",
                             Price = 18.00m,
                             Size = "Large",
-                            UpdatedAt = new DateTime(2025, 3, 30, 0, 11, 19, 858, DateTimeKind.Utc).AddTicks(4361)
+                            UpdatedAt = new DateTime(2025, 3, 30, 11, 29, 23, 188, DateTimeKind.Utc).AddTicks(1996)
                         },
                         new
                         {
                             Id = 12,
                             CategoryId = 2,
-                            CreatedAt = new DateTime(2025, 3, 30, 0, 11, 19, 858, DateTimeKind.Utc).AddTicks(4364),
+                            CreatedAt = new DateTime(2025, 3, 30, 11, 29, 23, 188, DateTimeKind.Utc).AddTicks(1999),
                             Description = "A crispy, golden loaf with a rich caramel flavor and a touch of herbs, perfect as a side or snack.",
                             ImagePath = "/images/tea-bread-image-4.png",
                             IsAvailable = true,
                             Name = "Caramel Tea",
                             Price = 12.00m,
                             Size = "Small",
-                            UpdatedAt = new DateTime(2025, 3, 30, 0, 11, 19, 858, DateTimeKind.Utc).AddTicks(4365)
+                            UpdatedAt = new DateTime(2025, 3, 30, 11, 29, 23, 188, DateTimeKind.Utc).AddTicks(2000)
                         },
                         new
                         {
                             Id = 13,
                             CategoryId = 2,
-                            CreatedAt = new DateTime(2025, 3, 30, 0, 11, 19, 858, DateTimeKind.Utc).AddTicks(4368),
+                            CreatedAt = new DateTime(2025, 3, 30, 11, 29, 23, 188, DateTimeKind.Utc).AddTicks(2002),
                             Description = "A classic French bread with a golden, crunchy crust and a soft, airy interior, ideal for sandwiches or serving with soup.",
                             ImagePath = "/images/tea-bread-image-5.png",
                             IsAvailable = true,
                             Name = "Garlic Bread",
                             Price = 15.00m,
                             Size = "Large",
-                            UpdatedAt = new DateTime(2025, 3, 30, 0, 11, 19, 858, DateTimeKind.Utc).AddTicks(4368)
+                            UpdatedAt = new DateTime(2025, 3, 30, 11, 29, 23, 188, DateTimeKind.Utc).AddTicks(2003)
                         },
                         new
                         {
                             Id = 14,
                             CategoryId = 2,
-                            CreatedAt = new DateTime(2025, 3, 30, 0, 11, 19, 858, DateTimeKind.Utc).AddTicks(4372),
+                            CreatedAt = new DateTime(2025, 3, 30, 11, 29, 23, 188, DateTimeKind.Utc).AddTicks(2006),
                             Description = "A sweet, spiced loaf filled with cinnamon swirls, offering a comforting aroma, perfect for breakfast or a treat.",
                             ImagePath = "/images/tea-bread-image-6.png",
                             IsAvailable = true,
                             Name = "Baguette",
                             Price = 16.00m,
                             Size = "Large",
-                            UpdatedAt = new DateTime(2025, 3, 30, 0, 11, 19, 858, DateTimeKind.Utc).AddTicks(4372)
+                            UpdatedAt = new DateTime(2025, 3, 30, 11, 29, 23, 188, DateTimeKind.Utc).AddTicks(2006)
                         },
                         new
                         {
                             Id = 15,
                             CategoryId = 2,
-                            CreatedAt = new DateTime(2025, 3, 30, 0, 11, 19, 858, DateTimeKind.Utc).AddTicks(4375),
+                            CreatedAt = new DateTime(2025, 3, 30, 11, 29, 23, 188, DateTimeKind.Utc).AddTicks(2009),
                             Description = "A perfect pairing of crispy, freshly made chips and rich, flavorful dips that bring a burst of taste in every bite.",
                             ImagePath = "/images/tea-bread-image-7.png",
                             IsAvailable = true,
                             Name = "Cinnamon Bread",
                             Price = 22.00m,
                             Size = "Medium",
-                            UpdatedAt = new DateTime(2025, 3, 30, 0, 11, 19, 858, DateTimeKind.Utc).AddTicks(4376)
+                            UpdatedAt = new DateTime(2025, 3, 30, 11, 29, 23, 188, DateTimeKind.Utc).AddTicks(2009)
                         },
                         new
                         {
                             Id = 16,
                             CategoryId = 2,
-                            CreatedAt = new DateTime(2025, 3, 30, 0, 11, 19, 858, DateTimeKind.Utc).AddTicks(4379),
+                            CreatedAt = new DateTime(2025, 3, 30, 11, 29, 23, 188, DateTimeKind.Utc).AddTicks(2012),
                             Description = "A hearty, wholesome bread made from whole wheat flour, rich in fiber and nutrients for a healthy option.",
                             ImagePath = "/images/tea-bread-image-8.png",
                             IsAvailable = true,
                             Name = "Whole Wheat Bread",
                             Price = 28.00m,
                             Size = "Medium",
-                            UpdatedAt = new DateTime(2025, 3, 30, 0, 11, 19, 858, DateTimeKind.Utc).AddTicks(4380)
+                            UpdatedAt = new DateTime(2025, 3, 30, 11, 29, 23, 188, DateTimeKind.Utc).AddTicks(2012)
                         },
                         new
                         {
                             Id = 17,
                             CategoryId = 3,
-                            CreatedAt = new DateTime(2025, 3, 30, 0, 11, 19, 858, DateTimeKind.Utc).AddTicks(4383),
+                            CreatedAt = new DateTime(2025, 3, 30, 11, 29, 23, 188, DateTimeKind.Utc).AddTicks(2015),
                             Description = "A perfect pairing of crispy, freshly made chips and rich, flavorful dips.",
                             ImagePath = "/images/dessert-image-3.png",
                             IsAvailable = true,
                             Name = "Almond Croissant",
                             Price = 22.00m,
                             Size = "Medium",
-                            UpdatedAt = new DateTime(2025, 3, 30, 0, 11, 19, 858, DateTimeKind.Utc).AddTicks(4383)
+                            UpdatedAt = new DateTime(2025, 3, 30, 11, 29, 23, 188, DateTimeKind.Utc).AddTicks(2015)
                         },
                         new
                         {
                             Id = 18,
                             CategoryId = 3,
-                            CreatedAt = new DateTime(2025, 3, 30, 0, 11, 19, 858, DateTimeKind.Utc).AddTicks(4387),
+                            CreatedAt = new DateTime(2025, 3, 30, 11, 29, 23, 188, DateTimeKind.Utc).AddTicks(2019),
                             Description = "A light, flaky pastry topped with fresh mixed berries.",
                             ImagePath = "/images/dessert-image-2.png",
                             IsAvailable = true,
                             Name = "Berry Danish",
                             Price = 20.00m,
                             Size = "Medium",
-                            UpdatedAt = new DateTime(2025, 3, 30, 0, 11, 19, 858, DateTimeKind.Utc).AddTicks(4388)
+                            UpdatedAt = new DateTime(2025, 3, 30, 11, 29, 23, 188, DateTimeKind.Utc).AddTicks(2019)
                         },
                         new
                         {
                             Id = 19,
                             CategoryId = 3,
-                            CreatedAt = new DateTime(2025, 3, 30, 0, 11, 19, 858, DateTimeKind.Utc).AddTicks(4391),
+                            CreatedAt = new DateTime(2025, 3, 30, 11, 29, 23, 188, DateTimeKind.Utc).AddTicks(2022),
                             Description = "A classic French pastry filled with creamy custard and chocolate.",
                             ImagePath = "/images/dessert-image-3.png",
                             IsAvailable = true,
                             Name = "Chocolate Eclair",
                             Price = 24.00m,
                             Size = "Medium",
-                            UpdatedAt = new DateTime(2025, 3, 30, 0, 11, 19, 858, DateTimeKind.Utc).AddTicks(4391)
+                            UpdatedAt = new DateTime(2025, 3, 30, 11, 29, 23, 188, DateTimeKind.Utc).AddTicks(2022)
                         },
                         new
                         {
                             Id = 20,
                             CategoryId = 3,
-                            CreatedAt = new DateTime(2025, 3, 30, 0, 11, 19, 858, DateTimeKind.Utc).AddTicks(4394),
+                            CreatedAt = new DateTime(2025, 3, 30, 11, 29, 23, 188, DateTimeKind.Utc).AddTicks(2024),
                             Description = "A warm, soft bun swirled with cinnamon and sugar.",
                             ImagePath = "/images/dessert-image-4.png",
                             IsAvailable = true,
                             Name = "Cinnamon Bun",
                             Price = 30.00m,
                             Size = "Large",
-                            UpdatedAt = new DateTime(2025, 3, 30, 0, 11, 19, 858, DateTimeKind.Utc).AddTicks(4395)
+                            UpdatedAt = new DateTime(2025, 3, 30, 11, 29, 23, 188, DateTimeKind.Utc).AddTicks(2025)
                         },
                         new
                         {
                             Id = 21,
                             CategoryId = 3,
-                            CreatedAt = new DateTime(2025, 3, 30, 0, 11, 19, 858, DateTimeKind.Utc).AddTicks(4398),
+                            CreatedAt = new DateTime(2025, 3, 30, 11, 29, 23, 188, DateTimeKind.Utc).AddTicks(2027),
                             Description = "Rich, fudgy brownies swirled with creamy caramel.",
                             ImagePath = "/images/dessert-image-5.png",
                             IsAvailable = true,
                             Name = "Caramel Brownie",
                             Price = 26.00m,
                             Size = "Medium",
-                            UpdatedAt = new DateTime(2025, 3, 30, 0, 11, 19, 858, DateTimeKind.Utc).AddTicks(4398)
+                            UpdatedAt = new DateTime(2025, 3, 30, 11, 29, 23, 188, DateTimeKind.Utc).AddTicks(2028)
                         },
                         new
                         {
                             Id = 22,
                             CategoryId = 3,
-                            CreatedAt = new DateTime(2025, 3, 30, 0, 11, 19, 858, DateTimeKind.Utc).AddTicks(4401),
+                            CreatedAt = new DateTime(2025, 3, 30, 11, 29, 23, 188, DateTimeKind.Utc).AddTicks(2030),
                             Description = "Classic soft cookies loaded with gooey chocolate chips.",
                             ImagePath = "/images/dessert-image-6.png",
                             IsAvailable = true,
                             Name = "Choco Chip Cookies",
                             Price = 22.00m,
                             Size = "Small",
-                            UpdatedAt = new DateTime(2025, 3, 30, 0, 11, 19, 858, DateTimeKind.Utc).AddTicks(4402)
+                            UpdatedAt = new DateTime(2025, 3, 30, 11, 29, 23, 188, DateTimeKind.Utc).AddTicks(2030)
                         },
                         new
                         {
                             Id = 23,
                             CategoryId = 3,
-                            CreatedAt = new DateTime(2025, 3, 30, 0, 11, 19, 858, DateTimeKind.Utc).AddTicks(4405),
+                            CreatedAt = new DateTime(2025, 3, 30, 11, 29, 23, 188, DateTimeKind.Utc).AddTicks(2033),
                             Description = "A tangy and creamy cheesecake with zesty lemon flavor.",
                             ImagePath = "/images/dessert-image-7.png",
                             IsAvailable = true,
                             Name = "Lemon Cheesecake",
                             Price = 32.00m,
                             Size = "Large",
-                            UpdatedAt = new DateTime(2025, 3, 30, 0, 11, 19, 858, DateTimeKind.Utc).AddTicks(4405)
+                            UpdatedAt = new DateTime(2025, 3, 30, 11, 29, 23, 188, DateTimeKind.Utc).AddTicks(2033)
                         },
                         new
                         {
                             Id = 24,
                             CategoryId = 3,
-                            CreatedAt = new DateTime(2025, 3, 30, 0, 11, 19, 858, DateTimeKind.Utc).AddTicks(4408),
+                            CreatedAt = new DateTime(2025, 3, 30, 11, 29, 23, 188, DateTimeKind.Utc).AddTicks(2036),
                             Description = "A crisp tart filled with sweet peach filling.",
                             ImagePath = "/images/dessert-image-8.png",
                             IsAvailable = true,
                             Name = "Peach Tart",
                             Price = 20.00m,
                             Size = "Medium",
-                            UpdatedAt = new DateTime(2025, 3, 30, 0, 11, 19, 858, DateTimeKind.Utc).AddTicks(4409)
+                            UpdatedAt = new DateTime(2025, 3, 30, 11, 29, 23, 188, DateTimeKind.Utc).AddTicks(2036)
                         });
                 });
 
@@ -869,20 +868,8 @@ namespace CafeHub.Commons.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime?>("CheckInTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("CheckOutTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<long>("HoursContributed")
-                        .HasColumnType("bigint");
-
                     b.Property<string>("Notes")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<decimal>("OvertimeHours")
-                        .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("StaffId")
                         .IsRequired()
@@ -1145,9 +1132,7 @@ namespace CafeHub.Commons.Migrations
                 {
                     b.HasOne("CafeHub.Commons.Models.Customer", "Customer")
                         .WithMany("Orders")
-                        .HasForeignKey("CustomerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("CustomerId");
 
                     b.HasOne("CafeHub.Commons.Models.Staff", "Staff")
                         .WithMany("OrdersProcessed")

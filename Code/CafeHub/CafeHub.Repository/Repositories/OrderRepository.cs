@@ -36,5 +36,18 @@ namespace CafeHub.Repository.Repositories
                 .Include(o => o.OrderItems)
                 .FirstOrDefaultAsync(o => o.CustomerId == customerId && o.Status == "Draft");
         }
+        public void Update(Order order)
+        {
+            _context.Orders.Update(order);
+        }
+
+        public async Task SaveChangesAsync()
+        {
+            await _context.SaveChangesAsync();
+        }
+        public async Task<IEnumerable<Order>> GetAllAsync()
+        {
+            return await _context.Orders.ToListAsync();
+        }
     }
 }

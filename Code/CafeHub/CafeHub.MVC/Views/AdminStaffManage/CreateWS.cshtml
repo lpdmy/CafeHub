@@ -46,17 +46,7 @@
                                     <input asp-for="WorkShiftId" type="number" class="form-control" id="workShiftId" placeholder="Work Shift ID" required>
                                     <span asp-validation-for="WorkShiftId" class="text-danger"></span>
                                 </div> *@
-                                <div class="form-group col-md-12 mb-5">
-                                    @* <label for="workShiftId">Choose WorkShift</label> *@
-                                    <select asp-for="WorkShiftId" class="form-control" id="workShiftId" required>
-                                        <option value="">-- WorkShift --</option>
-                                        @foreach (var shift in ViewBag.WorkShifts)
-                                        {
-                                            <option value="@shift.Value">@shift.Text</option>
-                                        }
-                                    </select>
-                                    <span asp-validation-for="WorkShiftId" class="text-danger"></span>
-                                </div>
+                                <input type="hidden" asp-for="WorkShiftId" value="@ViewBag.WorkShiftId" />
 
 
                                 <!-- Attendance Status -->
@@ -67,30 +57,6 @@
                                         <option value="Late">Late</option>
                                     </select>
                                     <span asp-validation-for="AttendanceStatus" class="text-danger"></span>
-                                </div>
-
-                                <!-- Check-in Time -->
-                                <div class="form-group col-md-12 mb-5">
-                                    <input asp-for="CheckInTime" type="datetime-local" class="form-control" id="checkInTime">
-                                    <span asp-validation-for="CheckInTime" class="text-danger"></span>
-                                </div>
-
-                                <!-- Check-out Time -->
-                                <div class="form-group col-md-12 mb-5">
-                                    <input asp-for="CheckOutTime" type="datetime-local" class="form-control" id="checkOutTime">
-                                    <span asp-validation-for="CheckOutTime" class="text-danger"></span>
-                                </div>
-
-                                <!-- Overtime Hours -->
-                                <div class="form-group col-md-12 mb-5">
-                                    <input asp-for="OvertimeHours" type="number" step="0.1" class="form-control" id="overtimeHours" placeholder="Overtime Hours">
-                                    <span asp-validation-for="OvertimeHours" class="text-danger"></span>
-                                </div>
-
-                                <!-- Hours Contributed -->
-                                <div class="form-group col-md-12 mb-5">
-                                    <input asp-for="HoursContributed" type="number" class="form-control" id="hoursContributed" placeholder="Total Hours">
-                                    <span asp-validation-for="HoursContributed" class="text-danger"></span>
                                 </div>
 
                                 <!-- Notes -->

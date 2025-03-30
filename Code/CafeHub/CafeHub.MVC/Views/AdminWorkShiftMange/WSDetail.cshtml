@@ -34,10 +34,6 @@
                                     <th>Staff</th>
                                     <th>WorkShift</th>
                                     <th>Attendance Status</th>
-                                    <th>Check In Time</th>
-                                    <th>Check Out Time</th>
-                                    <th>Overtime Hours</th>
-                                    <th>Hours Contributed</th>
                                     <th>Actions</th>
                                 </tr>
                             </thead>
@@ -48,10 +44,6 @@
                                         <td>@wsd.StaffName</td>
                                         <td>@wsd.WorkShiftName</td>
                                         <td>@wsd.AttendanceStatus</td>
-                                        <td>@wsd.CheckInTime</td>
-                                        <td>@wsd.CheckOutTime</td>
-                                        <td>@wsd.OvertimeHours</td>
-                                        <td>@wsd.HoursContributed</td>
                                         <td>
                                             <a asp-action="Edit" asp-route-id="@wsd.Id" class="btn btn-warning btn-sm">Edit</a>
                                             <a asp-action="CreateWS" asp-route-id="@wsd.Id" class="btn btn-outline-primary btn-sm">Detail</a>

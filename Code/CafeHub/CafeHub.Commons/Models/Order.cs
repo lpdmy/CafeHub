@@ -14,8 +14,8 @@ namespace CafeHub.Commons.Models
             [Key]
             public int Id { get; set; }
 
-            [Required]
-            public string CustomerId { get; set; } // ID khách hàng đặt hàng
+            
+            public string? CustomerId { get; set; } // ID khách hàng đặt hàng
 
             public string? StaffId { get; set; } // Nhân viên xử lý đơn hàng (nullable)
 

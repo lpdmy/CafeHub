@@ -1,0 +1,50 @@
+﻿@model CafeHub.Commons.Models.Order
+
+<h1 class="text-center">Order Details</h1>
+
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <h3>Order Information</h3>
+        <hr />
+        <dl class="row">
+            <dt class="col-sm-4">Order ID</dt>
+            <dd class="col-sm-8">@Model.Id</dd>
+
+            <dt class="col-sm-4">Order Date</dt>
+            <dd class="col-sm-8">@Model.OrderDate.ToString("yyyy-MM-dd HH:mm")</dd>
+
+            <dt class="col-sm-4">Total Amount</dt>
+            <dd class="col-sm-8">@Model.TotalAmount</dd>
+
+            <dt class="col-sm-4">Status</dt>
+            <dd class="col-sm-8">@Model.Status</dd>
+        </dl>
+
+        <h4>Order Items</h4>
+        <table class="table table-bordered">
+            <thead class="thead-dark">
+                <tr>
+                    <th>Product</th>
+                    <th>Quantity</th>
+                    <th>Price</th>
+                    <th>Total</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.OrderItems)
+                {
+                    <tr>
+                        <td>@item.Product.Name</td>
+                        <td>@item.Quantity</td>
+                        <td>@item.UnitPrice</td>
+                        <td>@(item.Quantity * item.UnitPrice)</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+        <div class="text-center">
+            <a asp-action="Index" class="btn btn-outline-primary">Back to Orders List</a>
+        </div>
+    </div>
+</div>
