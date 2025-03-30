@@ -39,7 +39,7 @@ namespace CafeHub.MVC.Controllers
         //}
         //admin
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> All_Salaries()
+        public async Task<IActionResult> All_Salaries(int page = 1, int pageSize = 5)
         {
             var salaries = await _salaryService.GetAllSalariesAsync();
             if(salaries.Count == 0)
@@ -47,7 +47,13 @@ namespace CafeHub.MVC.Controllers
                 return NotFound();
             }
 
-            return View(salaries);
+            int totalUsers = salaries.Count();
+            var pagedUsers = salaries.Skip((page - 1) * pageSize).Take(pageSize).ToList();
+
+            ViewBag.TotalPages = (int)Math.Ceiling((double)totalUsers / pageSize);
+            ViewBag.CurrentPage = page;
+
+            return View(pagedUsers);
         }
         //GET: 
         public async Task<IActionResult> Edit(string StaffID, int id)
