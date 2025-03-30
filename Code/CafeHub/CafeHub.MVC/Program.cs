@@ -5,6 +5,7 @@ using CafeHub.Repository.Interfaces;
 using CafeHub.Repository.Repositories;
 using CafeHub.Service.Interfaces;
 using CafeHub.Service.Services;
+using CafeHub.Services.Hubs;
 using CafeHub.Services.Interfaces;
 using CafeHub.Services.Models;
 using CafeHub.Services.Services;
@@ -43,8 +44,9 @@ builder.Services.AddScoped<IDiscountService, DiscountService>();
 builder.Services.AddScoped<IDiscountRepository, DiscountRepository>();
 builder.Services.AddScoped<IWorkShitService, WorkShiftService>();
 builder.Services.AddScoped<IWorkShiftDetailService, WorkShiftDetailService>();
+builder.Services.AddScoped<INotificationService, NotificationService>();
 
-
+builder.Services.AddSignalR();
 
 
 builder.Services.AddIdentity<User, ApplicationRole>(options => options.SignIn.RequireConfirmedAccount = false)
@@ -82,6 +84,7 @@ else
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
+app.MapHub<NotificationHub>("/notificationHub");
 
 app.UseRouting();
 
