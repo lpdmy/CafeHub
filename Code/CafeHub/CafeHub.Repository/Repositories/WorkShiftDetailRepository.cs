@@ -12,6 +12,11 @@ namespace CafeHub.Repository.Repositories
         {
             _context = context;
         }
+
+        public async Task<IEnumerable<WorkShiftDetail>> GetAllWSDetail()
+        {
+            return await GetAllAsync();
+        }
         public async Task<IEnumerable<WorkShiftDetail>> GetDetailOfWorkShift(int workShiftID)
         {
             var Info = await _context.WorkShiftDetails

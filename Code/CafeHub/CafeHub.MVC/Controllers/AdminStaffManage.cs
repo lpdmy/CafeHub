@@ -11,6 +11,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Reflection.Metadata.Ecma335;
 using System.Security.Policy;
 using System.Threading.Tasks;
+using X.PagedList.Extensions;
 
 namespace CafeHub.MVC.Controllers
 {
@@ -31,8 +32,10 @@ namespace CafeHub.MVC.Controllers
             _workShiftDetailService = workShiftDetailService;
             _workShiftService = workShiftService;
         }
-        public async Task<IActionResult> Manage_Staff()
+        public async Task<IActionResult> Manage_Staff(int page = 1, int pageSize = 5)
         {
+            
+
             var UserId = await _accountService.GetCurrentUserIdAsync();
 
             var staffs = await _userManager.GetUsersInRoleAsync("Staff");
@@ -50,10 +53,17 @@ namespace CafeHub.MVC.Controllers
                  })
                  .ToList();
 
+            int totalUsers = staffsList.Count();
+            var pagedUsers = staffsList.Skip((page - 1) * pageSize).Take(pageSize).ToList();
+
+            ViewBag.TotalPages = (int)Math.Ceiling((double)totalUsers / pageSize);
+            ViewBag.CurrentPage = page;
+
             // Gửi danh sách Staff kèm ID (dùng ViewBag nếu cần)
+
             ViewBag.StaffIds = staffs.ToDictionary(s => s.Email, s => s.Id);
 
-            return View(staffsList);
+            return View(pagedUsers);
         }
         public IActionResult CreateStaff(string returnUrl)
         {

@@ -7,6 +7,8 @@ using CafeHub.Services.Services;
 using CafeHub.Services.Interfaces;
 using CafeHub.Web.Models;
 using Microsoft.AspNetCore.Authorization;
+using X.PagedList.Extensions;
+
 namespace CafeHub.MVC.Controllers
 {
     [Authorize(Roles = "Admin")] // Customer/ Staff
@@ -25,30 +27,54 @@ namespace CafeHub.MVC.Controllers
         }
 
         [Authorize(Roles = "Admin")] // Customer/ Staff
-        public async Task<IActionResult> ManageUser()
+        public async Task<IActionResult> ManageUser(int page = 1, int pageSize = 5)
         {
-            var UserId = await _accountService.GetCurrentUserIdAsync();
             var usersList = await _userManager.Users.ToListAsync();
 
-            var users = new List<UserViewModel>();
-
-            foreach (var u in usersList)
+            var users = usersList.Select(u => new UserViewModel
             {
-                var roles = await _userManager.GetRolesAsync(u);
+                Id = u.Id,
+                Name = u.Name,
+                Email = u.Email,
+                Role = _userManager.GetRolesAsync(u).Result.FirstOrDefault() ?? "No Role",
+                IsActive = u.IsLocked,
+                CreatedAt = u.CreatedAt
+            });
 
-                users.Add(new UserViewModel
-                {
-                    Id = u.Id,
-                    Name = u.Name,
-                    Email = u.Email,
-                    Role = roles.FirstOrDefault() ?? "No Role",
-                    IsActive = u.IsLocked,
-                    CreatedAt = u.CreatedAt
-                });
-            }
-            return View(users);
+            int totalUsers = users.Count();
+            var pagedUsers = users.Skip((page - 1) * pageSize).Take(pageSize).ToList();
 
+            ViewBag.TotalPages = (int)Math.Ceiling((double)totalUsers / pageSize);
+            ViewBag.CurrentPage = page;
+
+            return View(pagedUsers);
         }
+
+
+        //public async Task<IActionResult> ManageUser(int pageIndex = 1, int pageSize = 5)
+        //{
+        //    var UserId = await _accountService.GetCurrentUserIdAsync();
+        //    var usersList = await _userManager.Users.ToListAsync();
+
+        //    var users = new List<UserViewModel>();
+
+        //    foreach (var u in usersList)
+        //    {
+        //        var roles = await _userManager.GetRolesAsync(u);
+
+        //        users.Add(new UserViewModel
+        //        {
+        //            Id = u.Id,
+        //            Name = u.Name,
+        //            Email = u.Email,
+        //            Role = roles.FirstOrDefault() ?? "No Role",
+        //            IsActive = u.IsLocked,
+        //            CreatedAt = u.CreatedAt
+        //        });
+        //    }
+        //    return View(users);
+
+        //}
         [HttpGet]
         public IActionResult CreateStaff(string returnUrl)
         {

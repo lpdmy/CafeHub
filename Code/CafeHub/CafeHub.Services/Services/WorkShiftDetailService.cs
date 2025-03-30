@@ -24,5 +24,10 @@ namespace CafeHub.Services.Services
         {
             return await _workShiftDetailRepository.AddNewDetail(ws);
         }
+
+        public async Task<IEnumerable<WorkShiftDetail>> GetAllWSDetail()
+        {
+            return await _workShiftDetailRepository.GetAllWSDetail();
+        }
     }
 }

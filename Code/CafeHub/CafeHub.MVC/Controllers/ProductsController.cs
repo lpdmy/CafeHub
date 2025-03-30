@@ -8,6 +8,7 @@ using CafeHub.Commons.Models;
 using CafeHub.Services.Interfaces;
 using CafeHub.MVC.Models;
 using Microsoft.AspNetCore.Hosting;
+using System.Drawing.Printing;
 
 namespace CafeHub.MVC.Controllers
 {
@@ -25,7 +26,7 @@ namespace CafeHub.MVC.Controllers
         }
 
         // GET: Products
-        public async Task<IActionResult> Index(string search)
+        public async Task<IActionResult> Index(string search, int page = 1, int pageSize = 5)
         {
             var products = await _productService.GetAllProductsAsync();
             var categories = await _categoryService.GetAllCategoriesAsync();
@@ -37,7 +38,14 @@ namespace CafeHub.MVC.Controllers
                                                 p.Description.Contains(search, StringComparison.OrdinalIgnoreCase))
                                    .ToList();
             }
-            return View(products);
+
+            int totalUsers = products.Count();
+            var pagedUsers = products.Skip((page - 1) * pageSize).Take(pageSize).ToList();
+
+            ViewBag.TotalPages = (int)Math.Ceiling((double)totalUsers / pageSize);
+            ViewBag.CurrentPage = page;
+
+            return View(pagedUsers);
         }
 
 

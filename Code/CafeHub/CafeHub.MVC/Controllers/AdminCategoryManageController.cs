@@ -17,7 +17,7 @@ namespace CafeHub.MVC.Controllers
         }
 
         // GET: Categories
-        public async Task<IActionResult> Index(string search)
+        public async Task<IActionResult> Index(string search, int page = 1, int pageSize = 5)
         {
             var categories = string.IsNullOrEmpty(search)
                 ? await _categoryService.GetAllCategoriesAsync()
@@ -32,7 +32,13 @@ namespace CafeHub.MVC.Controllers
                 IsActive = c.IsActive
             });
 
-            return View(categoryViewModels);
+            int totalUsers = categoryViewModels.Count();
+            var pagedUsers = categoryViewModels.Skip((page - 1) * pageSize).Take(pageSize).ToList();
+
+            ViewBag.TotalPages = (int)Math.Ceiling((double)totalUsers / pageSize);
+            ViewBag.CurrentPage = page;
+
+            return View(pagedUsers);
         }
 
 

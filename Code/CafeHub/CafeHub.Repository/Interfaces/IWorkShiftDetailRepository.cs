@@ -9,6 +9,7 @@ namespace CafeHub.Repository.Interfaces
 {
     public interface IWorkShiftDetailRepository : IGenericRepository<WorkShiftDetail>
     {
+        Task<IEnumerable<WorkShiftDetail>> GetAllWSDetail();
         Task<IEnumerable<WorkShiftDetail>> GetDetailOfWorkShift(int workShiftID);
         Task<bool> AddNewDetail(WorkShiftDetail ws);
     }
