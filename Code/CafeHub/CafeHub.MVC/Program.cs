@@ -54,7 +54,10 @@ builder.Services.AddScoped<IOrderService, OrderService>();
 
 
 builder.Services.AddSignalR();
-
+builder.Logging.ClearProviders();
+builder.Logging.AddConsole(); // Log ra console
+builder.Logging.AddDebug();   // Log vào Debug Window
+builder.Services.AddHostedService<WorkShiftBackgroundService>();
 
 
 builder.Services.AddIdentity<User, ApplicationRole>(options => options.SignIn.RequireConfirmedAccount = false)

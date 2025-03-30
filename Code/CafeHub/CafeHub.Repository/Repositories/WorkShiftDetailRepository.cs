@@ -27,15 +27,27 @@ namespace CafeHub.Repository.Repositories
 
         public async Task<bool> AddNewDetail(WorkShiftDetail ws)
         {
-            var checkId = ws.WorkShiftId;
+            try
+            {
+                var existingRecord = await _context.WorkShiftDetails
+                    .AnyAsync(wd => wd.StaffId == ws.StaffId && wd.WorkShiftId == ws.WorkShiftId);
 
-            await UpdateAsync(ws);
+                if (existingRecord)
+                {
+                    return false; 
+                }
 
-            var check = await GetDetailOfWorkShift(checkId);
+                await _context.WorkShiftDetails.AddAsync(ws);
+                await _context.SaveChangesAsync();
 
-            if (check == null) { return false; }
-
-            return true;
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Lỗi khi thêm WorkShiftDetail: {ex.Message}");
+                return false;
+            }
         }
+
     }
 }

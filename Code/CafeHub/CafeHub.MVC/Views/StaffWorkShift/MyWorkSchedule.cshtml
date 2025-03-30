@@ -1,0 +1,66 @@
+﻿@{
+    ViewData["Title"] = "My Work Schedule";
+    var shifts = ViewBag.WorkShifts as List<CafeHub.Commons.Models.WorkShift>;
+    var currentWeekStart = (DateTime)ViewBag.CurrentWeekStart;
+    var nextWeekStart = currentWeekStart.AddDays(7);
+    var prevWeekStart = currentWeekStart.AddDays(-7);
+    var currentStaffId = ViewBag.CurrentStaffId; // Lấy ID nhân viên hiện tại
+}
+
+<style>
+    .shift-row {
+        height: 175px;
+    }
+</style>
+
+<h2 class="text-center mt-3">📅 My Weekly Work Schedule</h2>
+
+<!-- Nút chuyển tuần -->
+<div class="text-center mb-3">
+    <a class="btn-default"
+       href="@Url.Action("MyWorkSchedule", new { weekStart = prevWeekStart.ToString("yyyy-MM-dd") })">⬅ Previous Week</a>
+
+    <span class="mx-3 fw-bold">@currentWeekStart.ToString("dd/MM/yyyy") - @currentWeekStart.AddDays(6).ToString("dd/MM/yyyy")</span>
+
+    <a class="btn-default"
+       href="@Url.Action("MyWorkSchedule", new { weekStart = nextWeekStart.ToString("yyyy-MM-dd") })">Next Week ➡</a>
+</div>
+
+<div class="container">
+    <table class="table table-bordered table-hover mt-3">
+        <thead class="table-dark text-center">
+            <tr>
+                <th>Shift</th>
+                @foreach (var group in shifts.GroupBy(s => s.ShiftDate.Date).OrderBy(g => g.Key))
+                {
+                    <th>@group.Key.ToString("ddd - dd/MM")</th>
+                }
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var shiftType in new[] { "Morning Shift", "Afternoon Shift" })
+            {
+                <tr class="text-center shift-row">
+                    <td class="fw-bold">@shiftType</td>
+                    @foreach (var group in shifts.GroupBy(s => s.ShiftDate.Date).OrderBy(g => g.Key))
+                    {
+                        var shift = group.FirstOrDefault(s => s.ShiftName == shiftType);
+                        var isCurrentUserInShift = shift?.WorkShiftDetails?.Any(d => d.Staff.Id == currentStaffId) ?? false;
+
+                        <td class="@(isCurrentUserInShift ? "table-success fw-bold" : "")">
+                            @if (shift != null)
+                            {
+                                <div>@shift.StartTime.ToString("HH:mm") - @shift.EndTime.ToString("HH:mm")</div>
+                                <small>@shift.Description</small>
+                            }
+                            else
+                            {
+                                <span class="text-muted">No Shift</span>
+                            }
+                        </td>
+                    }
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

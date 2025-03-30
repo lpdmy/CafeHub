@@ -1,10 +1,15 @@
-﻿using CafeHub.Commons.Models;
+﻿using CafeHub.Commons;
+using CafeHub.Commons.Models;
 using CafeHub.MVC.Models;
 using CafeHub.Services.Interfaces;
 using CafeHub.Services.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using OfficeOpenXml;
+using System.ComponentModel;
+using System.Globalization;
 
 namespace CafeHub.MVC.Controllers
 {
@@ -13,12 +18,52 @@ namespace CafeHub.MVC.Controllers
         private readonly IWorkShitService _workShitService;
         private readonly UserManager<User> _userManager;
         private readonly IWorkShiftDetailService _workShiftDetailService;
-        public AdminWorkShiftMangeController(IWorkShitService workShitService, UserManager<User> userManager, IWorkShiftDetailService workShiftDetailService)
+        private readonly ApplicationDbContext _dbContext;
+        public AdminWorkShiftMangeController(IWorkShitService workShitService, UserManager<User> userManager, IWorkShiftDetailService workShiftDetailService, ApplicationDbContext dbContext)
         {
             _workShitService = workShitService;
             _userManager = userManager;
             _workShiftDetailService = workShiftDetailService;
+            _dbContext = dbContext;
         }
+        public IActionResult Index(string? weekStart)
+        {
+            DateTime currentWeekStart;
+
+            if (string.IsNullOrEmpty(weekStart))
+            {
+                // Mặc định lấy ngày đầu tiên của tuần hiện tại (Chủ Nhật)
+                currentWeekStart = GetStartOfWeek(DateTime.Now);
+            }
+            else
+            {
+                // Nếu có tham số weekStart, chuyển về DateTime
+                currentWeekStart = DateTime.ParseExact(weekStart, "yyyy-MM-dd", CultureInfo.InvariantCulture);
+            }
+
+            // Lấy danh sách ca làm việc của tuần này
+            DateTime weekEnd = currentWeekStart.AddDays(6);
+            var workShifts = _dbContext.WorkShifts
+                .Where(s => s.ShiftDate >= currentWeekStart && s.ShiftDate <= weekEnd)
+                .OrderBy(s => s.ShiftDate)
+                .Include(s => s.WorkShiftDetails)
+                .ThenInclude(s => s.Staff)
+                .ToList();
+
+            ViewBag.WorkShifts = workShifts;
+            ViewBag.CurrentWeekStart = currentWeekStart;
+
+            return View();
+        }
+
+        // Hàm lấy ngày đầu tuần (Chủ Nhật)
+        private static DateTime GetStartOfWeek(DateTime date)
+        {
+            int diff = (7 + (date.DayOfWeek - DayOfWeek.Sunday)) % 7; 
+            return date.AddDays(-diff).Date;
+        }
+
+
 
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> AllWorkShift()
@@ -125,28 +170,28 @@ namespace CafeHub.MVC.Controllers
 
         public async Task<IActionResult> WSDetail(int id)
         {
-            if (id == null) return NotFound();
+            if (id == 0) return NotFound();
 
-            var GetDetail = await _workShiftDetailService.GetDetailOfWorkShift(id);
+            var getDetail = await _workShiftDetailService.GetDetailOfWorkShift(id);
 
-            if (GetDetail == null) return NotFound();
+            if (getDetail == null || !getDetail.Any())
+                return RedirectToAction("CreateWS", "AdminStaffManage");
 
-            var model = GetDetail.Select(n => new WorkShiftDetailViewModel
+            // Lấy danh sách Staff theo danh sách StaffIds
+            var allStaffs = await _userManager.GetUsersInRoleAsync("Staff");
+            var staffDict = allStaffs.OfType<Staff>().ToDictionary(s => s.Id, s => s.Name);
+
+            var model = getDetail.Select(n => new WorkShiftDetailViewModel
             {
                 Id = n.Id,
-                StaffId = n.StaffId,
                 WorkShiftId = n.WorkShiftId,
                 AttendanceStatus = n.AttendanceStatus,
-                CheckInTime = n.CheckInTime,
-                CheckOutTime = n.CheckOutTime,
-                OvertimeHours = n.OvertimeHours,
-                HoursContributed = n.HoursContributed,
                 Notes = n.Notes,
 
-                StaffName = n.Staff?.Name ?? "Unknown",
                 WorkShiftName = n.WorkShift?.ShiftName ?? "Unknown",
+                StaffId = n.StaffId
+            }).ToList();
 
-            });
             return View(model);
         }
 
@@ -180,5 +225,223 @@ namespace CafeHub.MVC.Controllers
             }
             return RedirectToAction(nameof(AllWorkShift));
         }
+
+        public async Task<IActionResult> WorkShiftDetail(int workshiftid)
+        {
+            var workShift = await _dbContext.WorkShifts
+                .Where(ws => ws.Id == workshiftid)
+                .Include(ws => ws.WorkShiftDetails)
+                    .ThenInclude(wd => wd.Staff) // Load thông tin nhân viên
+                .FirstOrDefaultAsync();
+
+            if (workShift == null)
+            {
+                return NotFound("Không tìm thấy ca làm việc.");
+            }
+
+            return View(workShift);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddStaffToWorkShift(int workshiftid, string staffId)
+        {
+            var workShift = await _dbContext.WorkShifts
+                .Include(ws => ws.WorkShiftDetails)
+                .FirstOrDefaultAsync(ws => ws.Id == workshiftid);
+
+            if (workShift == null)
+            {
+                return NotFound("Không tìm thấy ca làm việc.");
+            }
+
+            // Kiểm tra nếu nhân viên đã có trong ca làm việc
+            bool staffExists = workShift.WorkShiftDetails.Any(wd => wd.StaffId == staffId);
+            if (staffExists)
+            {
+                TempData["Message"] = "Nhân viên đã có trong ca làm việc!";
+                return RedirectToAction("WorkShiftDetail", new { workshiftid });
+            }
+
+            // Tạo WorkShiftDetail mới
+            var newWorkShiftDetail = new WorkShiftDetail
+            {
+                StaffId = staffId,
+                WorkShiftId = workshiftid,
+                AttendanceStatus = "Present",
+                Notes = ""
+            };
+
+            _dbContext.WorkShiftDetails.Add(newWorkShiftDetail);
+            await _dbContext.SaveChangesAsync();
+
+            TempData["Message"] = "Nhân viên đã được thêm vào ca làm việc.";
+            return RedirectToAction("WorkShiftDetail", new { workshiftid });
+        }
+
+        public IActionResult ExportWorkShifts(string weekStart)
+        {
+            ExcelPackage.License.SetNonCommercialPersonal("CafeHub");
+
+            DateTime startDate = DateTime.Parse(weekStart);
+            DateTime endDate = startDate.AddDays(6);
+
+            // Fetch shifts from the database
+            var shifts = GetWorkShiftsForWeek(startDate, endDate);
+
+            using (var package = new ExcelPackage())
+            {
+                var worksheet = package.Workbook.Worksheets.Add("WorkShifts");
+
+                // Headers
+                worksheet.Cells[1, 1].Value = "Shift Date";
+                worksheet.Cells[1, 2].Value = "Shift Name";
+                worksheet.Cells[1, 3].Value = "Start Time";
+                worksheet.Cells[1, 4].Value = "End Time";
+                worksheet.Cells[1, 5].Value = "Description";
+                worksheet.Cells[1, 6].Value = "Staff Name";
+                worksheet.Cells[1, 7].Value = "Attendance Status";
+
+                int row = 2;
+
+                foreach (var shift in shifts)
+                {
+                    if (shift.WorkShiftDetails != null && shift.WorkShiftDetails.Any())
+                    {
+                        foreach (var detail in shift.WorkShiftDetails)
+                        {
+                            worksheet.Cells[row, 1].Value = shift.ShiftDate.ToString("yyyy-MM-dd");
+                            worksheet.Cells[row, 2].Value = shift.ShiftName;
+                            worksheet.Cells[row, 3].Value = shift.StartTime.ToString("HH:mm");
+                            worksheet.Cells[row, 4].Value = shift.EndTime.ToString("HH:mm");
+                            worksheet.Cells[row, 5].Value = shift.Description;
+                            worksheet.Cells[row, 6].Value = detail.Staff?.Name ?? "N/A";
+                            worksheet.Cells[row, 7].Value = detail.AttendanceStatus;
+                            row++;
+                        }
+                    }
+                    else
+                    {
+                        worksheet.Cells[row, 1].Value = shift.ShiftDate.ToString("yyyy-MM-dd");
+                        worksheet.Cells[row, 2].Value = shift.ShiftName;
+                        worksheet.Cells[row, 3].Value = shift.StartTime.ToString("HH:mm");
+                        worksheet.Cells[row, 4].Value = shift.EndTime.ToString("HH:mm");
+                        worksheet.Cells[row, 5].Value = shift.Description;
+                        worksheet.Cells[row, 6].Value = "No staff assigned";
+                        worksheet.Cells[row, 7].Value = "-";
+                        row++;
+                    }
+                }
+
+                worksheet.Cells.AutoFitColumns();
+
+                var stream = new MemoryStream();
+                package.SaveAs(stream);
+                stream.Position = 0;
+
+                string fileName = $"WorkShifts_{startDate:yyyyMMdd}.xlsx";
+                return File(stream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", fileName);
+            }
+        }
+
+        private List<WorkShift> GetWorkShiftsForWeek(DateTime startDate, DateTime endDate)
+        {
+            return _dbContext.WorkShifts
+                .Include(ws => ws.WorkShiftDetails)
+                    .ThenInclude(wsd => wsd.Staff)
+                .Where(ws => ws.ShiftDate >= startDate && ws.ShiftDate <= endDate)
+                .OrderBy(ws => ws.ShiftDate)
+                .ToList();
+        }
+
+        [HttpPost]
+        public IActionResult ImportWorkShifts(IFormFile file)
+        {
+            if (file == null || file.Length == 0)
+            {
+                TempData["Error"] = "Please upload a valid Excel file.";
+                return RedirectToAction("Index");
+            }
+
+            try
+            {
+                ExcelPackage.License.SetNonCommercialPersonal("CafeHub");
+
+                using (var stream = new MemoryStream())
+                {
+                    file.CopyTo(stream);
+                    using (var package = new ExcelPackage(stream))
+                    {
+                        var worksheet = package.Workbook.Worksheets[0]; // Read first sheet
+
+                        int rowCount = worksheet.Dimension.Rows;
+
+                        var workShifts = new List<WorkShift>();
+
+                        for (int row = 2; row <= rowCount; row++) // Start from row 2 (skip headers)
+                        {
+                            DateTime shiftDate = DateTime.Parse(worksheet.Cells[row, 1].Value.ToString());
+                            string shiftName = worksheet.Cells[row, 2].Value.ToString();
+                            TimeSpan startTime = TimeSpan.Parse(worksheet.Cells[row, 3].Value.ToString());
+                            TimeSpan endTime = TimeSpan.Parse(worksheet.Cells[row, 4].Value.ToString());
+                            string description = worksheet.Cells[row, 5].Value?.ToString();
+                            string staffName = worksheet.Cells[row, 6].Value?.ToString();
+                            string attendanceStatus = worksheet.Cells[row, 7].Value?.ToString();
+
+                            // Find or create shift
+                            var existingShift = _dbContext.WorkShifts.Include(x => x.WorkShiftDetails).ThenInclude(x => x.Staff)
+                                .FirstOrDefault(s => s.ShiftDate == shiftDate && s.ShiftName == shiftName);
+
+                            //if (existingShift == null)
+                            //{
+                            //    existingShift = new WorkShift
+                            //    {
+                            //        ShiftDate = shiftDate,
+                            //        ShiftName = shiftName,
+                            //        StartTime = startTime,
+                            //        EndTime = endTime,
+                            //        Description = description,
+                            //        WorkShiftDetails = new List<WorkShiftDetail>()
+                            //    };
+                            //    _context.WorkShifts.Add(existingShift);
+                            //}
+
+                            // Add staff details if applicable
+                            if (!string.IsNullOrEmpty(staffName))
+                            {
+                                var staff = _dbContext.Staffs.FirstOrDefault(s => s.Name == staffName);
+                                if (staff != null)
+                                {
+                                    var existStaff = existingShift.WorkShiftDetails.FirstOrDefault(x => x.Staff.Name.Equals(staffName));
+                                    if (existStaff == null)
+                                    {
+                                        existingShift.WorkShiftDetails.Add(new WorkShiftDetail
+                                        {
+                                            StaffId = staff.Id,
+                                            AttendanceStatus = attendanceStatus
+                                        });
+                                    }
+                                    else if (existStaff.AttendanceStatus != attendanceStatus) {
+                                        existStaff.AttendanceStatus = attendanceStatus;
+                                        _dbContext.Update(existStaff);
+                                    }
+                                   
+                                }
+                            }
+                        }
+
+                        _dbContext.SaveChanges();
+                    }
+                }
+
+                TempData["Success"] = "Work shifts imported successfully!";
+            }
+            catch (Exception ex)
+            {
+                TempData["Error"] = $"Error processing file: {ex.Message}";
+            }
+
+            return RedirectToAction("Index");
+        }
     }
 }
+

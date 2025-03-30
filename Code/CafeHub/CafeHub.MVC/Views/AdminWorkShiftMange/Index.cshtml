@@ -1,0 +1,142 @@
+﻿@{
+    ViewData["Title"] = "Work Shift Table";
+    var shifts = ViewBag.WorkShifts as List<CafeHub.Commons.Models.WorkShift>;
+    var currentWeekStart = (DateTime)ViewBag.CurrentWeekStart;
+    var nextWeekStart = currentWeekStart.AddDays(7);
+    var prevWeekStart = currentWeekStart.AddDays(-7);
+
+    var groupedShifts = shifts.GroupBy(s => s.ShiftDate.Date)
+                              .OrderBy(g => g.Key)
+                              .ToList();
+}
+<style>
+    .table td {
+        min-height: 80px; /* Đặt chiều cao tối thiểu */
+        vertical-align: middle; /* Căn giữa nội dung theo chiều dọc */
+    }
+
+    .table th {
+        text-align: center;
+    }
+
+    .shift-row {
+        height: 175px;
+    }
+
+    .staff-list {
+        font-size: 0.9em;
+        color: #333;
+        margin-top: 5px;
+    }
+
+    .staff-list span {
+        display: block;
+    }
+</style>
+
+<h2 class="text-center mt-3">📅 Weekly Work Shift Schedule</h2>
+
+<div class="text-center mb-3">
+    <a class="btn-default" href="@Url.Action("Index", new { weekStart = prevWeekStart.ToString("yyyy-MM-dd") })" class="btn btn-outline-primary">⬅ Previous Week</a>
+    <span class="mx-3 fw-bold">@currentWeekStart.ToString("dd/MM/yyyy") - @currentWeekStart.AddDays(6).ToString("dd/MM/yyyy")</span>
+    <a class="btn-default" href="@Url.Action("Index", new { weekStart = nextWeekStart.ToString("yyyy-MM-dd") })" class="btn btn-outline-primary">Next Week ➡</a>
+</div>
+<div class="d-flex justify-content-center mb-3 gap-2">
+    <a class="btn btn-sm btn-success" href="@Url.Action("ExportWorkShifts", "AdminWorkShiftMange", new { weekStart = currentWeekStart.ToString("yyyy-MM-dd") })">
+        📥 Download Excel
+    </a>
+
+    <form method="post" enctype="multipart/form-data" asp-action="ImportWorkShifts" asp-controller="AdminWorkShiftMange" class="d-flex align-items-center">
+        <input type="file" name="file" class="form-control form-control-sm me-2" required />
+        <button type="submit" class="btn btn-sm btn-primary">Upload</button>
+    </form>
+</div>
+
+<div class="container">
+    <table class="table table-bordered table-hover mt-3">
+        <thead class="table-dark text-center">
+            <tr>
+                <th>Shift</th>
+                @foreach (var group in groupedShifts)
+                {
+                    <th>@group.Key.ToString("ddd - dd/MM")</th>
+                }
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Morning Shift Row -->
+            <tr class="text-center shift-row">
+                <td class="table-primary fw-bold">Morning Shift</td>
+                @foreach (var group in groupedShifts)
+                {
+                    var morningShift = group.FirstOrDefault(s => s.ShiftName == "Morning Shift");
+                    <td>
+                        @if (morningShift != null)
+                        {
+                            <a href="@Url.Action("WorkShiftDetail", "AdminWorkShiftMange", new { workshiftid = morningShift.Id })">
+                                <div>@morningShift.StartTime.ToString("HH:mm") - @morningShift.EndTime.ToString("HH:mm")</div>
+                                <small>@morningShift.Description</small>
+                            </a>
+
+                            <!-- Hiển thị danh sách nhân viên -->
+                            <div class="staff-list">
+                                @if (morningShift.WorkShiftDetails != null && morningShift.WorkShiftDetails.Any())
+                                {
+                                    foreach (var detail in morningShift.WorkShiftDetails)
+                                    {
+                                        <span>👤 @detail.Staff?.Name (@detail.AttendanceStatus)</span>
+                                    }
+                                }
+                                else
+                                {
+                                    <span class="text-muted">No staff assigned</span>
+                                }
+                            </div>
+                        }
+                        else
+                        {
+                            <span class="text-muted">No Shift</span>
+                        }
+                    </td>
+                }
+            </tr>
+
+            <!-- Afternoon Shift Row -->
+            <tr class="text-center shift-row">
+                <td class="table-warning fw-bold">Afternoon Shift</td>
+                @foreach (var group in groupedShifts)
+                {
+                    var afternoonShift = group.FirstOrDefault(s => s.ShiftName == "Afternoon Shift");
+                    <td>
+                        @if (afternoonShift != null)
+                        {
+                            <a href="@Url.Action("WorkShiftDetail", "AdminWorkShiftMange", new { workshiftid = afternoonShift.Id })">
+                                <div>@afternoonShift.StartTime.ToString("HH:mm") - @afternoonShift.EndTime.ToString("HH:mm")</div>
+                                <small>@afternoonShift.Description</small>
+                            </a>
+
+                            <!-- Hiển thị danh sách nhân viên -->
+                            <div class="staff-list">
+                                @if (afternoonShift.WorkShiftDetails != null && afternoonShift.WorkShiftDetails.Any())
+                                {
+                                    foreach (var detail in afternoonShift.WorkShiftDetails)
+                                    {
+                                        <span>👤 @detail.Staff?.Name (@detail.AttendanceStatus)</span>
+                                    }
+                                }
+                                else
+                                {
+                                    <span class="text-muted">No staff assigned</span>
+                                }
+                            </div>
+                        }
+                        else
+                        {
+                            <span class="text-muted">No Shift</span>
+                        }
+                    </td>
+                }
+            </tr>
+        </tbody>
+    </table>
+</div>

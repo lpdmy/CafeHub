@@ -1,16 +1,12 @@
 ﻿using CafeHub.Commons.Models;
 using CafeHub.MVC.Models;
 using CafeHub.Services.Interfaces;
-using CafeHub.Services.Services;
 using CafeHub.Web.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using System.Reflection.Metadata.Ecma335;
-using System.Security.Policy;
-using System.Threading.Tasks;
 
 namespace CafeHub.MVC.Controllers
 {
@@ -183,31 +179,31 @@ namespace CafeHub.MVC.Controllers
             }
             return View();
         }
-        public async Task<IActionResult> CreateWS(string id)
+        public async Task<IActionResult> CreateWS(int id)
         {
-            var dataWS = await _workShiftService.GetAllWorkShift();
-            var StaffID = id;
-            if (StaffID == null)
+            var workShift = await _workShiftService.GetWorkShiftById(id);
+
+            if (workShift == null)
             {
-                var staffs = await _userManager.GetUsersInRoleAsync("Staff");
-
-                var staffsList = staffs
-                     .OfType<Staff>().ToList();
-
-                ViewBag.StaffList = staffsList.Select(st => new SelectListItem
-                {
-                    Value = st.Id.ToString(),
-                    Text = st.Name,
-                });
+                return NotFound("Không tìm thấy ca làm việc.");
             }
-            ViewBag.StaffId = id;
 
-            ViewBag.WorkShifts = dataWS.Select(ws => new SelectListItem
+            // Lấy danh sách nhân viên chưa có trong ca làm việc
+            var allStaffs = await _userManager.GetUsersInRoleAsync("Staff");
+            var assignedStaffIds = workShift.WorkShiftDetails.Select(wd => wd.StaffId).ToList();
+
+            var availableStaffs = allStaffs
+                .OfType<Staff>()
+                .Where(st => !assignedStaffIds.Contains(st.Id))
+                .ToList();
+
+            ViewBag.StaffList = availableStaffs.Select(st => new SelectListItem
             {
-                Value = ws.Id.ToString(),
-                Text = ws.ShiftName
-            }).ToList();
+                Value = st.Id.ToString(),
+                Text = st.Name
+            });
 
+            ViewBag.WorkShiftId = workShift.Id;
             return View();
         }
         [HttpPost]
@@ -217,14 +213,9 @@ namespace CafeHub.MVC.Controllers
 
             var shift = new WorkShiftDetail
             {
-                Id = model.Id,
                 StaffId = model.StaffId,
                 WorkShiftId = model.WorkShiftId,
                 AttendanceStatus = model.AttendanceStatus,
-                CheckInTime = model.CheckInTime,
-                CheckOutTime = model.CheckOutTime,
-                OvertimeHours = model.OvertimeHours,
-                HoursContributed = model.HoursContributed,
             };
 
             var success = await _workShiftDetailService.AddNewDetail(shift);
@@ -235,7 +226,7 @@ namespace CafeHub.MVC.Controllers
                 return View(model);
             }
 
-            return RedirectToAction(nameof(Manage_Staff));
+            return RedirectToAction("WorkShiftDetail", "AdminWorkShiftMange", new { workshiftid = model.WorkShiftId});
         }
     }
 }
