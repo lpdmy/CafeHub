@@ -21,7 +21,7 @@ namespace CafeHub.MVC.Models
         [Required]
         public decimal TotalAmount { get; set; }
 
-       
+
         public Payment? Payment { get; set; }
     }
 }
