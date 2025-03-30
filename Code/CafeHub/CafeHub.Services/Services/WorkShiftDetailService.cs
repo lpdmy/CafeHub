@@ -16,6 +16,10 @@ namespace CafeHub.Services.Services
         {
             _workShiftDetailRepository = workShiftDetailRepository;
         }
+        public async Task<IEnumerable<WorkShiftDetail>> GetAllWSDetail()
+        {
+            return await _workShiftDetailRepository.GetAllWSDetail();
+        }
         public async Task<IEnumerable<WorkShiftDetail>> GetDetailOfWorkShift(int workShiftID)
         {
             return await _workShiftDetailRepository.GetDetailOfWorkShift(workShiftID);

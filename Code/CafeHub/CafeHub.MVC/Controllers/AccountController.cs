@@ -41,6 +41,7 @@ namespace CafeHub.MVC.Controllers
                 UserName = model.Email,
                 Email = model.Email,
                 FullName = model.FullName,
+                Name = model.FullName,
                 PhoneNumber = model.Phone,
                 DateOfBirth = model.DateOfBirth,
                 Gender = model.Gender,

@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.Blazor;
 using OfficeOpenXml;
 using System.ComponentModel;
 using System.Globalization;
@@ -66,10 +67,11 @@ namespace CafeHub.MVC.Controllers
 
 
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> AllWorkShift()
+        public async Task<IActionResult> AllWorkShift(int page = 1, int pageSize = 5)
         {
             var allWS = await _workShitService.GetAllWorkShift();
-
+            bool noDetails = TempData["NoWSDetail"] as bool? ?? false;
+            if (allWS == null) return NotFound();
             var model = allWS.Select(w => new WorkShiftViewModel
             {
                 Id = w.Id,
@@ -79,7 +81,14 @@ namespace CafeHub.MVC.Controllers
                 ShiftDate = w.ShiftDate,
                 Description = w.Description,
             }).ToList();
-            return View(model);
+            int totalUsers = model.Count();
+            var pagedUsers = model.Skip((page - 1) * pageSize).Take(pageSize).ToList();
+
+            ViewBag.TotalPages = (int)Math.Ceiling((double)totalUsers / pageSize);
+            ViewBag.CurrentPage = page;
+
+            ViewBag.NoWSDetail = noDetails;
+            return View(pagedUsers);
         }
         public IActionResult Create()
         {
@@ -116,6 +125,7 @@ namespace CafeHub.MVC.Controllers
                 ModelState.AddModelError("", "Không thể tạo ca làm việc. Vui lòng thử lại!");
                 return View(model);
             }
+            /*
             var detailShift = new WorkShiftDetail
             {
                 WorkShiftId = model.Id,
@@ -123,7 +133,7 @@ namespace CafeHub.MVC.Controllers
             var AddSuccesss = await _workShiftDetailService.AddNewDetail(detailShift);
 
             if (!AddSuccesss) return View(model);
-
+            */
             return Redirect("AllWorkShift");
         }
 
@@ -168,15 +178,25 @@ namespace CafeHub.MVC.Controllers
             return RedirectToAction(nameof(AllWorkShift));
         }
 
-        public async Task<IActionResult> WSDetail(int id)
+        public async Task<IActionResult> WSDetail(int id, int page = 1, int pageSize = 5)
         {
+            var allWSDetail = await _workShiftDetailService.GetAllWSDetail();
+
+            if (!allWSDetail.Any())
+            {
+                TempData["NoWSDetail"] = true; // Sử dụng TempData để lưu trạng thái thông báo
+                return RedirectToAction(nameof(AllWorkShift));
+            }
+
             if (id == 0) return NotFound();
 
             var getDetail = await _workShiftDetailService.GetDetailOfWorkShift(id);
 
             if (getDetail == null || !getDetail.Any())
+            {
+                TempData["NoWSDetail"] = true;
                 return RedirectToAction("CreateWS", "AdminStaffManage");
-
+            }
             // Lấy danh sách Staff theo danh sách StaffIds
             var allStaffs = await _userManager.GetUsersInRoleAsync("Staff");
             var staffDict = allStaffs.OfType<Staff>().ToDictionary(s => s.Id, s => s.Name);
@@ -192,7 +212,13 @@ namespace CafeHub.MVC.Controllers
                 StaffId = n.StaffId
             }).ToList();
 
-            return View(model);
+            int totalUsers = model.Count();
+            var pagedUsers = model.Skip((page - 1) * pageSize).Take(pageSize).ToList();
+
+            ViewBag.TotalPages = (int)Math.Ceiling((double)totalUsers / pageSize);
+            ViewBag.CurrentPage = page;
+
+            return View(pagedUsers);
         }
 
         public async Task<IActionResult> Delete(int id)

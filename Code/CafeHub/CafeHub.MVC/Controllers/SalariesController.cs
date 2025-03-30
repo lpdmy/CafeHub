@@ -7,6 +7,8 @@ using CafeHub.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using System.Globalization;
+using CafeHub.Commons;
 
 namespace CafeHub.MVC.Controllers
 {
@@ -15,39 +17,54 @@ namespace CafeHub.MVC.Controllers
         private readonly UserManager<User> _userManager;
         private readonly ISalaryService _salaryService;
         private readonly IAccountService _accountService;
-        public SalariesController(UserManager<User> userManager,ISalaryService salaryService, IAccountService accountService)
+        private readonly ApplicationDbContext _context;
+        private readonly IWorkShiftDetailService _workShiftDetailService;
+        public SalariesController(UserManager<User> userManager,ISalaryService salaryService, IAccountService accountService, ApplicationDbContext context,
+            IWorkShiftDetailService workShiftDetailService)
         {
             _userManager = userManager;
             _salaryService = salaryService;
             _accountService = accountService;
+            _context = context;
+            _workShiftDetailService = workShiftDetailService;
         }
 
-        //public async Task<IActionResult> Index(int? staffId)
-        //{
-        //    var salaries;
 
-        //    if (staffId.HasValue)
-        //    {
-        //        salaries = await _salaryService.GetSalariesStaffByIdAsync(staffId.Value);
-        //    }
-        //    else
-        //    {
-        //        salaries = await _salaryService.GetAllSalariesAsync();
-        //    }
-
-        //    return View(salaries);
-        //}
         //admin
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> All_Salaries()
+        public async Task<IActionResult> All_Salaries(int page = 1, int pageSize = 5)
         {
             var salaries = await _salaryService.GetAllSalariesAsync();
-            if(salaries.Count == 0)
+            if (salaries.Count == 0)
             {
                 return NotFound();
             }
+            // Lấy ngày hiện tại
+            DateTime currentDate = DateTime.Now;
 
-            return View(salaries);
+            // Kiểm tra và cập nhật PayDate của các salaries
+            foreach (var salary in salaries)
+            {
+                if (salary.PayDate < currentDate)
+                {
+                    salary.PayDate = salary.PayDate.AddMonths(1);
+                    // Cập nhật MonthYear để phù hợp với PayDate mới
+                    salary.MonthYear = salary.PayDate.ToString("yyyy-MM");
+
+                    // Cập nhật từng salary riêng lẻ
+                    await _salaryService.ModifySalaryAsync(salary);  // Giả sử service có phương thức UpdateAsync
+                }
+            }
+
+
+
+            int totalUsers = salaries.Count();
+            var pagedUsers = salaries.Skip((page - 1) * pageSize).Take(pageSize).ToList();
+
+            ViewBag.TotalPages = (int)Math.Ceiling((double)totalUsers / pageSize);
+            ViewBag.CurrentPage = page;
+
+            return View(pagedUsers);
         }
         //GET: 
         public async Task<IActionResult> Edit(string StaffID, int id)
@@ -113,6 +130,7 @@ namespace CafeHub.MVC.Controllers
                 return View(salary);
             }
             return RedirectToAction(nameof(All_Salaries));
-        }        
+        }
+        
     }
 }
