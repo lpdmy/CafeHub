@@ -125,11 +125,9 @@ namespace CafeHub.MVC.Controllers
                 }
 
                 DateTime hireDate = staff.HireDate;
-                DateTime nextMonth = hireDate.AddMonths(1);
 
                 // Lấy ngày cuối cùng của tháng mới
-                int lastDay = DateTime.DaysInMonth(nextMonth.Year, nextMonth.Month);
-                salaryOfStaff.PayDate = new DateTime(nextMonth.Year, nextMonth.Month, lastDay);
+                salaryOfStaff.PayDate = hireDate.AddDays(30);
 
                 salaryOfStaff.MonthYear = salaryOfStaff.PayDate.ToString("yyyy-MM");
 

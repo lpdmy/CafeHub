@@ -57,26 +57,40 @@ namespace CafeHub.MVC.Controllers
                 if(staffShifts != null)
                 {
                     //lấy data satff (Hireday)
-                    var staffInfo = await _accountService.GetUserByIdAsync(salary.StaffId);
 
+                    //var staffs = await _userManager.GetUsersInRoleAsync("Staff");
+
+                    //var staffsList = staffs
+                       //.OfType<Staff>
+                        //.FirstOrDefaultAsync(u => u.Id == salary.StaffId);
+
+                    //var staffInfo = await _accountService.GetUserByIdAsync(salary.StaffId);
+
+                    var staff = await _userManager.Users
+                    .OfType<Staff>() // Lọc User chỉ lấy Staff
+                    .FirstOrDefaultAsync(u => u.Id == salary.StaffId);
                     //var staff = staffInfo as Staff;
-                    var staff = new Staff
-                    {
-                        HireDate = staffInfo.CreatedAt,
-                    };
+                    //var staff = new Staff
+                    //{
+                    //    HireDate = staffInfo.CreatedAt,
+                    //};
 
-                    var StartDate = staff.HireDate.Date; //ngày thuê ví dụ 15/1/2025
+                    
+
+                   
+
+                    var StartDate = staff.HireDate.Date; //ngày thuê ví dụ 1/4/2025
 
 
-                    DateTime nextMonth = staff.HireDate.AddMonths(1);
+                    DateTime hireDate = staff.HireDate;
 
-                    // Lấy ngày cuối cùng của tháng mới
-                    int lastDay = DateTime.DaysInMonth(nextMonth.Year, nextMonth.Month);
+                    // Cộng đúng 30 ngày vào HireDate
+                    DateTime payDate = hireDate.AddDays(30);
 
-                    // Đảm bảo ngày mới luôn là ngày cuối tháng
-                    staff.HireDate = new DateTime(nextMonth.Year, nextMonth.Month, lastDay); //khiến ngày thuê = ngày trả lương đầu tiên
+                    // Gán giá trị mới cho PayDate
 
-                    var CheckHdateVSPdate = staff.HireDate; // sau khi khien hdate = pdate dau tien => 28/2/2025
+                    var CheckHdateVSPdate = payDate; // Check giá trị
+                     // sau khi khien hdate = pdate dau tien => 28/2/2025
 
                     var MonthShift = new List<WorkShiftDetail>();
 
@@ -87,16 +101,10 @@ namespace CafeHub.MVC.Controllers
                     }
                     else
                     {
-                        // Trừ đi 1 tháng
-                        DateTime prevM = salary.PayDate.AddMonths(-1); // salary.PayDate = 31/3
+                        // Trừ đúng 30 ngày từ PayDate
+                        salary.PayDate = salary.PayDate.AddDays(-30);
 
-                        // Lấy ngày cuối cùng của tháng trước đó
-                        int lDayPrev = DateTime.DaysInMonth(prevM.Year, prevM.Month);
-
-                        // Đảm bảo ngày luôn là cuối tháng
-                        salary.PayDate = new DateTime(prevM.Year, prevM.Month, lDayPrev); // salary.PayDate = 28/2
-
-                        var prePayDate = salary.PayDate;
+                        var prePayDate = salary.PayDate; // Giá trị mới sau khi trừ 30 ngày
 
 
                         MonthShift = staffShifts.Where(x => x.WorkShift.ShiftDate > prePayDate && x.WorkShift.ShiftDate <= salary.PayDate).ToList();
@@ -128,14 +136,8 @@ namespace CafeHub.MVC.Controllers
 
                     if (salary.PayDate < currentDate)
                     {
-                        // Cộng thêm 1 tháng
-                        DateTime nextM = salary.PayDate.AddMonths(1);
-
-                        // Lấy ngày cuối cùng của tháng mới
-                        int lDay = DateTime.DaysInMonth(nextM.Year, nextM.Month);
-
-                        // Đảm bảo ngày mới luôn là ngày cuối tháng
-                        salary.PayDate = new DateTime(nextM.Year, nextM.Month, lDay);
+                        
+                        salary.PayDate = salary.PayDate.AddDays(30);
 
                         // Cập nhật MonthYear
                         salary.MonthYear = salary.PayDate.ToString("yyyy-MM");

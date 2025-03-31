@@ -83,9 +83,7 @@ namespace CafeHub.MVC.Controllers
                 await _userManager.AddToRoleAsync(staff, "Staff");
 
                 DateTime hireDate = staff.HireDate;
-                DateTime nextMonth = hireDate.AddMonths(1);
-                int lastDay = DateTime.DaysInMonth(nextMonth.Year, nextMonth.Month);
-                var payD = new DateTime(nextMonth.Year, nextMonth.Month, lastDay);
+                DateTime payD = hireDate.AddDays(30);
                 var MaY = payD.ToString("yyyy-MM");
 
                 // Thêm thông tin lương vào bảng Salary
