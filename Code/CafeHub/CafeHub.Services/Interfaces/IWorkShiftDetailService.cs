@@ -10,6 +10,7 @@ namespace CafeHub.Services.Interfaces
     public interface IWorkShiftDetailService
     {
         Task<IEnumerable<WorkShiftDetail>> GetAllWSDetail();
+        Task<IEnumerable<WorkShiftDetail>> GetWorShiftByStaff(string StaffID);
         Task<IEnumerable<WorkShiftDetail>> GetDetailOfWorkShift(int workShiftID);
         Task<bool> AddNewDetail(WorkShiftDetail ws);
     }

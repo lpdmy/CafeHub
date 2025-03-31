@@ -16,6 +16,18 @@ namespace CafeHub.Repository.Repositories
         {
             return await GetAllAsync();
         }
+        public async Task<IEnumerable<WorkShiftDetail>> GetWorShiftByStaff(string StaffID)
+        {
+            var info = await _context.WorkShiftDetails
+                .Where(x => x.StaffId.Equals(StaffID))
+                .Include(w => w.Staff)
+                .Include(w => w.WorkShift)
+                .ToListAsync();
+
+            if (info.Count <= 0) { return null; }
+
+            return info;
+        }
         public async Task<IEnumerable<WorkShiftDetail>> GetDetailOfWorkShift(int workShiftID)
         {
             var Info = await _context.WorkShiftDetails

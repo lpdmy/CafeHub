@@ -106,15 +106,23 @@ namespace CafeHub.MVC.Controllers
             {               
                 await _userManager.AddToRoleAsync(staff, "Staff");
 
+                DateTime hireDate = staff.HireDate;
+                DateTime nextMonth = hireDate.AddMonths(1);
+                int lastDay = DateTime.DaysInMonth(nextMonth.Year, nextMonth.Month);
+                var payD = new DateTime(nextMonth.Year, nextMonth.Month, lastDay);
+                var MaY = payD.ToString("yyyy-MM");
+
                 // Thêm thông tin lương vào bảng Salary
                 var salary = new Salary
                 {
                     StaffId = staff.Id, // Lấy ID của nhân viên vừa tạo
                     BaseSalary = model.Salary, // Lương cơ bản nhập từ form
-                    PayDate = model.HireDate.AddMonths(1)
+                    PayDate = payD,//model.HireDate.AddMonths(1)
+                    MonthYear = MaY,
+                    HourlyRate = 25
                 };
                 await _isalaryService.CreateSalaryAsync(salary);
-
+                
 
 
                 return Redirect(returnUrl ?? Url.Action("ManageUser", "AdminUserDashboard")); // Redirect đến danh sách Staff

@@ -124,7 +124,17 @@ namespace CafeHub.MVC.Controllers
                     return View(model);
                 }
 
+                DateTime hireDate = staff.HireDate;
+                DateTime nextMonth = hireDate.AddMonths(1);
+
+                // Lấy ngày cuối cùng của tháng mới
+                int lastDay = DateTime.DaysInMonth(nextMonth.Year, nextMonth.Month);
+                salaryOfStaff.PayDate = new DateTime(nextMonth.Year, nextMonth.Month, lastDay);
+
+                salaryOfStaff.MonthYear = salaryOfStaff.PayDate.ToString("yyyy-MM");
+
                 salaryOfStaff.BaseSalary = model.Salary;
+                salaryOfStaff.HourlyRate = 25;
 
                 await _salaryService.ModifySalaryAsync(salaryOfStaff);
 
