@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using CafeHub.Commons.Models;
+using System.ComponentModel.DataAnnotations;
 
 namespace CafeHub.MVC.Models
 {
@@ -9,8 +10,9 @@ namespace CafeHub.MVC.Models
 
         [Required]
         public string StaffId { get; set; }
-        //public string StaffName { get; set; }
-
+        [Required]
+        public string StaffName { get; set; }
+        //public string StaffName => Staff?.Name ?? "Unknown";
         [Required]
         [Range(0, double.MaxValue, ErrorMessage = "Base salary must be positive.")]
         public decimal BaseSalary { get; set; }
@@ -29,5 +31,6 @@ namespace CafeHub.MVC.Models
         public double OvertimeHours { get; set; }
         public decimal HourlyRate { get; set; }
         public string? Notes { get; set; }
+        public decimal TotalSalary { get; set; }
     }
 }
