@@ -23,7 +23,7 @@ namespace CafeHub.Services.Services
             order.OrderDate = DateTime.UtcNow;
             order.Status = "Pending";
             order.StartDate = DateTime.UtcNow;
-            order.TotalAmount = order.OrderItems.Sum(x => x.UnitPrice * x.Quantity);
+            
 
             await _orderRepository.AddAsync(order);
             return order;
@@ -37,6 +37,10 @@ namespace CafeHub.Services.Services
         public async Task<IEnumerable<Order>> GetOrdersByCustomerAsync(string customerId)
         {
             return await _orderRepository.GetOrdersByCustomerAsync(customerId);
+        }
+        public async Task UpdateOrderAsync(Order order)
+        {
+            await _orderRepository.UpdateAsync(order);
         }
     }
 }

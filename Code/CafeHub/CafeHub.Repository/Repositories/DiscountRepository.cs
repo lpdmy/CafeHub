@@ -1,6 +1,7 @@
 ﻿using CafeHub.Commons;
 using CafeHub.Commons.Models;
 using CafeHub.Repository.Interfaces;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,7 +19,7 @@ namespace CafeHub.Repository.Repositories
         {
             return await GetByIdAsync(discountId); // Using GenericRepository
         }
-
+       
         public async Task<IEnumerable<Discount>> GetAllDiscountsAsync()
         {
             return await GetAllAsync(); // Using GenericRepository
@@ -61,6 +62,35 @@ namespace CafeHub.Repository.Repositories
             {
                 await RemoveAsync(discount);
             }
+        }
+
+        // Get available discounts based on customer's membership type
+        public async Task<List<Discount>> GetDiscountsByMembershipTypeAsync(string membershipType)
+        {
+            return await _context.Discounts
+                .Where(d => d.IsActive
+                            && d.StartDate <= DateTime.Now
+                            && d.EndDate >= DateTime.Now
+                            && d.Condition.Contains(membershipType))
+                .ToListAsync();
+        }
+
+        // Assign a discount to a specific customer
+        public async Task ApplyDiscountForCustomerAsync(string customerId, int discountId)
+        {
+            var discount = await _context.Discounts.FindAsync(discountId);
+            if (discount == null || !discount.IsActive) return;
+
+            var customerDiscount = new CustomerDiscount
+            {
+                CustomerId = customerId,
+                DiscountId = discountId,
+                DateGranted = DateTime.Now,
+                IsActive = true
+            };
+
+            _context.CustomerDiscounts.Add(customerDiscount);
+            await _context.SaveChangesAsync();
         }
     }
 }

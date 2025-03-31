@@ -4,39 +4,119 @@
 
 @if (Model != null && Model.Any())
 {
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Product</th>
-                <th>Size</th>
-                <th>Quantity</th>
-                <th>Sugar</th>
-                <th>Ice</th>
-                <th>Price</th>
-                <th>Total</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model)
-            {
+    <form method="post" asp-action="UpdateCart">
+        <table class="table">
+            <thead>
                 <tr>
-                    <td>@item.ProductName</td>
-                    <td>@item.Size</td>
-                    <td>@item.Quantity</td>
-                    <td>@item.SugarAmount%</td>
-                    <td>@item.IceAmount%</td>
-                    <td>@item.UnitPrice.ToString("C")</td>
-                    <td>@(item.UnitPrice * item.Quantity).ToString("C")</td>
+                    <th>Product</th>
+                    <th>Size</th>
+                    <th>Quantity</th>
+                    <th>Sugar</th>
+                    <th>Ice</th>
+                    <th>Price</th>
+                    <th>Total</th>
+                    <th>Actions</th>
                 </tr>
-            }
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                @for (int i = 0; i < Model.Count(); i++)
+                {
+                    var item = Model.ElementAt(i);
+                    var adjustedPrice = item.UnitPrice;
 
-    <h4>Total: @Model.Sum(x => x.UnitPrice * x.Quantity).ToString("C")</h4>
+                    // Adjust price based on size selection
+                    if (item.Size == "Medium")
+                    {
+                        adjustedPrice *= 1.3m; // +30%
+                    }
+                    else if (item.Size == "Large")
+                    {
+                        adjustedPrice *= 1.5m; // +50%
+                    }
 
-    <a asp-action="Create" asp-controller="Order" class="btn btn-success">Proceed to Checkout</a>
+                    <tr>
+                        <td>@item.ProductName</td>
+                        <td>
+                            <select name="CartItems[@i].Size" class="form-control">
+                                <option value="Small" selected="@(item.Size == "Small")">Small</option>
+                                <option value="Medium" selected="@(item.Size == "Medium")">Medium</option>
+                                <option value="Large" selected="@(item.Size == "Large")">Large</option>
+                            </select>
+                        </td>
+                        <td>
+                            <input type="number" name="CartItems[@i].Quantity" value="@item.Quantity" min="1" class="form-control" />
+                        </td>
+                        <td>
+                            <input type="number" name="CartItems[@i].SugarAmount" value="@item.SugarAmount" min="0" max="100" class="form-control" />
+                        </td>
+                        <td>
+                            <input type="number" name="CartItems[@i].IceAmount" value="@item.IceAmount" min="0" max="100" class="form-control" />
+                        </td>
+                        <td>@adjustedPrice.ToString("C")</td>
+                        <td>@(adjustedPrice * item.Quantity).ToString("C")</td>
+                        <td>
+                            <input type="hidden" name="CartItems[@i].ProductId" value="@item.ProductId" />
+                            <input type="hidden" name="CartItems[@i].OriginalSize" value="@item.Size" />
+                            <input type="hidden" name="CartItems[@i].OriginalSugarAmount" value="@item.SugarAmount" />
+                            <input type="hidden" name="CartItems[@i].OriginalIceAmount" value="@item.IceAmount" />
+
+                            <a asp-action="Remove"
+                               asp-route-productId="@item.ProductId"
+                               asp-route-size="@item.Size"
+                               asp-route-sugarAmount="@item.SugarAmount"
+                               asp-route-iceAmount="@item.IceAmount"
+                               class="btn btn-danger">Remove</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+        <h4>
+            Total: @Model.Sum(x =>
+              (x.Size == "Medium" ? x.UnitPrice * 1.3m : (x.Size == "Large" ? x.UnitPrice * 1.5m : x.UnitPrice))
+              * x.Quantity).ToString("C")
+        </h4>
+
+        <div class="d-flex justify-content-between align-items-center mt-3">
+            <button type="submit" class="btn-default">Update Cart</button>
+
+            <div>
+
+                <a asp-action="Create" asp-controller="Orders" class="btn-default btn-highlighted ml-2">Proceed to Checkout</a>
+            </div>
+        </div>
+
+
+    </form>
+
+    <div class="d-flex justify-content-between align-items-center mt-3">
+    <form asp-action="Clear" asp-controller="Cart" method="post" class="d-inline">
+        <button type="submit" class="btn-default btn-danger">Clear Cart</button>
+    </form>
+    </div>
+   
 }
 else
 {
-    <p>Your cart is empty.</p>
+    
+
+    <div class="d-flex flex-column justify-content-center align-items-center text-center vh-100">
+        <p class="fs-4 fw-bold">Your cart is empty.</p>
+
+        <div class="video-counter-item">
+            <div class="icon-box">
+                <img src="@Url.Content("~/images/icon-intro-video-counter-4.svg")" alt="">
+            </div>
+            <div class="video-counter-content">
+                <h2>
+                    <a asp-action="Add" asp-controller="Cart" class="text-decoration-none text-primary">
+                        View our menu
+                    </a>+
+                </h2>
+                <p>to add products</p>
+            </div>
+        </div>
+    </div>
+
 }

@@ -12,5 +12,6 @@ namespace CafeHub.Services.Interfaces
         Task<Order> CreateOrderAsync(Order order);
         Task<Order?> GetOrderDetailsAsync(int id);
         Task<IEnumerable<Order>> GetOrdersByCustomerAsync(string customerId);
+        Task UpdateOrderAsync(Order order);
     }
 }

@@ -45,6 +45,53 @@ namespace CafeHub.Services.Services
             await _orderItemRepository.AddAsync(item);
         }
 
+        public async Task UpdateCartItemAsync(string userId, OrderItem updatedItem, string originalSize, int originalSugar, int originalIce)
+        {
+            // 1. Get draft order
+            var draftOrder = await _orderRepository.GetDraftOrderByCustomerIdAsync(userId);
+            if (draftOrder == null)
+            {
+                return;
+            }
+
+            // 2. Get item in draft order by productId + original options
+            var orderItem = await _orderItemRepository.GetByOrderIdAndOptionsAsync(
+                draftOrder.Id,
+                updatedItem.ProductId,
+                originalSize,
+                originalSugar,
+                originalIce
+            );
+
+            if (orderItem == null)
+            {
+                return;
+            }
+
+            // 3. Update properties
+            orderItem.Quantity = updatedItem.Quantity;
+            orderItem.Size = updatedItem.Size;
+            orderItem.SugarAmount = updatedItem.SugarAmount;
+            orderItem.IceAmount = updatedItem.IceAmount;
+
+            await _orderItemRepository.UpdateAsync(orderItem);
+        }
+
+        public async Task RemoveCartItemAsync(string userId, int productId, string size, int sugarAmount, int iceAmount)
+        {
+            var draftOrder = await _orderRepository.GetDraftOrderByCustomerIdAsync(userId);
+            if (draftOrder == null) return;
+
+            var item = await _orderItemRepository.GetByOrderIdAndOptionsAsync(
+                draftOrder.Id, productId, size, sugarAmount, iceAmount);
+
+            if (item != null)
+            {
+                await _orderItemRepository.RemoveAsync(item);
+            }
+        }
+
+
 
         public async Task ClearCartByUserIdAsync(string userId)
         {

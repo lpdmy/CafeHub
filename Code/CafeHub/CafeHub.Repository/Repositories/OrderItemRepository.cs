@@ -26,6 +26,22 @@ namespace CafeHub.Repository.Repositories
 
             return cartItems;
         }
+        public async Task<OrderItem> GetByOrderIdAndProductIdAsync(int orderId, int productId)
+        {
+            return await _context.OrderItems
+                .FirstOrDefaultAsync(x => x.OrderId == orderId && x.ProductId == productId);
+        }
+        public async Task<OrderItem?> GetByOrderIdAndOptionsAsync(int orderId, int productId, string size, int sugarAmount, int iceAmount)
+        {
+            return await _context.OrderItems
+                .FirstOrDefaultAsync(x =>
+                    x.OrderId == orderId &&
+                    x.ProductId == productId &&
+                    x.Size == size &&
+                    x.SugarAmount == sugarAmount &&
+                    x.IceAmount == iceAmount);
+        }
+
 
     }
 }
