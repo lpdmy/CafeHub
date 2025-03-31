@@ -1,52 +1,87 @@
 ﻿@model CafeHub.Web.Models.StaffViewModel
 
 @{
-    ViewData["Title"] = "EditStaff";
+    ViewData["Title"] = "Edit Staff";
 }
 
-<h2>Chỉnh sửa nhân viên</h2>
+<div class="page-contact-us">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6">
+                <div class="contact-information">
+                    <div class="section-title">
+                        <h3 class="wow fadeInUp">Edit Staff</h3>
+                        <h2 class="text-anime-style-3" data-cursor="-opaque">Edit Staff Details</h2>
+                        <p class="wow fadeInUp" data-wow-delay="0.2s">Modify the staff details below.</p>
+                    </div>
+                </div>
+            </div>
 
-<form asp-action="EditStaff" method="post">
+            <div class="col-lg-6">
+                <div class="contact-us-form">
+                    <div class="contact-form-content">
+                        <h3 class="wow fadeInUp">Staff Details</h3>
+                        <p class="wow fadeInUp" data-wow-delay="0.2s">Please edit the staff information accordingly.</p>
+                    </div>
 
-    <div class="form-group">
-        <label asp-for="Name"></label>
-        <input asp-for="Name" class="form-control" />
-        <span asp-validation-for="Name" class="text-danger"></span>
+                    <div class="contact-form">
+                        <form asp-action="EditStaff" asp-route-id="@ViewBag.StaffId" method="post" class="wow fadeInUp" data-wow-delay="0.4s">
+                            <div class="row">
+                                <!-- Staff Name -->
+                                <div class="form-group col-md-12 mb-5">
+                                    <label asp-for="Name" class="control-label">Full Name</label>
+                                    <input asp-for="Name" class="form-control" placeholder="Enter Full Name" />
+                                    <span asp-validation-for="Name" class="text-danger"></span>
+                                </div>
+
+                                <!-- Staff Email (Read-Only) -->
+                                <div class="form-group col-md-12 mb-5">
+                                    <label asp-for="Email" class="control-label">Email</label>
+                                    <input asp-for="Email" class="form-control" readonly />
+                                    <span asp-validation-for="Email" class="text-danger"></span>
+                                </div>
+
+                                <!-- Employee Code -->
+                                <div class="form-group col-md-12 mb-5">
+                                    <label asp-for="EmployeeCode" class="control-label">Employee Code</label>
+                                    <input asp-for="EmployeeCode" class="form-control" placeholder="Enter Employee Code" />
+                                    <span asp-validation-for="EmployeeCode" class="text-danger"></span>
+                                </div>
+
+                                <!-- Position -->
+                                <div class="form-group col-md-12 mb-5">
+                                    <label asp-for="Position" class="control-label">Position</label>
+                                    <input asp-for="Position" class="form-control" placeholder="Enter Position" />
+                                    <span asp-validation-for="Position" class="text-danger"></span>
+                                </div>
+
+                                <!-- Hire Date -->
+                                <div class="form-group col-md-12 mb-5">
+                                    <label asp-for="HireDate" class="control-label">Hire Date</label>
+                                    <input asp-for="HireDate" type="date" class="form-control" />
+                                    <span asp-validation-for="HireDate" class="text-danger"></span>
+                                </div>
+
+                                <!-- Salary -->
+                                <div class="form-group col-md-12 mb-5">
+                                    <label asp-for="Salary" class="control-label">Salary</label>
+                                    <input asp-for="Salary" type="number" step="0.01" class="form-control" placeholder="Enter Salary" />
+                                    <span asp-validation-for="Salary" class="text-danger"></span>
+                                </div>
+
+                                <!-- Submit Button -->
+                                <div class="col-lg-12 text-center">
+                                    <button type="submit" class="btn btn-success btn-lg">Save Changes</button>
+                                    <a asp-action="Manage_Staff" class="btn btn-outline-primary btn-lg">Cancel</a>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-
-    <div class="form-group">
-        <label asp-for="Email"></label>
-        <input asp-for="Email" class="form-control" readonly />
-        <span asp-validation-for="Email" class="text-danger"></span>
-    </div>
-
-    <div class="form-group">
-        <label asp-for="EmployeeCode"></label>
-        <input asp-for="EmployeeCode" class="form-control" />
-        <span asp-validation-for="EmployeeCode" class="text-danger"></span>
-    </div>
-
-    <div class="form-group">
-        <label asp-for="Position"></label>
-        <input asp-for="Position" class="form-control" />
-        <span asp-validation-for="Position" class="text-danger"></span>
-    </div>
-
-    <div class="form-group">
-        <label asp-for="HireDate"></label>
-        <input asp-for="HireDate" type="date" class="form-control" />
-        <span asp-validation-for="HireDate" class="text-danger"></span>
-    </div>
-
-    <div class="form-group">
-        <label asp-for="Salary"></label>
-        <input asp-for="Salary" type="number" step="0.01" class="form-control" />
-        <span asp-validation-for="Salary" class="text-danger"></span>
-    </div>
-
-    <button type="submit" asp-route-id="@ViewBag.StaffId" class="btn btn-primary">Save</button>
-    <a asp-action="Manage_Staff" class="btn btn-secondary">Hủy</a>
-</form>
+</div>
 
 @section Scripts {
     @{

@@ -42,7 +42,8 @@ namespace CafeHub.MVC.Controllers
 
             if (salaries.Count == 0)
             {
-                return NotFound();
+                TempData["NoWSDetail"] = true;
+                return RedirectToAction("ManageUser", "AdminUserDashboard");
             }
             // Lấy ngày hiện tại
             DateTime currentDate = DateTime.Now;
@@ -50,53 +51,100 @@ namespace CafeHub.MVC.Controllers
             // Kiểm tra và cập nhật PayDate của các salaries
             foreach (var salary in salaries)
             {
+                //lấy tất cả ws của staff 
                 var staffShifts =  await _workShiftDetailService.GetWorShiftByStaff(salary.StaffId);
-
-                
-
+              
                 if(staffShifts != null)
                 {
-                    var LateTime = staffShifts.Count(w => w.AttendanceStatus == "Late");
-                    var AbsentTime = staffShifts.Count(w => w.AttendanceStatus == "Absent");
-                    // Tính số tiền trừ do đi muộn
-                    salary.Deduction = LateTime * 100000 + AbsentTime * 500000;
+                    //lấy data satff (Hireday)
+                    var staffInfo = await _accountService.GetUserByIdAsync(salary.StaffId);
 
-                    // Tính số ngày làm việc(Present)
-                    salary.TotalHoursWorked = staffShifts.Count(w => w.AttendanceStatus == "Present") * 5;
+                    //var staff = staffInfo as Staff;
+                    var staff = new Staff
+                    {
+                        HireDate = staffInfo.CreatedAt,
+                    };
 
-                    // Tính số giờ làm thêm(OvertimeHours)
-                    salary.OvertimeHours = staffShifts.Count(w => w.AttendanceStatus == "Present" && w.WorkShift!.ShiftDate.DayOfWeek == DayOfWeek.Sunday) * 5;
+                    var StartDate = staff.HireDate.Date; //ngày thuê ví dụ 15/1/2025
 
-                    // Tính thưởng từ số giờ làm ngày chủ nhật
-                    salary.Bonus = (decimal)salary.OvertimeHours * salary.HourlyRate;
 
-                }
-
-                if (salary.PayDate < currentDate)
-                {
-
-                    // Cộng thêm 1 tháng
-                    DateTime nextMonth = salary.PayDate.AddMonths(1);
+                    DateTime nextMonth = staff.HireDate.AddMonths(1);
 
                     // Lấy ngày cuối cùng của tháng mới
                     int lastDay = DateTime.DaysInMonth(nextMonth.Year, nextMonth.Month);
 
                     // Đảm bảo ngày mới luôn là ngày cuối tháng
-                    salary.PayDate = new DateTime(nextMonth.Year, nextMonth.Month, lastDay);
+                    staff.HireDate = new DateTime(nextMonth.Year, nextMonth.Month, lastDay); //khiến ngày thuê = ngày trả lương đầu tiên
 
-                    // Cập nhật MonthYear
-                    salary.MonthYear = salary.PayDate.ToString("yyyy-MM");
+                    var CheckHdateVSPdate = staff.HireDate; // sau khi khien hdate = pdate dau tien => 28/2/2025
 
-                    /*
-                    salary.PayDate = salary.PayDate.AddMonths(1);
-                    // Cập nhật MonthYear để phù hợp với PayDate mới
-                    salary.MonthYear = salary.PayDate.ToString("yyyy-MM");
-                    */
+                    var MonthShift = new List<WorkShiftDetail>();
 
-                }
+                    if (CheckHdateVSPdate == salary.PayDate) // salary.PayDate = 28/2 sẳn r :::: loop 2: salary.PayDate 31/3/2025
+                    {
+                        //First month
+                        MonthShift = staffShifts.Where(x => x.WorkShift.ShiftDate >= StartDate && x.WorkShift.ShiftDate <= salary.PayDate).ToList();
+                    }
+                    else
+                    {
+                        // Trừ đi 1 tháng
+                        DateTime prevM = salary.PayDate.AddMonths(-1); // salary.PayDate = 31/3
 
-                // Cập nhật từng salary riêng lẻ
-                await _salaryService.ModifySalaryAsync(salary);  // Giả sử service có phương thức UpdateAsync
+                        // Lấy ngày cuối cùng của tháng trước đó
+                        int lDayPrev = DateTime.DaysInMonth(prevM.Year, prevM.Month);
+
+                        // Đảm bảo ngày luôn là cuối tháng
+                        salary.PayDate = new DateTime(prevM.Year, prevM.Month, lDayPrev); // salary.PayDate = 28/2
+
+                        var prePayDate = salary.PayDate;
+
+
+                        MonthShift = staffShifts.Where(x => x.WorkShift.ShiftDate > prePayDate && x.WorkShift.ShiftDate <= salary.PayDate).ToList();
+                    }
+
+
+
+                    var CurrentShifts = MonthShift;
+
+                    if (CurrentShifts != null)
+                    {
+
+
+                        var LateTime = CurrentShifts.Count(w => w.AttendanceStatus == "Late");
+                        var AbsentTime = CurrentShifts.Count(w => w.AttendanceStatus == "Absent");
+                        // Tính số tiền trừ do đi muộn
+                        salary.Deduction = LateTime * 100000 + AbsentTime * 500000;
+
+                        // Tính số ngày làm việc(Present)
+                        salary.TotalHoursWorked = CurrentShifts.Count(w => w.AttendanceStatus == "Present") * 5;
+
+                        // Tính số giờ làm thêm(OvertimeHours)
+                        salary.OvertimeHours = CurrentShifts.Count(w => w.AttendanceStatus == "Present" && w.WorkShift!.ShiftDate.DayOfWeek == DayOfWeek.Sunday) * 5;
+
+                        // Tính thưởng từ số giờ làm ngày chủ nhật
+                        salary.Bonus = (decimal)salary.OvertimeHours * salary.HourlyRate;
+
+                    }
+
+                    if (salary.PayDate < currentDate)
+                    {
+                        // Cộng thêm 1 tháng
+                        DateTime nextM = salary.PayDate.AddMonths(1);
+
+                        // Lấy ngày cuối cùng của tháng mới
+                        int lDay = DateTime.DaysInMonth(nextM.Year, nextM.Month);
+
+                        // Đảm bảo ngày mới luôn là ngày cuối tháng
+                        salary.PayDate = new DateTime(nextM.Year, nextM.Month, lDay);
+
+                        // Cập nhật MonthYear
+                        salary.MonthYear = salary.PayDate.ToString("yyyy-MM");
+
+                    }
+
+                    // Cập nhật từng salary riêng lẻ
+                    await _salaryService.ModifySalaryAsync(salary);  // Giả sử service có phương thức UpdateAsync
+                }                
             }
 
             var A_CheckSalary = await _salaryService.GetAllSalariesAsync();
@@ -128,7 +176,6 @@ namespace CafeHub.MVC.Controllers
 
             ViewBag.TotalPages = (int)Math.Ceiling((double)totalUsers / pageSize);
             ViewBag.CurrentPage = page;
-
             return View(pagedUsers);
         }
         //GET: 
