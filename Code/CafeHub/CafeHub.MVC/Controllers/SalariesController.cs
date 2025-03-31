@@ -105,7 +105,7 @@ namespace CafeHub.MVC.Controllers
             {
                 return NotFound();
             }
-
+            // tính và display lương 
             var salaryView = A_CheckSalary.Select(salary => new SalaryViewModel
             {
                 Id = salary.Id,
