@@ -10,6 +10,7 @@
         public decimal Salary { get; set; }
         public DateTime CreatedAt { get; set; }
         public bool IsLocked { get; set; }
+        public decimal TotalSalary { get; set; }
     }
 
 }

@@ -33,7 +33,7 @@ namespace CafeHub.Commons.Models
         public double TotalHoursWorked { get; set; }
         public double OvertimeHours { get; set; }
         public decimal HourlyRate { get; set; }
-        public string? Notes { get; set; }
+        public string? Notes { get; set; }   
 
         [ForeignKey("StaffId")]
         public virtual Staff? Staff { get; set; }
@@ -42,7 +42,8 @@ namespace CafeHub.Commons.Models
         public decimal NetSalary => BaseSalary + Bonus - Deduction;
         [NotMapped]
         public string StaffName => Staff?.Name ?? "Unknown";
-
+        [NotMapped]
+        public decimal TotalSalary => BaseSalary + Bonus * 1000 - Deduction;
         public string GetInfo() => $"Salary for {Staff?.EmployeeCode} - {MonthYear}: {NetSalary:C}";
     }
 

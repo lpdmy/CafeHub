@@ -27,6 +27,7 @@ namespace CafeHub.MVC.Controllers
         [Authorize(Roles = "Admin")] // Customer/ Staff
         public async Task<IActionResult> ManageUser(int page = 1, int pageSize = 5)
         {
+            bool noDetails = TempData["NoWSDetail"] as bool? ?? false;
             var usersList = await _userManager.Users.ToListAsync();
 
             var users = usersList.Select(u => new UserViewModel
@@ -44,36 +45,11 @@ namespace CafeHub.MVC.Controllers
 
             ViewBag.TotalPages = (int)Math.Ceiling((double)totalUsers / pageSize);
             ViewBag.CurrentPage = page;
-
+            ViewBag.NoWSDetail = noDetails;
             return View(pagedUsers);
         }
 
-        /*
-        public async Task<IActionResult> ManageUser(int page = 1, int pageSize = 5)
-        {
-            var UserId = await _accountService.GetCurrentUserIdAsync();
-            var usersList = await _userManager.Users.ToListAsync();
-
-            var users = new List<UserViewModel>();
-
-            foreach (var u in usersList)
-            {
-                var roles = await _userManager.GetRolesAsync(u);
-
-                users.Add(new UserViewModel
-                {
-                    Id = u.Id,
-                    Name = u.Name,
-                    Email = u.Email,
-                    Role = roles.FirstOrDefault() ?? "No Role",
-                    IsActive = u.IsLocked,
-                    CreatedAt = u.CreatedAt
-                });
-            }
-            return View(users);
-
-        }
-        */
+        
         [HttpGet]
         public IActionResult CreateStaff(string returnUrl)
         {
@@ -107,9 +83,7 @@ namespace CafeHub.MVC.Controllers
                 await _userManager.AddToRoleAsync(staff, "Staff");
 
                 DateTime hireDate = staff.HireDate;
-                DateTime nextMonth = hireDate.AddMonths(1);
-                int lastDay = DateTime.DaysInMonth(nextMonth.Year, nextMonth.Month);
-                var payD = new DateTime(nextMonth.Year, nextMonth.Month, lastDay);
+                DateTime payD = hireDate.AddDays(30);
                 var MaY = payD.ToString("yyyy-MM");
 
                 // Thêm thông tin lương vào bảng Salary

@@ -1,9 +1,11 @@
-﻿using CafeHub.Commons.Models;
+﻿using CafeHub.Commons;
+using CafeHub.Commons.Models;
 using CafeHub.MVC.Models;
 using CafeHub.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace CafeHub.MVC.Controllers
 {
@@ -12,14 +14,17 @@ namespace CafeHub.MVC.Controllers
         private readonly IAccountService _accountService;
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
+        private readonly ApplicationDbContext _context;
 
         private readonly IEmailService _emailService;
-        public AccountController(UserManager<User> userManager, IAccountService accountService, IEmailService emailService, SignInManager<User> signInManager)
+        public AccountController(UserManager<User> userManager, IAccountService accountService, IEmailService emailService, SignInManager<User> signInManager, 
+            ApplicationDbContext context)
         {
             _accountService = accountService;
             _userManager = userManager;
             _emailService = emailService;
             _signInManager = signInManager;
+            _context = context;
         }
 
 
@@ -188,6 +193,14 @@ namespace CafeHub.MVC.Controllers
             if (user == null)
                 return RedirectToAction("Login", "Account");
 
+
+            // Lấy lương gần nhất của nhân viên dựa theo tháng mới nhất
+            var salary = await _context.Salaries
+                .Where(s => s.StaffId == user.Id)
+                .OrderByDescending(s => s.PayDate)
+                .FirstOrDefaultAsync();
+
+
             var model = new StaffProfileViewModel
             {
                 Name = user.Name,
@@ -197,7 +210,8 @@ namespace CafeHub.MVC.Controllers
                 HireDate = user.HireDate,
                 Salary = user.Salary,
                 CreatedAt = user.CreatedAt,
-                IsLocked = user.IsLocked
+                IsLocked = user.IsLocked,
+                TotalSalary = salary?.TotalSalary ?? 0
             };
 
             return View(model);
