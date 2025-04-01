@@ -9,5 +9,6 @@ namespace CafeHub.Repository.Interfaces
 {
     public interface ICustomerDiscountRepository : IGenericRepository<CustomerDiscount>
     {
+        Task<CustomerDiscount?> GetLatestActiveDiscountByCustomerIdAsync(string customerId);
     }
 }

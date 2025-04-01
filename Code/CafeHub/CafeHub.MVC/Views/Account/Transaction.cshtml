@@ -1,0 +1,33 @@
+﻿@model IEnumerable<CafeHub.Commons.Models.Payment>
+
+@{
+    ViewData["Title"] = "Transaction History";
+}
+
+<h2>Transaction History</h2>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Order ID</th>
+            <th>Paid Amount</th>
+            <th>Date of Payment</th>
+            <th>Payment Method</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var payment in Model)
+        {
+            <tr>
+                <td>@payment.OrderId</td>
+                <td>@payment.AmountPaid.ToString("C")</td>
+                <td>@payment.PaymentDate.ToString("yyyy-MM-dd HH:mm")</td>
+                <td>@payment.PaymentMethod</td>
+                <td>
+                    <a asp-controller="Orders" asp-action="Details" asp-route-id="@payment.OrderId" class="btn btn-info">View Details</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -21,7 +21,7 @@ namespace CafeHub.Commons.Models
         public string DiscountType { get; set; } = string.Empty; // Percentage, FixedAmount, etc.
 
         [Required]
-        [Range(0, 100, ErrorMessage = "Discount value must be between 0 and 100.")]
+        [Range(0, int.MaxValue, ErrorMessage = "Discount value must be more than 0.")]
         public float DiscountValue { get; set; }
 
         [Required]

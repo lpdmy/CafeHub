@@ -23,12 +23,13 @@ namespace CafeHub.Services.Services
             order.OrderDate = DateTime.UtcNow;
             order.Status = "Pending";
             order.StartDate = DateTime.UtcNow;
-            order.TotalAmount = order.OrderItems.Sum(x => x.UnitPrice * x.Quantity);
+            
 
             await _orderRepository.AddAsync(order);
             return order;
         }
 
+       
         public async Task<Order?> GetOrderDetailsAsync(int id)
         {
             return await _orderRepository.GetOrderWithDetailsAsync(id);
@@ -40,13 +41,22 @@ namespace CafeHub.Services.Services
         }
         public async Task<Order> UpdateOrderAsync(Order order)
         {
-            _orderRepository.Update(order);
-            await _orderRepository.SaveChangesAsync();
+          
+
+            // Update order properties
+            await _orderRepository.UpdateAsync(order);
+
             return order;
         }
+
         public async Task<IEnumerable<Order>> GetAllOrdersAsync()
         {
-            return await _orderRepository.GetAllAsync(); 
+            return await _orderRepository.GetAllAsync();
+        }
+
+        public async Task<List<Order>> GetPendingOrdersAsync()
+        {
+            return await _orderRepository.GetPendingOrdersAsync();
         }
     }
 }

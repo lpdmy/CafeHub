@@ -1,0 +1,9 @@
+﻿@{
+    ViewData["Title"] = "Payment Result";
+}
+
+<div class="text-center mt-5">
+    <h2>@ViewBag.Message</h2>
+    <a class="btn-default" href="@Url.Action("Index", "Transaction")">View transaction history</a>
+    <a class="btn-default" href="@Url.Action("Index", "Home")">Back to Home</a>
+</div>

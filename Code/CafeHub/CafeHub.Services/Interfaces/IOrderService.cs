@@ -12,7 +12,9 @@ namespace CafeHub.Services.Interfaces
         Task<Order> CreateOrderAsync(Order order);
         Task<Order?> GetOrderDetailsAsync(int id);
         Task<IEnumerable<Order>> GetOrdersByCustomerAsync(string customerId);
+       
         Task<Order> UpdateOrderAsync(Order order);
         Task<IEnumerable<Order>> GetAllOrdersAsync();
+        Task<List<Order>> GetPendingOrdersAsync();
     }
 }

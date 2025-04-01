@@ -5,10 +5,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CafeHub.Repository.Interfaces
+namespace CafeHub.Services.Interfaces
 {
-    public interface IPaymentRepository : IGenericRepository<Payment>
+    public interface IPaymentService
     {
+        Task CreatePaymentAsync(Payment payment);
         Task<Payment?> GetPaymentByOrderIdAsync(int orderId);
         Task<IEnumerable<Payment>> GetPaymentsByCustomerIdAsync(string customerId);
     }

@@ -1,5 +1,6 @@
 ﻿using CafeHub.Commons.Models;
 using CafeHub.Repository.Interfaces;
+using CafeHub.Repository.Repositories;
 using CafeHub.Service.Interfaces;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -9,10 +10,13 @@ namespace CafeHub.Service.Services
     public class DiscountService : IDiscountService
     {
         private readonly IDiscountRepository _discountRepository;
+        private readonly ICustomerDiscountRepository _customerDiscountRepository;
 
-        public DiscountService(IDiscountRepository discountRepository)
+        public DiscountService(IDiscountRepository discountRepository, ICustomerDiscountRepository customerDiscountRepository)
         {
             _discountRepository = discountRepository;
+            _customerDiscountRepository = customerDiscountRepository;
+           
         }
 
         public async Task<Discount?> GetDiscountByIdAsync(int discountId)
@@ -58,6 +62,20 @@ namespace CafeHub.Service.Services
         public async Task RemoveDiscountAsync(int discountId)
         {
             await _discountRepository.RemoveDiscountAsync(discountId);
+        }
+
+        public async Task<List<Discount>> GetDiscountsByMembershipTypeAsync(string membershipType)
+        {
+            return await _discountRepository.GetDiscountsByMembershipTypeAsync(membershipType);
+        }
+
+        public async Task ApplyDiscountForCustomerAsync(string customerId, int discountId)
+        {
+            await _discountRepository.ApplyDiscountForCustomerAsync(customerId, discountId);
+        }
+        public async Task<CustomerDiscount?> GetDiscountByCustomerIdAsync(string customerId)
+        {
+            return await _customerDiscountRepository.GetLatestActiveDiscountByCustomerIdAsync(customerId);
         }
     }
 }

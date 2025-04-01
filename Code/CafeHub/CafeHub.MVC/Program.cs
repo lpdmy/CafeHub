@@ -27,6 +27,7 @@ builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 //add service and repository
 builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection("EmailSettings"));
 
+
 builder.Services.AddScoped<IEmailService, EmailService>();
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
@@ -42,6 +43,16 @@ builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<IDiscountService, DiscountService>();
 builder.Services.AddScoped<IDiscountRepository, DiscountRepository>();
+builder.Services.AddScoped<ICustomerDiscountRepository, CustomerDiscountRepository>();
+
+builder.Services.AddScoped<IOrderService, OrderService>();
+builder.Services.AddScoped<IOrderRepository, OrderRepository>();
+
+builder.Services.AddScoped<IPaymentService, PaymentService>();
+builder.Services.AddScoped<IPaymentRepository, PaymentRepository>();
+
+builder.Services.AddScoped<ICartService, CartService>();
+builder.Services.AddScoped<IOrderItemRepository, OrderItemRepository>();
 builder.Services.AddScoped<IWorkShitService, WorkShiftService>();
 builder.Services.AddScoped<IWorkShiftDetailService, WorkShiftDetailService>();
 builder.Services.AddScoped<INotificationService, NotificationService>();
@@ -51,6 +62,7 @@ builder.Services.AddScoped<IOrderService, OrderService>();
 
 
 
+builder.Services.AddScoped<IVnPayService, VnPayService>();
 
 
 builder.Services.AddSignalR();

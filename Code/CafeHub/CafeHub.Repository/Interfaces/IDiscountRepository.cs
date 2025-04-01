@@ -18,5 +18,8 @@ namespace CafeHub.Repository.Interfaces
         Task AddDiscountAsync(Discount discount);
         Task UpdateDiscountAsync(Discount discount);
         Task RemoveDiscountAsync(int discountId);
+
+        Task<List<Discount>> GetDiscountsByMembershipTypeAsync(string membershipType);
+        Task ApplyDiscountForCustomerAsync(string customerId, int discountId);
     }
 }

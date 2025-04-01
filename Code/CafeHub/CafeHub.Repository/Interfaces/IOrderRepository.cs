@@ -15,6 +15,7 @@ namespace CafeHub.Repository.Interfaces
         void Update(Order order); 
         Task SaveChangesAsync();
         Task<IEnumerable<Order>> GetAllAsync();
+        Task<List<Order>> GetPendingOrdersAsync();
 
     }
 }
