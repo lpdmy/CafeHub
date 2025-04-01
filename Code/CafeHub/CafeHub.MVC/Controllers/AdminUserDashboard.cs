@@ -25,7 +25,31 @@ namespace CafeHub.MVC.Controllers
         }
 
         [Authorize(Roles = "Admin")] // Customer/ Staff
-        public async Task<IActionResult> ManageUser()
+        public async Task<IActionResult> ManageUser(int page = 1, int pageSize = 5)
+        {
+            var usersList = await _userManager.Users.ToListAsync();
+
+            var users = usersList.Select(u => new UserViewModel
+            {
+                Id = u.Id,
+                Name = u.Name,
+                Email = u.Email,
+                Role = _userManager.GetRolesAsync(u).Result.FirstOrDefault() ?? "No Role",
+                IsActive = u.IsLocked,
+                CreatedAt = u.CreatedAt
+            });
+
+            int totalUsers = users.Count();
+            var pagedUsers = users.Skip((page - 1) * pageSize).Take(pageSize).ToList();
+
+            ViewBag.TotalPages = (int)Math.Ceiling((double)totalUsers / pageSize);
+            ViewBag.CurrentPage = page;
+
+            return View(pagedUsers);
+        }
+
+        /*
+        public async Task<IActionResult> ManageUser(int page = 1, int pageSize = 5)
         {
             var UserId = await _accountService.GetCurrentUserIdAsync();
             var usersList = await _userManager.Users.ToListAsync();
@@ -49,6 +73,7 @@ namespace CafeHub.MVC.Controllers
             return View(users);
 
         }
+        */
         [HttpGet]
         public IActionResult CreateStaff(string returnUrl)
         {
@@ -81,14 +106,23 @@ namespace CafeHub.MVC.Controllers
             {               
                 await _userManager.AddToRoleAsync(staff, "Staff");
 
+                DateTime hireDate = staff.HireDate;
+                DateTime nextMonth = hireDate.AddMonths(1);
+                int lastDay = DateTime.DaysInMonth(nextMonth.Year, nextMonth.Month);
+                var payD = new DateTime(nextMonth.Year, nextMonth.Month, lastDay);
+                var MaY = payD.ToString("yyyy-MM");
+
                 // Thêm thông tin lương vào bảng Salary
                 var salary = new Salary
                 {
                     StaffId = staff.Id, // Lấy ID của nhân viên vừa tạo
                     BaseSalary = model.Salary, // Lương cơ bản nhập từ form
+                    PayDate = payD,//model.HireDate.AddMonths(1)
+                    MonthYear = MaY,
+                    HourlyRate = 25
                 };
                 await _isalaryService.CreateSalaryAsync(salary);
-
+                
 
 
                 return Redirect(returnUrl ?? Url.Action("ManageUser", "AdminUserDashboard")); // Redirect đến danh sách Staff

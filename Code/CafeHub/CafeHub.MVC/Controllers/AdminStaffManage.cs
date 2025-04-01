@@ -1,4 +1,5 @@
-﻿using CafeHub.Commons.Models;
+﻿using CafeHub.Commons;
+using CafeHub.Commons.Models;
 using CafeHub.MVC.Models;
 using CafeHub.Services.Interfaces;
 using CafeHub.Web.Models;
@@ -18,16 +19,18 @@ namespace CafeHub.MVC.Controllers
         private readonly ISalaryService _salaryService;
         private readonly IWorkShiftDetailService _workShiftDetailService;
         private readonly IWorkShitService _workShiftService;
+        private readonly ApplicationDbContext _context;
         public AdminStaffManage(UserManager<User> userManager, IAccountService accountService, ISalaryService salaryService,
-            IWorkShiftDetailService workShiftDetailService, IWorkShitService workShiftService)
+            IWorkShiftDetailService workShiftDetailService, IWorkShitService workShiftService, ApplicationDbContext context)
         {
             _userManager = userManager;
             _accountService = accountService;
             _salaryService = salaryService;
             _workShiftDetailService = workShiftDetailService;
             _workShiftService = workShiftService;
+            _context = context;
         }
-        public async Task<IActionResult> Manage_Staff()
+        public async Task<IActionResult> Manage_Staff(int page = 1, int pageSize = 5)
         {
             var UserId = await _accountService.GetCurrentUserIdAsync();
 
@@ -45,11 +48,15 @@ namespace CafeHub.MVC.Controllers
                      Salary = s.Salary
                  })
                  .ToList();
+            int totalUsers = staffsList.Count();
+            var pagedUsers = staffsList.Skip((page - 1) * pageSize).Take(pageSize).ToList();
 
+            ViewBag.TotalPages = (int)Math.Ceiling((double)totalUsers / pageSize);
+            ViewBag.CurrentPage = page;
             // Gửi danh sách Staff kèm ID (dùng ViewBag nếu cần)
             ViewBag.StaffIds = staffs.ToDictionary(s => s.Email, s => s.Id);
 
-            return View(staffsList);
+            return View(pagedUsers);
         }
         public IActionResult CreateStaff(string returnUrl)
         {
@@ -117,7 +124,17 @@ namespace CafeHub.MVC.Controllers
                     return View(model);
                 }
 
+                DateTime hireDate = staff.HireDate;
+                DateTime nextMonth = hireDate.AddMonths(1);
+
+                // Lấy ngày cuối cùng của tháng mới
+                int lastDay = DateTime.DaysInMonth(nextMonth.Year, nextMonth.Month);
+                salaryOfStaff.PayDate = new DateTime(nextMonth.Year, nextMonth.Month, lastDay);
+
+                salaryOfStaff.MonthYear = salaryOfStaff.PayDate.ToString("yyyy-MM");
+
                 salaryOfStaff.BaseSalary = model.Salary;
+                salaryOfStaff.HourlyRate = 25;
 
                 await _salaryService.ModifySalaryAsync(salaryOfStaff);
 
@@ -225,8 +242,32 @@ namespace CafeHub.MVC.Controllers
                 ModelState.AddModelError("", "Không thể tạo ca làm việc. Vui lòng thử lại!");
                 return View(model);
             }
+            
 
             return RedirectToAction("WorkShiftDetail", "AdminWorkShiftMange", new { workshiftid = model.WorkShiftId});
+
+            /*
+             // Cập nhật giờ làm việc trong Salary
+            var staff = await _dbContext.Staffs.FindAsync(model.StaffId);
+            if (staff != null)
+            {
+                var currentMonthYear = DateTime.Now.ToString("yyyy-MM");
+
+                var salaryRecord = await _dbContext.Salaries
+                    .FirstOrDefaultAsync(s => s.StaffId == staffId && s.MonthYear == currentMonthYear);
+
+                if (salaryRecord != null)
+                {
+                    // Kiểm tra ngày thuê có hợp lệ trong khoảng PayDate
+                    if (staff.HireDate <= salaryRecord.PayDate)
+                    {
+                        salaryRecord.TotalHoursWorked += 5;
+                        await _dbContext.SaveChangesAsync();
+                    }
+                }
+            }
+            return RedirectToAction("WorkShiftDetail", "AdminWorkShiftMange", new { workshiftid = model.WorkShiftId});
+             */
         }
     }
 }

@@ -1,93 +1,53 @@
-﻿@model IEnumerable<CafeHub.Commons.Models.Salary>
-<div class="page-service-single">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-4">
-                <div class="page-single-sidebar">
-                    <div class="page-category-list wow fadeInUp">
-                        <h3>Admin Panel</h3>
-                        <ul>
-                            <li><a asp-controller="AdminUserDashboard" asp-action="Index">Dashboard</a></li>
-                            <li><a asp-controller="AdminUserDashboard" asp-action="ManageUser">Manage Users</a></li>
-                            <li><a asp-controller="AdminStaffManage" asp-action="Manage_Staff">Manage Staffs</a></li>
-                            <li><a asp-controller="Salaries" asp-action="All_Salaries">Salary</a></li>
-                            <li><a asp-controller="Discounts" asp-action="Index">Manage Discounts</a></li>
-                            <li><a asp-controller="Products" asp-action="Index">Manage Products</a></li>
-                            <li><a asp-controller="AdminCategoryManage" asp-action="Index">Manage Category</a></li>
-                            <li><a asp-controller="AdminWorkShiftMange" asp-action="Index">Manage WorkShift</a></li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-8">
-                <div class="service-single-content">
-                    <h2 class="text-anime-style-3">Salary Management</h2>
-                    <a asp-action="CreateSalary" class="btn btn-primary mb-3">Add New Salary</a>
-                    <input type="text" id="search" class="form-control mb-3" placeholder="Search Staff...">
-                    <div class="table-responsive">
-                        <table class="table table-bordered border-primary">
-                            <thead class="thead-dark">
-                                <tr>
-                                    <th>Name</th> <!--StaffId-->
-                                    <th>BaseSalary</th>
-                                    <th>Bonus</th>
-                                    <th>Deduction</th>
-                                    <th>PayDate</th>
-                                    <th>MonthYear</th>
-                                    <th>TotalHoursWorked</th>
-                                    <th>OvertimeHours</th>
-                                    <th>HourlyRate</th>
-                                    <th>Notes</th>
-                                </tr>
-                            </thead>
-                            <tbody id="salaryTableBody">
-                                @foreach (var salary in Model)
-                                {
-                                    <tr>
-                                        <td>@salary.StaffName</td> <!--StaffId-->
-                                        <td>@salary.BaseSalary</td>
-                                        <td>@salary.Bonus</td>
-                                        <td>@salary.Deduction</td>
-                                        <td>@salary.PayDate</td>
-                                        <td>@salary.MonthYear</td>
-                                        <td>@salary.TotalHoursWorked</td>
-                                        <td>@salary.OvertimeHours</td>
-                                        <td>@salary.HourlyRate</td>
-                                        <td>@salary.Notes</td>
+﻿@model List<CafeHub.Commons.Models.Salary>
 
-                                        <td>
-                                            <a asp-action="EditUser" asp-route-id="@salary.Id" class="btn btn-warning btn-sm">Edit</a>
-                                            <a asp-action="DeleteUser" asp-route-id="@salary.Id" class="btn btn-danger btn-sm">Delete</a>
-                                        </td>
-                                    </tr>
-                                }
-                            </tbody>
-                        </table>
-                    </div>
-                    <nav>
-                        <ul class="pagination justify-content-center">
-                            <li class="page-item disabled"><a class="page-link" href="#">Previous</a></li>
-                            <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                            <li class="page-item"><a class="page-link" href="#">2</a></li>
-                            <li class="page-item"><a class="page-link" href="#">3</a></li>
-                            <li class="page-item"><a class="page-link" href="#">Next</a></li>
-                        </ul>
-                    </nav>
-                </div>
-            </div>
-        </div>
-    </div>
+@{
+    ViewData["Title"] = "Salary Management";
+    var monthYear = ViewBag.MonthYear as string;
+}
+
+<h2>Salary Management - @monthYear</h2>
+
+@if (TempData["Message"] != null)
+{
+    <div class="alert alert-success">@TempData["Message"]</div>
+}
+
+<div class="d-flex justify-content-between mb-3">
+    <a class="btn btn-primary" href="@Url.Action("CalculateSalaries", new { monthYear })">🔄 Calculate Salaries</a>
+    <form method="get" class="d-flex">
+        <input type="month" name="monthYear" value="@monthYear" class="form-control me-2" />
+        <button type="submit" class="btn btn-secondary">Filter</button>
+    </form>
 </div>
 
-@section Scripts {
-    <script>
-        document.getElementById("search").addEventListener("keyup", function () {
-            let filter = this.value.toLowerCase();
-            let rows = document.querySelectorAll("#salaryTableBody tr");
-            rows.forEach(row => {
-                let text = row.textContent.toLowerCase();
-                row.style.display = text.includes(filter) ? "" : "none";
-            });
-        });
-    </script>
-}
+<table class="table table-bordered">
+    <thead class="table-dark">
+        <tr>
+            <th>Staff ID</th>
+            <th>Name</th>
+            <th>Base Salary</th>
+            <th>Total Hours Worked</th>
+            <th>Overtime Hours</th>
+            <th>Bonus</th>
+            <th>Deduction</th>
+            <th>Net Salary</th>
+            <th>Pay Date</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var salary in Model)
+        {
+            <tr>
+                <td>@salary.StaffId</td>
+                <td>@salary.StaffName</td>
+                <td>@salary.BaseSalary.ToString("C")</td>
+                <td>@salary.TotalHoursWorked</td>
+                <td>@salary.OvertimeHours</td>
+                <td>@salary.Bonus.ToString("C")</td>
+                <td>@salary.Deduction.ToString("C")</td>
+                <td><strong>@salary.NetSalary.ToString("C")</strong></td>
+                <td>@salary.PayDate.ToString("yyyy-MM-dd")</td>
+            </tr>
+        }
+    </tbody>
+</table>

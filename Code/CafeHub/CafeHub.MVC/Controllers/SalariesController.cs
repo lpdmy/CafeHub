@@ -7,6 +7,9 @@ using CafeHub.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using System.Globalization;
+using CafeHub.Commons;
+using CafeHub.MVC.Models;
 
 namespace CafeHub.MVC.Controllers
 {
@@ -15,39 +18,118 @@ namespace CafeHub.MVC.Controllers
         private readonly UserManager<User> _userManager;
         private readonly ISalaryService _salaryService;
         private readonly IAccountService _accountService;
-        public SalariesController(UserManager<User> userManager,ISalaryService salaryService, IAccountService accountService)
+        private readonly ApplicationDbContext _context;
+        private readonly IWorkShiftDetailService _workShiftDetailService;
+        private readonly IWorkShitService _workShitService;
+        public SalariesController(UserManager<User> userManager,ISalaryService salaryService, IAccountService accountService, ApplicationDbContext context,
+            IWorkShiftDetailService workShiftDetailService, IWorkShitService workShitService)
         {
             _userManager = userManager;
             _salaryService = salaryService;
             _accountService = accountService;
+            _context = context;
+            _workShiftDetailService = workShiftDetailService;
+            _workShitService = workShitService;
         }
 
-        //public async Task<IActionResult> Index(int? staffId)
-        //{
-        //    var salaries;
 
-        //    if (staffId.HasValue)
-        //    {
-        //        salaries = await _salaryService.GetSalariesStaffByIdAsync(staffId.Value);
-        //    }
-        //    else
-        //    {
-        //        salaries = await _salaryService.GetAllSalariesAsync();
-        //    }
-
-        //    return View(salaries);
-        //}
         //admin
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> All_Salaries()
+        public async Task<IActionResult> All_Salaries(int page = 1, int pageSize = 5)
         {
             var salaries = await _salaryService.GetAllSalariesAsync();
-            if(salaries.Count == 0)
+            var WSDetail = await _workShiftDetailService.GetAllWSDetail();
+
+            if (salaries.Count == 0)
             {
                 return NotFound();
             }
+            // Lấy ngày hiện tại
+            DateTime currentDate = DateTime.Now;
 
-            return View(salaries);
+            // Kiểm tra và cập nhật PayDate của các salaries
+            foreach (var salary in salaries)
+            {
+                var staffShifts =  await _workShiftDetailService.GetWorShiftByStaff(salary.StaffId);
+
+                
+
+                if(staffShifts != null)
+                {
+                    var LateTime = staffShifts.Count(w => w.AttendanceStatus == "Late");
+                    var AbsentTime = staffShifts.Count(w => w.AttendanceStatus == "Absent");
+                    // Tính số tiền trừ do đi muộn
+                    salary.Deduction = LateTime * 100000 + AbsentTime * 500000;
+
+                    // Tính số ngày làm việc(Present)
+                    salary.TotalHoursWorked = staffShifts.Count(w => w.AttendanceStatus == "Present") * 5;
+
+                    // Tính số giờ làm thêm(OvertimeHours)
+                    salary.OvertimeHours = staffShifts.Count(w => w.AttendanceStatus == "Present" && w.WorkShift!.ShiftDate.DayOfWeek == DayOfWeek.Sunday) * 5;
+
+                    // Tính thưởng từ số giờ làm ngày chủ nhật
+                    salary.Bonus = (decimal)salary.OvertimeHours * salary.HourlyRate;
+
+                }
+
+                if (salary.PayDate < currentDate)
+                {
+
+                    // Cộng thêm 1 tháng
+                    DateTime nextMonth = salary.PayDate.AddMonths(1);
+
+                    // Lấy ngày cuối cùng của tháng mới
+                    int lastDay = DateTime.DaysInMonth(nextMonth.Year, nextMonth.Month);
+
+                    // Đảm bảo ngày mới luôn là ngày cuối tháng
+                    salary.PayDate = new DateTime(nextMonth.Year, nextMonth.Month, lastDay);
+
+                    // Cập nhật MonthYear
+                    salary.MonthYear = salary.PayDate.ToString("yyyy-MM");
+
+                    /*
+                    salary.PayDate = salary.PayDate.AddMonths(1);
+                    // Cập nhật MonthYear để phù hợp với PayDate mới
+                    salary.MonthYear = salary.PayDate.ToString("yyyy-MM");
+                    */
+
+                }
+
+                // Cập nhật từng salary riêng lẻ
+                await _salaryService.ModifySalaryAsync(salary);  // Giả sử service có phương thức UpdateAsync
+            }
+
+            var A_CheckSalary = await _salaryService.GetAllSalariesAsync();
+
+            if (A_CheckSalary.Count == 0)
+            {
+                return NotFound();
+            }
+            // tính và display lương 
+            var salaryView = A_CheckSalary.Select(salary => new SalaryViewModel
+            {
+                Id = salary.Id,
+                StaffId = salary.StaffId,
+                StaffName = salary.StaffName,
+                BaseSalary = salary.BaseSalary,
+                Bonus = salary.Bonus,
+                Deduction = salary.Deduction,
+                PayDate = salary.PayDate,
+                MonthYear = salary.MonthYear,
+                TotalHoursWorked = salary.TotalHoursWorked,
+                OvertimeHours = salary.OvertimeHours,
+                HourlyRate = salary.HourlyRate,
+                Notes = salary.Notes,
+                TotalSalary = salary.BaseSalary + salary.Bonus * 1000 - salary.Deduction
+            }).ToList();
+
+            int totalUsers = salaryView.Count();
+            var pagedUsers = salaryView.Skip((page - 1) * pageSize).Take(pageSize).ToList();
+
+            ViewBag.TotalPages = (int)Math.Ceiling((double)totalUsers / pageSize);
+            ViewBag.CurrentPage = page;
+
+            return View(pagedUsers);
         }
         //GET: 
         public async Task<IActionResult> Edit(string StaffID, int id)
@@ -113,6 +195,7 @@ namespace CafeHub.MVC.Controllers
                 return View(salary);
             }
             return RedirectToAction(nameof(All_Salaries));
-        }        
+        }
+        
     }
 }
