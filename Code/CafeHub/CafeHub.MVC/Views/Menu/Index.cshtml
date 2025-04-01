@@ -97,7 +97,8 @@
                                                 <div class="menu-item-title">
                                                     <h3>@products[i].Name</h3>
                                                     <hr>
-                                                    <span>$@products[i].Price</span>
+                                                    <span>@products[i].Price.ToString("C0", new System.Globalization.CultureInfo("vi-VN"))</span>
+
                                                 </div>
                                                 <div class="menu-item-content">
                                                     <p>@products[i].Description</p>
@@ -121,7 +122,8 @@
                                                 <div class="menu-item-title">
                                                     <h3>@products[i].Name</h3>
                                                     <hr>
-                                                    <span>$@products[i].Price</span>
+                                                    <span>@products[i].Price.ToString("C0", new System.Globalization.CultureInfo("vi-VN"))</span>
+
                                                 </div>
                                                 <div class="menu-item-content">
                                                     <p>@products[i].Description</p>

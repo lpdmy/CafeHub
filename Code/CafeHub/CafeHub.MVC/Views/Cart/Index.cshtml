@@ -1,4 +1,62 @@
 ﻿@model IEnumerable<OrderItemViewModel>
+<style>
+    /* Table Header */
+    .table th {
+        color: white; /* Text color */
+        background-color: #121d23; /* Background color */
+        padding: 10px; /* Add some padding for better spacing */
+        text-align: center; /* Center align text */
+    }
+
+    /* Table Body */
+    .table tbody tr {
+        background-color: #1e2b32; /* Row background color */
+        color: white; /* Text color */
+    }
+
+        /* Alternate Row Coloring */
+        .table tbody tr:nth-child(even) {
+            background-color: #24333a; /* Slightly lighter for contrast */
+        }
+
+    /* Table Borders */
+    .table, .table th, .table td {
+        border: 1px solid #2c3e50; /* Border color */
+    }
+
+        /* Table Cells */
+        .table td {
+            padding: 10px;
+            text-align: center;
+        }
+
+        /* Table Hover Effect */
+        .table tbody tr:hover {
+            background-color: #34495e; /* Hover effect */
+        }
+
+    /* Button Styling */
+    .btn-default {
+        background-color: #ff7f50; /* Custom button color */
+        color: white;
+        padding: 8px 16px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+        .btn-default:hover {
+            background-color: #e67346; /* Darker shade on hover */
+        }
+
+    .btn-danger {
+        background-color: #dc3545; /* Red for danger buttons */
+    }
+
+        .btn-danger:hover {
+            background-color: #c82333;
+        }
+</style>
 
 <h2>Your Cart</h2>
 
@@ -52,8 +110,9 @@
                         <td>
                             <input type="number" name="CartItems[@i].IceAmount" value="@item.IceAmount" min="0" max="100" class="form-control" />
                         </td>
-                        <td>@adjustedPrice.ToString("C")</td>
-                        <td>@(adjustedPrice * item.Quantity).ToString("C")</td>
+                        <td>@adjustedPrice.ToString("C0", new System.Globalization.CultureInfo("vi-VN"))</td>
+                        <td>@((adjustedPrice * item.Quantity).ToString("N0", new System.Globalization.CultureInfo("vi-VN")) + " đ")</td>
+
                         <td>
                             <input type="hidden" name="CartItems[@i].ProductId" value="@item.ProductId" />
                             <input type="hidden" name="CartItems[@i].OriginalSize" value="@item.Size" />
@@ -73,10 +132,15 @@
         </table>
 
         <h4>
-            Total: @Model.Sum(x =>
-              (x.Size == "Medium" ? x.UnitPrice * 1.3m : (x.Size == "Large" ? x.UnitPrice * 1.5m : x.UnitPrice))
-              * x.Quantity).ToString("C")
+            Total: @(((decimal)Model.Sum(x =>
+         (x.Size == "Medium" ? x.UnitPrice * 1.3m :
+         (x.Size == "Large" ? x.UnitPrice * 1.5m : x.UnitPrice))
+         * x.Quantity)).ToString("N0", new System.Globalization.CultureInfo("vi-VN")) + " đ")
         </h4>
+
+
+
+
 
         <div class="d-flex justify-content-between align-items-center mt-3">
             <button type="submit" class="btn-default">Update Cart</button>
@@ -120,8 +184,3 @@ else
     </div>
 
 }
-<style>
-    .table th {
-        background-color: #C9A581;
-    }
-</style>

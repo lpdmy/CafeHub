@@ -54,7 +54,8 @@
                                                 <div class="menu-item-title">
                                                     <h3>@product.Name</h3>
                                                     <hr>
-                                                    <span>$@product.Price</span>
+                                                    <span>@product.Price.ToString("C0", new System.Globalization.CultureInfo("vi-VN"))</span>
+
                                                 </div>
                                                 <div class="menu-item-content">
                                                     <p>@product.Description</p>
