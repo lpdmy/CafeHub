@@ -1,0 +1,44 @@
+﻿<!-- Interactive Process Layout Start -->
+<div class="interactive interactive-process-layout">
+    <div class="interactive-interactive-process-wrapper interactive-wrapper">
+        <div class="interactive-con">
+            <div class="interactive-con-inner interactive-grid">
+                @{
+                    var teamMembers = new[]
+                    {
+                new { Index = 0, Name = "Le Phuoc Dieu My" },
+                new { Index = 1, Name = "Nguyen Tuan Minh" },
+                new { Index = 2, Name = "Le Cong Thien" },
+                new { Index = 3, Name = "Nguyen Minh Tuan" }
+                };
+                }
+
+                @foreach (var member in teamMembers)
+                {
+                    <div class="interactive-process-item">
+                        <div class="interactive-inner-process @(member.Index == 0 ? "activate" : "")" data-index="@member.Index">
+                            <div class="process-content-wap">
+                                <div class="process-inner-content-wap">
+                                    <h2><a href="#">@member.Name</a></h2>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+
+            <!-- Interactive Process Image Start -->
+            <div class="interactive-process-list-image">
+                @for (int i = 1; i <= 4; i++)
+                {
+                    <div class="interactive-process-image img-@(i-1) @(i == 1 ? "show" : "")"
+                         data-bg="@Url.Content("~/images/team-member-image-" + i + ".jpg")"
+                         style="background-image: url('@Url.Content("~/images/team-member-image-" + i + ".jpg")');">
+                    </div>
+                }
+            </div>
+            <!-- Interactive Process Image End -->
+        </div>
+    </div>
+</div>
+<!-- Interactive Process Layout End -->

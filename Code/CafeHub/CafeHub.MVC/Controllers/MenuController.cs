@@ -21,6 +21,11 @@ namespace CafeHub.MVC.Controllers
 
             return View(categories);
         }
+
+        public IActionResult Team()
+        {
+            return View();
+        }
         //public IActionResult Index()
         //{
         //    return View();
