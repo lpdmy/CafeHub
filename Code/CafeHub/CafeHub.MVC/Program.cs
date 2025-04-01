@@ -5,6 +5,7 @@ using CafeHub.Repository.Interfaces;
 using CafeHub.Repository.Repositories;
 using CafeHub.Service.Interfaces;
 using CafeHub.Service.Services;
+using CafeHub.Services.Hubs;
 using CafeHub.Services.Interfaces;
 using CafeHub.Services.Models;
 using CafeHub.Services.Services;
@@ -15,8 +16,8 @@ using Microsoft.EntityFrameworkCore;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection")
-                        ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+var connectionString = Environment.GetEnvironmentVariable("DefaultConnection")
+    ?? builder.Configuration.GetConnectionString("DefaultConnection");
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString));
@@ -34,12 +35,12 @@ builder.Services.AddScoped<IAccountRepository, AccountRepository>();
 builder.Services.AddScoped<IAccountService, AccountService>();
 builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 builder.Services.AddScoped<ISalaryRepository, SalaryRepository>();
+builder.Services.AddScoped<IWorkShiftRepository, WorkShiftRepository>();
+builder.Services.AddScoped<IWorkShiftDetailRepository, WorkShiftDetailRepository>();
 
 builder.Services.AddScoped<ISalaryService, SalaryService>();
-
 builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
-
 builder.Services.AddScoped<IDiscountService, DiscountService>();
 builder.Services.AddScoped<IDiscountRepository, DiscountRepository>();
 builder.Services.AddScoped<ICustomerDiscountRepository, CustomerDiscountRepository>();
@@ -52,10 +53,23 @@ builder.Services.AddScoped<IPaymentRepository, PaymentRepository>();
 
 builder.Services.AddScoped<ICartService, CartService>();
 builder.Services.AddScoped<IOrderItemRepository, OrderItemRepository>();
+builder.Services.AddScoped<IWorkShitService, WorkShiftService>();
+builder.Services.AddScoped<IWorkShiftDetailService, WorkShiftDetailService>();
+builder.Services.AddScoped<INotificationService, NotificationService>();
+
+
+builder.Services.AddScoped<IOrderService, OrderService>();
+
+
 
 builder.Services.AddScoped<IVnPayService, VnPayService>();
 
 
+builder.Services.AddSignalR();
+builder.Logging.ClearProviders();
+builder.Logging.AddConsole(); // Log ra console
+builder.Logging.AddDebug();   // Log vào Debug Window
+builder.Services.AddHostedService<WorkShiftBackgroundService>();
 
 
 builder.Services.AddIdentity<User, ApplicationRole>(options => options.SignIn.RequireConfirmedAccount = false)
@@ -93,6 +107,7 @@ else
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
+app.MapHub<NotificationHub>("/notificationHub");
 
 app.UseRouting();
 

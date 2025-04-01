@@ -288,6 +288,5 @@ namespace CafeHub.Commons
             modelBuilder.Entity<Product>().HasData(products);
      
         }
-
     }
 }

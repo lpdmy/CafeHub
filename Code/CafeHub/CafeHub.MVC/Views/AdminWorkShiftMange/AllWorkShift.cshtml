@@ -1,6 +1,4 @@
-﻿@using CafeHub.Web.Models
- @model IEnumerable<StaffViewModel?> 
-
+﻿@model IEnumerable<WorkShiftViewModel?>
 
 <div class="page-service-single">
     <div class="container">
@@ -24,40 +22,35 @@
             </div>
             <div class="col-lg-8">
                 <div class="service-single-content">
-                    <h2 class="text-anime-style-3" style="margin-bottom:5px; color:#C9A581;">Staff Management</h2>
-                    <a asp-action="CreateStaff" asp-controller="AdminStaffManage"
-                       asp-route-returnUrl="@Url.Action("Manage_Staff", "AdminStaffManage")" class="btn btn-primary mb-3">Add New Staff</a>
-                    <input type="text" id="search" class="form-control mb-3" placeholder="Search staff...">
+                    <h2 class="text-anime-style-3" style="margin-bottom:5px; color:#C9A581;">WorkShift Management</h2>
+                    <a asp-action="Create" class="btn btn-primary mb-3">Add New Shift</a>
+                    <input type="text" id="search" class="form-control mb-3" placeholder="Search ...">
                     <div class="table-responsive">
                         <table class="table table-bordered border-primary">
                             <thead class="thead-dark">
                                 <tr>
                                     <th>Name</th>
-                                    <th>Email</th>
-                                    <th>EmployeeCode</th>
-                                    <th>Position</th>
-                                    <th>HireDate</th>
-                                    <th>Salary</th> 
-                                    <th style="width: 150px;">Actions</th>
+                                    <th>Start Time</th>
+                                    <th>End Time</th>
+                                    <th>Create Date</th>
+                                    <th>Description</th>
+                                    <th>Actions</th>
                                 </tr>
                             </thead>
-                            <tbody id="staffTableBody">
-                                @foreach (var staff in Model)
+                            <tbody id="workShiftTableBody">
+                                @foreach (var ws in Model)
                                 {
-                                    var staffId = ViewBag.StaffIds[staff.Email];
-
                                     <tr>
-                                        <td>@staff.Name</td>
-                                        <td>@staff.Email</td>
-                                        <td>@staff.EmployeeCode</td>
-                                        <td>@staff.Position</td>
-                                        <td>@staff.HireDate.ToString("dd-MM-yyyy")</td>
-                                        <td>@staff.Salary</td>
+                                        <td>@ws.ShiftName</td>
+                                        <td>@ws.StartTime.ToShortTimeString()</td>
+                                        <td>@ws.EndTime.ToShortTimeString()</td>
+                                        <td>@ws.ShiftDate.ToString("dd-MM-yyyy")</td>
+                                        <td>@ws.Description</td>
                                         <td>
-                                            <a asp-action="EditStaff" asp-route-id="@staffId" class="btn btn-warning btn-sm">Edit</a>
-                                            <a asp-action="DeleteStaff" asp-route-id="@staffId" asp-route-returnUrl="@Url.Action("Manage_Staff", "AdminStaffManage")" class="btn btn-danger btn-sm">Delete</a>
-                                            <a asp-action="CreateWS" asp-route-id="@staffId" class="btn btn-outline-primary btn-sm">WS</a>
-                                        </td> 
+                                            <a asp-action="Edit" asp-route-id="@ws.Id" class="btn btn-warning btn-sm">Edit</a>
+                                            <a asp-action="WSDetail" asp-route-id="@ws.Id" class="btn btn-outline-primary btn-sm">Detail</a>
+                                            <a asp-action="Delete" asp-route-id="@ws.Id" class="btn btn-danger btn-sm">Delete</a>
+                                        </td>
                                     </tr>
                                 }
                             </tbody>
@@ -82,7 +75,7 @@
     <script>
         document.getElementById("search").addEventListener("keyup", function () {
             let filter = this.value.toLowerCase();
-            let rows = document.querySelectorAll("#staffTableBody tr");
+            let rows = document.querySelectorAll("#workShiftTableBody tr");
             rows.forEach(row => {
                 let text = row.textContent.toLowerCase();
                 row.style.display = text.includes(filter) ? "" : "none";

@@ -1,11 +1,12 @@
 ﻿using CafeHub.Commons.Models;
+using CafeHub.MVC.Models;
 using CafeHub.Services.Interfaces;
 using CafeHub.Web.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using System.Security.Policy;
 
 namespace CafeHub.MVC.Controllers
 {
@@ -15,18 +16,22 @@ namespace CafeHub.MVC.Controllers
         private readonly UserManager<User> _userManager;
         private readonly IAccountService _accountService;
         private readonly ISalaryService _salaryService;
-        
-        public AdminStaffManage(UserManager<User> userManager, IAccountService accountService, ISalaryService salaryService)
+        private readonly IWorkShiftDetailService _workShiftDetailService;
+        private readonly IWorkShitService _workShiftService;
+        public AdminStaffManage(UserManager<User> userManager, IAccountService accountService, ISalaryService salaryService,
+            IWorkShiftDetailService workShiftDetailService, IWorkShitService workShiftService)
         {
             _userManager = userManager;
             _accountService = accountService;
             _salaryService = salaryService;
+            _workShiftDetailService = workShiftDetailService;
+            _workShiftService = workShiftService;
         }
         public async Task<IActionResult> Manage_Staff()
         {
             var UserId = await _accountService.GetCurrentUserIdAsync();
 
-            var staffs = await _userManager.GetUsersInRoleAsync("Staff");      
+            var staffs = await _userManager.GetUsersInRoleAsync("Staff");
 
             var staffsList = staffs
                  .OfType<Staff>() // Ép kiểu sang Staff
@@ -52,14 +57,14 @@ namespace CafeHub.MVC.Controllers
         }
         public async Task<IActionResult> EditStaff(string id)
         {
-            
-            if(string.IsNullOrEmpty(id))
+
+            if (string.IsNullOrEmpty(id))
             {
                 return NotFound();
             }
 
             var user = await _userManager.FindByIdAsync(id);
-            var staff = user as Staff;           
+            var staff = user as Staff;
 
             // Chuyển đổi từ Staff sang StaffViewModel
             var model = new StaffViewModel
@@ -74,12 +79,12 @@ namespace CafeHub.MVC.Controllers
 
             ViewBag.StaffId = id;
             return View(model);
-            
+
         }
-        [HttpPost]        
+        [HttpPost]
         public async Task<IActionResult> EditStaff(string id, StaffViewModel model)
         {
-            if(string.IsNullOrEmpty(id)) return NotFound();
+            if (string.IsNullOrEmpty(id)) return NotFound();
             if (!ModelState.IsValid) return View(model);
 
             var staff = await _userManager.Users
@@ -93,30 +98,30 @@ namespace CafeHub.MVC.Controllers
                 return View(model);
             }
 
-                // Cập nhật thông tin từ model vào đối tượng staff đã lấy từ DB
-                staff.Name = model.Name;
-                staff.Email = model.Email;
-                staff.EmployeeCode = model.EmployeeCode;
-                staff.Position = model.Position;
-                staff.HireDate = model.HireDate;
-                staff.Salary = model.Salary;
+            // Cập nhật thông tin từ model vào đối tượng staff đã lấy từ DB
+            staff.Name = model.Name;
+            staff.Email = model.Email;
+            staff.EmployeeCode = model.EmployeeCode;
+            staff.Position = model.Position;
+            staff.HireDate = model.HireDate;
+            staff.Salary = model.Salary;
 
             var updateResult = await _userManager.UpdateAsync(staff);
             if (updateResult.Succeeded)
             {
                 var salaryOfStaff = await _salaryService.GetSalaryOfStaff(id);
 
-                if (salaryOfStaff == null) 
+                if (salaryOfStaff == null)
                 {
                     ModelState.AddModelError("", "Can not update Salary.");
-                    return View(model); 
+                    return View(model);
                 }
-                               
+
                 salaryOfStaff.BaseSalary = model.Salary;
 
                 await _salaryService.ModifySalaryAsync(salaryOfStaff);
 
-                return RedirectToAction("Manage_Staff");
+                return RedirectToAction(nameof(Manage_Staff)); //RedirectToAction("Manage_Staff"); 
             }
 
             return View(model);
@@ -173,6 +178,55 @@ namespace CafeHub.MVC.Controllers
                 return Redirect(returnUrl ?? Url.Action("Manage_Staff", "AdminStaffManage"));
             }
             return View();
+        }
+        public async Task<IActionResult> CreateWS(int id)
+        {
+            var workShift = await _workShiftService.GetWorkShiftById(id);
+
+            if (workShift == null)
+            {
+                return NotFound("Không tìm thấy ca làm việc.");
+            }
+
+            // Lấy danh sách nhân viên chưa có trong ca làm việc
+            var allStaffs = await _userManager.GetUsersInRoleAsync("Staff");
+            var assignedStaffIds = workShift.WorkShiftDetails.Select(wd => wd.StaffId).ToList();
+
+            var availableStaffs = allStaffs
+                .OfType<Staff>()
+                .Where(st => !assignedStaffIds.Contains(st.Id))
+                .ToList();
+
+            ViewBag.StaffList = availableStaffs.Select(st => new SelectListItem
+            {
+                Value = st.Id.ToString(),
+                Text = st.Name
+            });
+
+            ViewBag.WorkShiftId = workShift.Id;
+            return View();
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CreateWS(WorkShiftDetailViewModel model)
+        {
+
+            var shift = new WorkShiftDetail
+            {
+                StaffId = model.StaffId,
+                WorkShiftId = model.WorkShiftId,
+                AttendanceStatus = model.AttendanceStatus,
+            };
+
+            var success = await _workShiftDetailService.AddNewDetail(shift);
+
+            if (!success)
+            {
+                ModelState.AddModelError("", "Không thể tạo ca làm việc. Vui lòng thử lại!");
+                return View(model);
+            }
+
+            return RedirectToAction("WorkShiftDetail", "AdminWorkShiftMange", new { workshiftid = model.WorkShiftId});
         }
     }
 }

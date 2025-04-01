@@ -22,11 +22,6 @@ namespace CafeHub.Commons.Models
         [Required]
         public string AttendanceStatus { get; set; } = "Present";
 
-        public DateTime? CheckInTime { get; set; }
-        public DateTime? CheckOutTime { get; set; }
-
-        public decimal OvertimeHours { get; set; }
-        public long HoursContributed { get; set; }
         public string? Notes { get; set; }
 
         [ForeignKey("StaffId")]

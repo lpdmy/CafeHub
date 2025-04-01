@@ -7,6 +7,8 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/CafeHub.MVC.styles.css" asp-append-version="true" />
+    <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.0/main.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.0/main.min.js"></script>
         <!-- Meta -->
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -45,6 +47,68 @@
         <link rel="stylesheet" href="@Url.Content("~/css/mousecursor.css")">
         <!-- Main Custom Css -->
         <link href="@Url.Content("~/css/custom.css")" rel="stylesheet" media="screen">
+        <style>
+        /* Notification Button */
+        .notification-container {
+            position: relative;
+            margin-left: 20px; /* Adjust positioning as needed */
+        }
+
+        #notificationButton {
+            background-color: transparent;
+            border: none;
+            font-size: 20px;
+            color: #fff;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .notification-count {
+            position: absolute;
+            top: -7px;
+            right: -5px;
+            background-color: red;
+            color: white;
+            font-size: 12px;
+            border-radius: 50%;
+            width: 18px;
+            height: 18px;
+            text-align: center;
+        }
+
+        /* Dropdown Menu for Notifications */
+        .notification-dropdown {
+            display: none;
+            position: absolute;
+            top: 30px; /* Position below the notification button */
+            right: 0;
+            background-color: white;
+            border: 1px solid #ddd;
+            width: 250px;
+            box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+            z-index: 1;
+        }
+
+        .notification-item {
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+            cursor: pointer;
+        }
+
+            .notification-item:hover {
+                background-color: #f1f1f1;
+            }
+
+        /* Show the dropdown when active */
+        .notification-dropdown.show {
+            display: block;
+        }
+
+        form option {
+            color: black;
+        }
+
+        </style>
 </head>
 <body>
     <!-- Preloader Start -->
@@ -102,8 +166,34 @@
                                         <li class="nav-item"><a class="nav-link" href="index-slider.html">Home - Slider</a></li>
                                     </ul>
                                 </li>
-                                <li class="nav-item"><a class="nav-link" href="about.html">About Us</a></li>
-                                <li class="nav-item"><a class="nav-link" href="services.html">Services</a></li>
+                                @if (User.IsInRole("Staff"))
+                                {
+                                <li class="nav-item">
+                                    <a class="nav-link" asp-controller="StaffWorkShift" asp-action="MyWorkSchedule">My Schedule</a>
+                                </li>
+                                }
+                                @if (User.Identity.IsAuthenticated)
+                                {
+                                    if (User.IsInRole("Staff"))
+                                    {
+                                        <li class="nav-item">
+                                            <a class="nav-link" asp-controller="OrderOffline" asp-action="Index">Service</a>
+                                        </li>
+                                    }
+                                    else
+                                    {
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="services.html">Services</a>
+                                        </li>
+                                    }
+                                }
+                                else
+                                {
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="services.html">Services</a>
+                                    </li>
+                                }
+
                                 
                                     @if (User.Identity.IsAuthenticated)
                                     {
@@ -128,6 +218,9 @@
                                 
 
 
+                                <li class="nav-item"><a class="nav-link" href="services.html">Services</a></li>
+                                <li class="nav-item"><a class="nav-link" asp-controller="Menu" asp-action="Index">Menu</a></li>
+
 
                                 <li class="nav-item submenu">
                                     <a class="nav-link" href="#">Pages</a>
@@ -149,7 +242,22 @@
                                 <li class="nav-item highlighted-menu">
                                     <a class="nav-link" asp-controller="Account" asp-action="Login">Login</a>
                                 </li>
+                                @if (User.Identity.IsAuthenticated)
+                                {
+                                    <li class="nav-item">
+                                        <div class="notification-container">
+                                        <button id="notificationButton">
+                                            <i class="fa fa-bell"></i>
+                                            <span id="unreadCount" class="notification-count">0</span>
+                                        </button>
 
+                                        <div id="notificationDropdown" class="notification-dropdown">
+                                            <div id="notificationList">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                                }
                             </ul>
                         </div>
 
@@ -161,7 +269,12 @@
                                 {
                                     <a asp-controller="AdminUserDashboard" asp-action="ManageUser" class="btn-default btn-highlighted me-2">Dashboard</a>
                                     <a asp-controller="Account" asp-action="Logout" class="btn-default btn-highlighted">Logout</a>
-                                } else
+                                }
+                                else if (User.IsInRole("Staff"))
+                                {
+                                    <a asp-controller="Account" asp-action="StaffProfile" class="btn-default btn-highlighted me-2">Profile</a>
+                                    <a asp-controller="Account" asp-action="Logout" class="btn-default btn-highlighted">Logout</a>
+                                } else if (User.IsInRole("Customer"))
                                 {
                                     <a asp-controller="Account" asp-action="CustomerProfile" class="btn-default btn-highlighted me-2">Profile</a>
                                     <a asp-controller="Account" asp-action="Logout" class="btn-default btn-highlighted">Logout</a>
@@ -360,5 +473,96 @@
     <script src="~/js/wow.min.js" asp-append-version="true"></script>
     <!-- Main Custom js file -->
     <script src="~/js/function.js" asp-append-version="true"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/7.0.5/signalr.min.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            let notifications = [
+                { title: "New Comment", content: "Someone commented on your post.", status: "Unseen", url: "/Home", createdAt: new Date() },
+                { title: "System Update", content: "A new update is available for your app.", status: "Unseen", url: "/Home", createdAt: new Date() },
+                { title: "Message", content: "You have a new message from John.", status: "Unseen", url: "/Home", createdAt: new Date() }
+            ];
+            const notificationListElement = document.getElementById("notificationList");
+            const unreadCountElement = document.getElementById("unreadCount");
+            const notificationDropdown = document.getElementById("notificationDropdown");
+            const notificationButton = document.getElementById("notificationButton"); // Lấy phần tử nút
+
+            // Kết nối SignalR và các sự kiện khác sau khi DOM được tải
+            const connection = new signalR.HubConnectionBuilder()
+                .withUrl("/notificationHub")
+                .configureLogging(signalR.LogLevel.Information)
+                .withAutomaticReconnect()  
+                .build();
+
+            // Các hàm xử lý sự kiện khác
+            function renderNotifications() {
+              
+                notificationListElement.innerHTML = "";
+                notifications.forEach((notification, index) => {
+                    const notificationItem = document.createElement("div");
+                    notificationItem.classList.add("notification-item");
+                    notificationItem.setAttribute('data-index', index);
+
+                    // Format the date and display time of creation
+                    const notificationTime = new Date(notification.createdAt).toLocaleString();
+
+                    notificationItem.innerHTML = `
+                        <strong>${notification.title}</strong><br>
+                        ${notification.content}<br>
+                        <small>Received at: ${notificationTime}</small>
+                    `;
+
+                    // Add click event to mark as 'Seen' and redirect to the URL
+                    notificationItem.onclick = function () {
+                        notification.status = "Seen";
+                        notificationItem.style.backgroundColor = "#f0f0f0";
+                        updateUnreadCount();
+
+                        // Redirect to the notification URL (if exists)
+                        if (notification.url) {
+                            window.location.href = notification.url;
+                        }
+                    };
+
+                    notificationListElement.appendChild(notificationItem);
+                });
+
+                updateUnreadCount();
+            }
+
+            function updateUnreadCount() {
+                const unreadNotifications = notifications.filter(notification => notification.status === "Unseen");
+                unreadCountElement.textContent = unreadNotifications.length;
+            }
+
+            function toggleNotificationDropdown() {
+                notificationDropdown.classList.toggle('show');
+            }
+
+            // Gán sự kiện onclick cho nút
+            notificationButton.addEventListener("click", toggleNotificationDropdown);
+
+            connection.start().then(() => {
+                console.log("SignalR connected.");
+
+                connection.on("ReceiveMessage", function (notification) {
+                    notifications.push(notification);
+                    renderNotifications();
+                });
+            }).catch(err => {
+                console.error("Error connecting to SignalR: ", err);
+            });
+
+            connection.start().catch(function (err) {
+                console.error('Error while starting the connection: ' + err);
+            });
+
+            connection.onclose(function (err) {
+                console.error('Connection closed. Attempting to reconnect...');
+                // Optionally try to reconnect here
+            });
+        });
+    </script>
+
+
 </body>
 </html>

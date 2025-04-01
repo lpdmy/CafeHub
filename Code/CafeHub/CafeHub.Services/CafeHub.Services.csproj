@@ -7,6 +7,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="EPPlus" Version="8.0.1" />
+    <PackageReference Include="Microsoft.AspNetCore.SignalR" Version="1.2.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\CafeHub.Commons\CafeHub.Commons.csproj" />
     <ProjectReference Include="..\CafeHub.Repository\CafeHub.Repository.csproj" />
     

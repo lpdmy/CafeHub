@@ -1,0 +1,101 @@
+﻿@model CafeHub.MVC.Models.OrderOfflineViewModel
+
+<div class="page-create-order">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6">
+                <div class="order-information">
+                    <div class="section-title">
+                        <h3 class="wow fadeInUp">Create Order</h3>
+                        <h2 class="text-anime-style-3" data-cursor="-opaque">Complete your order</h2>
+                        <p class="wow fadeInUp" data-wow-delay="0.2s">Fill out the form below to create your order.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-6">
+                <div class="order-form">
+                    <div class="order-form-content">
+                        <h3 class="wow fadeInUp">Order Details</h3>
+                        <p class="wow fadeInUp" data-wow-delay="0.2s">Select your products, specify quantities, and review your total.</p>
+                    </div>
+
+                    <div class="order-form-table">
+                        <form asp-action="Create" method="post" class="wow fadeInUp" data-wow-delay="0.4s">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Product</th>
+                                        <th>Quantity</th>
+                                        <th>Price</th>
+                                        <th>Total</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @for (var i = 0; i < Model.OrderItems.Count; i++)
+                                    {
+                                        <tr>
+                                            <td>@Model.OrderItems[i].ProductName</td>
+                                            <td>
+                                                <input type="number" class="form-control quantity" asp-for="OrderItems[i].Quantity" data-price="@Model.OrderItems[i].UnitPrice" />
+                                            </td>
+                                            <td>@Model.OrderItems[i].UnitPrice</td>
+                                            <td>
+                                                <span class="total">@(Model.OrderItems[i].Quantity * Model.OrderItems[i].UnitPrice)</span>
+                                            </td>
+                                            <input type="hidden" asp-for="OrderItems[i].ProductId" />
+                                            <input type="hidden" asp-for="OrderItems[i].ProductName" />
+                                            <input type="hidden" asp-for="OrderItems[i].UnitPrice" />
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+
+                            <div class="form-group">
+                                <label for="TotalAmount">Total Amount</label>
+                                <input type="text" asp-for="TotalAmount" class="form-control" readonly />
+                            </div>
+
+                            <div class="order-form-btn">
+                                <button type="submit" class="btn-default">Create Order</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // Function to calculate the total price
+        function calculateTotal() {
+            let totalAmount = 0;
+
+            // Loop through all the quantity inputs to calculate total for each row
+            document.querySelectorAll('.quantity').forEach(function(input) {
+                let quantity = parseInt(input.value) || 0;
+                let price = parseFloat(input.getAttribute('data-price')) || 0;
+                let rowTotal = quantity * price;
+
+                // Update the corresponding total cell
+                input.closest('tr').querySelector('.total').innerText = rowTotal.toFixed(2);
+
+                // Add to the overall total amount
+                totalAmount += rowTotal;
+            });
+
+            // Set the total amount to the input field
+            document.getElementById('TotalAmount').value = totalAmount.toFixed(2);
+        }
+
+        // Call calculateTotal whenever quantity is changed
+        document.querySelectorAll('.quantity').forEach(function(input) {
+            input.addEventListener('input', calculateTotal);
+        });
+
+        // Initial calculation of total
+        calculateTotal();
+    </script>
+}

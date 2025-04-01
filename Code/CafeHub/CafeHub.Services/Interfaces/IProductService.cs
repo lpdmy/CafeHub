@@ -12,5 +12,6 @@ namespace CafeHub.Services.Interfaces
         Task UpdateProductAsync(Product product);
         Task DeleteProductAsync(int id);
         Task<IEnumerable<Product>> GetProductsByCategoryAsync(int categoryId);
+        Task<List<Product>> GetProductsByIds(List<int> productIds);
     }
 }
