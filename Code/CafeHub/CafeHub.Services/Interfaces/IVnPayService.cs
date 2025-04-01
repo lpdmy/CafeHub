@@ -11,7 +11,7 @@ namespace CafeHub.Services.Interfaces
     public interface IVnPayService
     {
         Task<string> GetPaymentUrl(int orderId);
-        Task<string> ProcessPaymentResponse(IQueryCollection queryCollection); 
+        Task<string> ProcessPaymentResponse(IQueryCollection queryCollection, string returnUrl);
     }
 
 

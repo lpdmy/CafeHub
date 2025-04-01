@@ -180,10 +180,14 @@
                                             <a class="nav-link" asp-controller="OrderOffline" asp-action="Index">Service</a>
                                         </li>
                                     }
-                                    else
+                                    else if(User.IsInRole("Customer"))
                                     {
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="services.html">Services</a>
+                                        <li class="nav-item submenu">
+                                            <a class="nav-link" href="#">My cart</a>
+                                            <ul>
+                                                <li class="nav-item"><a class="nav-link" asp-controller="Cart" asp-action="Index">View Cart</a></li>
+                                                <li class="nav-item"><a class="nav-link" asp-controller="Cart" asp-action="Add">Add To Cart</a></li>
+                                            </ul>
                                         </li>
                                     }
                                 }
@@ -203,10 +207,10 @@
                                                 <a class="nav-link" asp-controller="Products" asp-action="Index">Menu</a>
                                             </li>
                                         }
-                                        else
+                                        else if (User.IsInRole("Customer"))
                                         {
                                         <li class="nav-item"><a class="nav-link" asp-controller="Menu" asp-action="Index">Menu</a></li>
-                                        <li class="nav-item"><a class="nav-link" asp-controller="Cart" asp-action="Add">Add To Cart</a></li>
+                                        
                                         }
                                     }
                                     else
@@ -215,10 +219,10 @@
                                     }
                                 
 
+                               
+
+
                                 
-
-
-                                <li class="nav-item"><a class="nav-link" href="services.html">Services</a></li>
                                 <li class="nav-item"><a class="nav-link" asp-controller="Menu" asp-action="Index">Menu</a></li>
 
 
@@ -276,6 +280,8 @@
                                     <a asp-controller="Account" asp-action="Logout" class="btn-default btn-highlighted">Logout</a>
                                 } else if (User.IsInRole("Customer"))
                                 {
+                                    
+
                                     <a asp-controller="Account" asp-action="CustomerProfile" class="btn-default btn-highlighted me-2">Profile</a>
                                     <a asp-controller="Account" asp-action="Logout" class="btn-default btn-highlighted">Logout</a>
                                 }
@@ -476,11 +482,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/7.0.5/signalr.min.js"></script>
     <script>
         document.addEventListener("DOMContentLoaded", function () {
-            let notifications = [
-                { title: "New Comment", content: "Someone commented on your post.", status: "Unseen", url: "/Home", createdAt: new Date() },
-                { title: "System Update", content: "A new update is available for your app.", status: "Unseen", url: "/Home", createdAt: new Date() },
-                { title: "Message", content: "You have a new message from John.", status: "Unseen", url: "/Home", createdAt: new Date() }
-            ];
+            let notifications = []; 
+
             const notificationListElement = document.getElementById("notificationList");
             const unreadCountElement = document.getElementById("unreadCount");
             const notificationDropdown = document.getElementById("notificationDropdown");

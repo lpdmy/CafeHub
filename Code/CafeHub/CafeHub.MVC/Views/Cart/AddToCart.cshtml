@@ -100,17 +100,42 @@
     </div>
 </div>
 
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
-    document.addEventListener("DOMContentLoaded", function () {
-        document.querySelectorAll(".size-selector").forEach(select => {
-            select.addEventListener("change", function () {
-                let productId = this.dataset.productId;
-                let basePrice = parseFloat(document.querySelector(`input[name="basePrice"][value="${productId}"]`).value);
-                let multiplier = parseFloat(this.options[this.selectedIndex].dataset.multiplier);
-                let newPrice = (basePrice * multiplier).toFixed(2);
-                document.getElementById(`price-${productId}`).textContent = `$${newPrice}`;
+    $(document).ready(function () {
+        $(".menu-list-item form").submit(function (e) {
+            e.preventDefault(); // Prevent normal form submission
+
+            let form = $(this);
+            let formData = form.serialize(); // Serialize form data
+
+            $.ajax({
+                url: form.attr("action"),
+                type: "POST",
+                data: formData,
+                success: function (response) {
+                    if (response.success) {
+                        alert(response.message);
+                        // Optionally update cart count or UI dynamically
+                    } else {
+                        alert("Error: " + response.message);
+                    }
+                },
+                error: function () {
+                    alert("An error occurred while adding the item.");
+                }
             });
+        });
+
+        // Update price dynamically when selecting a size
+        $(".size-selector").change(function () {
+            let productId = $(this).data("product-id");
+            let basePrice = parseFloat($(`input[name="basePrice"][value="${productId}"]`).val());
+            let multiplier = parseFloat($(this).find(":selected").data("multiplier"));
+            let newPrice = (basePrice * multiplier).toFixed(2);
+            $(`#price-${productId}`).text(`$${newPrice}`);
         });
     });
 </script>
+
 <!-- Page Menu Section End -->

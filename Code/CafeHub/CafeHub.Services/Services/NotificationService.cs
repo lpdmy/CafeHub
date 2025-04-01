@@ -58,6 +58,9 @@ namespace CafeHub.Services.Services
             _notificationsCache[notification.Title] = notification;
 
             await _hubContext.Clients.Group("Staff").SendAsync("ReceiveMessage", notification);
+
+            // Send updated count
+            await _hubContext.Clients.Group("Staff").SendAsync("UpdateNotificationCount", _notificationsCache.Count);
         }
 
         public async Task UpdateNotificationStatus(string userId, string notificationTitle)

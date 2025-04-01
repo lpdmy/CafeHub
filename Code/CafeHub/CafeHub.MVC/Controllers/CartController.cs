@@ -104,7 +104,7 @@ namespace CafeHub.MVC.Controllers
                 await _cartService.AddToCartAsync(userId, orderItem);
             }
 
-            return RedirectToAction("Index");
+            return Json(new { success = true, message = "Item added to cart successfully." });
         }
 
 

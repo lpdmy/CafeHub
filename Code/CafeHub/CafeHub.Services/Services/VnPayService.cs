@@ -1,4 +1,5 @@
-﻿using CafeHub.Commons.Models;
+﻿using Azure.Core;
+using CafeHub.Commons.Models;
 using CafeHub.Services.Interfaces;
 using CafeHub.Services.Models;
 using Microsoft.AspNetCore.Http;
@@ -17,17 +18,20 @@ namespace CafeHub.Services.Services
         private readonly IOrderService _orderService;
         private readonly IPaymentService _paymentService;
         private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly INotificationService _notificationService;
 
         public VnPayService(
             IConfiguration configuration,
             IOrderService orderService,
             IPaymentService paymentService,
-            IHttpContextAccessor httpContextAccessor)
+            IHttpContextAccessor httpContextAccessor,
+            INotificationService notificationService)
         {
             _configuration = configuration;
             _orderService = orderService;
             _paymentService = paymentService;
             _httpContextAccessor = httpContextAccessor;
+            _notificationService = notificationService;
         }
 
         public async Task<string> GetPaymentUrl(int orderId)
@@ -57,7 +61,7 @@ namespace CafeHub.Services.Services
             return vnpay.CreateRequestUrl(vnp_Url, vnp_HashSecret);
         }
 
-        public async Task<string> ProcessPaymentResponse(IQueryCollection queryCollection)
+        public async Task<string> ProcessPaymentResponse(IQueryCollection queryCollection, string returnUrl)
         {
             VnPayLibrary vnpay = new VnPayLibrary();
             foreach (var key in queryCollection.Keys)
@@ -81,11 +85,10 @@ namespace CafeHub.Services.Services
                 return "Order not found!";
             }
 
-            order.Status = vnp_ResponseCode == "00" ? "Paid" : "Failed";
-            await _orderService.UpdateOrderAsync(order);
-
-            if (order.Status == "Paid")
+            if (vnp_ResponseCode == "00")
             {
+                order.Status = "Paid";
+
                 await _paymentService.CreatePaymentAsync(new Payment
                 {
                     OrderId = order.Id,
@@ -93,13 +96,34 @@ namespace CafeHub.Services.Services
                     PaymentMethod = "VNPAY",
                     PaymentDate = DateTime.UtcNow
                 });
+
+                // Notify staff when payment is successful
+                await _notificationService.SendNotificationToStaff(
+                    "New Order Payment",
+                    $"Order #{order.Id} has been successfully paid via VNPay.",
+                    returnUrl
+                );
+
+                return "Payment successful!";
+            }
+            else
+            {
+                order.Status = "Failed";
+
+                // Notify staff when payment fails
+                await _notificationService.SendNotificationToStaff(
+                    "Payment Failed",
+                    $"Order #{order.Id} payment via VNPay failed. Please check and contact the customer if necessary.",
+                    returnUrl
+                );
+
+                return "Payment failed. Please try again.";
             }
 
-            return order.Status == "Paid" ? "Payment successful!" : "Payment failed. Please try again.";
         }
-
     }
-
 }
+
+
 
 

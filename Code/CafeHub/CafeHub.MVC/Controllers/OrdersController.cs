@@ -15,6 +15,7 @@ using CafeHub.Services.Models;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using CafeHub.Service.Interfaces;
+using CafeHub.Repository.Interfaces;
 
 namespace CafeHub.MVC.Controllers
 {
@@ -24,12 +25,14 @@ namespace CafeHub.MVC.Controllers
         private readonly IAccountService _accountService;
         private readonly ICartService _cartService;
         private readonly IOrderService _orderService;
+        private readonly IOrderRepository _orderRepository;
         private readonly IPaymentService _paymentService;
         private readonly IProductService _productService;
         private readonly IVnPayService _vnPayService;
         private readonly IDiscountService _discountService;
-        public OrdersController(ApplicationDbContext context, IAccountService accountService, ICartService cartService, IOrderService orderService, 
-           IPaymentService paymentService, IProductService productService, IVnPayService vnPayService, IDiscountService discountService )
+        private readonly INotificationService _notificationService;
+        public OrdersController(ApplicationDbContext context, IAccountService accountService, ICartService cartService, IOrderService orderService, IOrderRepository orderRepository,
+           IPaymentService paymentService, IProductService productService, IVnPayService vnPayService, IDiscountService discountService, INotificationService notificationService)
         {
             _context = context;
             _accountService = accountService;
@@ -39,6 +42,8 @@ namespace CafeHub.MVC.Controllers
             _productService = productService;
             _vnPayService = vnPayService;
             _discountService = discountService;
+            _notificationService = notificationService;
+            _orderRepository = orderRepository;
         }
 
 
@@ -46,6 +51,7 @@ namespace CafeHub.MVC.Controllers
         public async Task<IActionResult> Create()
         {
             var customer = await _accountService.GetCurrentCustomerAsync();
+            
 
             if (customer == null)
             {
@@ -110,11 +116,21 @@ namespace CafeHub.MVC.Controllers
                     if (product != null)
                     {
                         item.ProductName = product.Name;
-                        item.UnitPrice = GetFinalPrice(product.Price, item.Size); // Updated to ensure price adjustment
+                        item.UnitPrice = GetFinalPrice(product.Price, item.Size);
                     }
                 }
                 return View(model);
             }
+
+            // Retrieve the existing draft order (assumed to always exist)
+            var order = await _orderRepository.GetDraftOrderByCustomerIdAsync(userId);
+
+            // Update order details
+            order.Status = "Pending";
+            order.StartDate = DateTime.Now;
+            order.EndDate = DateTime.Now.AddMinutes(5);
+
+            
 
             var cartItems = await _cartService.GetCartItemsByUserIdAsync(userId);
             decimal totalAmount = cartItems.Sum(x => x.Quantity * GetFinalPrice(x.Product.Price, x.Size)); // Adjusted here
@@ -140,31 +156,10 @@ namespace CafeHub.MVC.Controllers
                     await _discountService.ApplyDiscountForCustomerAsync(userId, discount.Id);
                 }
             }
-            var order = new Order
-            {
-                CustomerId = userId,
-                OrderDate = DateTime.Now,
-                TotalAmount = totalAmount,
-                Status = "Pending",
-                StartDate = DateTime.Now,
-                EndDate = DateTime.Now.AddMinutes(5),
-                OrderItems = model.OrderItems
-                    .Where(x => x != null)
-                    .Select(x => new OrderItem
-                    {
-                        ProductId = x.ProductId,
-                        Quantity = x.Quantity,
-                        Size = x.Size,
-                        SugarAmount = x.SugarAmount,
-                        IceAmount = x.IceAmount,
-                        UnitPrice = GetFinalPrice(x.UnitPrice, x.Size) // Ensure correct price is stored
-                    }).ToList()
-            };
 
-            await _orderService.CreateOrderAsync(order);
+            order.TotalAmount = totalAmount;
 
-            // Optional: Clear cart
-            await _cartService.ClearCartByUserIdAsync(userId);
+            await _orderService.UpdateOrderAsync(order); // Save the updated order
 
             if (model.PaymentMethod == "VNPAY")
             {
@@ -178,6 +173,13 @@ namespace CafeHub.MVC.Controllers
                 PaymentMethod = "Cash",
                 PaymentDate = DateTime.UtcNow
             });
+
+            await _notificationService.SendNotificationToStaff(
+                "New Order Payment",
+                $"Order #{order.Id} has been successfully paid in cash.",
+                Url.Action("OrderConfirm", "Orders", null, Request.Scheme)
+            );
+
             return RedirectToAction(nameof(Details), new { id = order.Id });
         }
 
@@ -185,9 +187,14 @@ namespace CafeHub.MVC.Controllers
 
         public async Task<IActionResult> VnPayReturn()
         {
-            var resultMessage = await _vnPayService.ProcessPaymentResponse(HttpContext.Request.Query);
+            // Generate the return URL for OrderConfirm page
+            var returnUrl = Url.Action("OrderConfirm", "Orders", null, Request.Scheme);
+
+            // Pass the return URL to the service method
+            var resultMessage = await _vnPayService.ProcessPaymentResponse(HttpContext.Request.Query, returnUrl);
+
             ViewBag.Message = resultMessage; // Set message directly
-            return View("PaymentResult"); 
+            return View("PaymentResult"); // Display the payment result view
         }
 
         public async Task<IActionResult> Details(int id)
@@ -218,27 +225,95 @@ namespace CafeHub.MVC.Controllers
                 PaymentMethod = payment?.PaymentMethod ?? "N/A", // Assign PaymentMethod from Payment table
                 SelectedDiscountId = customerDiscount?.DiscountId, // Assign discount ID from CustomerDiscount
                 AvailableDiscounts = customerDiscount != null
-                    ? new List<DiscountViewModel>
-                    {
-                new DiscountViewModel
-                {
-                    Id = customerDiscount.Discount.Id,
-                    Name = customerDiscount.Discount.DiscountName,
-                    DiscountType = customerDiscount.Discount.DiscountType,
-                    DiscountValue = customerDiscount.Discount.DiscountValue
-                }
-                    }
-                    : new List<DiscountViewModel>(),
-                OrderItems = order.OrderItems.Select(oi => new OrderItemViewModel
-                {
-                    ProductName = oi.Product.Name,
-                    Quantity = oi.Quantity,
-                    UnitPrice = oi.UnitPrice
-                }).ToList()
+         ? new List<DiscountViewModel>
+         {
+            new DiscountViewModel
+            {
+                Id = customerDiscount.Discount.Id,
+                Name = customerDiscount.Discount.DiscountName,
+                DiscountType = customerDiscount.Discount.DiscountType,
+                DiscountValue = customerDiscount.Discount.DiscountValue
+            }
+         }
+         : new List<DiscountViewModel>()
             };
+
 
             return View(viewModel);
         }
+        public async Task<IActionResult> OrderConfirm(int id)
+        {
+            // Fetch the list of pending orders
+            var orders = await _orderService.GetPendingOrdersAsync();
+           
+
+            // Create an empty list to hold the OrderViewModel
+            var model = new List<OrderViewModel>();
+
+            foreach (var order in orders)
+            {
+                // Fetch payment for each order
+                var payment = await _paymentService.GetPaymentByOrderIdAsync(order.Id);
+
+                // Add the order with payment details to the model list
+                var orderViewModel = new OrderViewModel
+                {
+                    Id = order.Id,
+                    CustomerName = order.Customer.FullName,
+                    PhoneNumber = order.Customer.PhoneNumber,
+                    Address = order.Customer.Address,
+                    TotalAmount = order.TotalAmount,
+                    PaymentMethod = payment?.PaymentMethod ?? "N/A", // Default to "N/A" if no payment
+                    OrderItems = order.OrderItems.Select(item => new OrderItemViewModel
+                    {
+                        ProductId = item.ProductId,
+                        ProductName = item.Product.Name,
+                        UnitPrice = item.UnitPrice,
+                        Quantity = item.Quantity,
+                        Size = item.Size,
+                        SugarAmount = item.SugarAmount,
+                        IceAmount = item.IceAmount
+                    }).ToList()
+                };
+
+                model.Add(orderViewModel);
+            }
+
+            return View("OrderConfirm", model); // Return the list of orders with payment details
+        }
+
+
+
+        [HttpPost]
+        public async Task<IActionResult> UpdateStatus([FromBody] OrderStatusUpdateModel model)
+        {
+            var order = await _orderService.GetOrderDetailsAsync(model.OrderId);
+            if (order == null)
+            {
+                return Json(new { success = false, message = "Order not found." });
+            }
+
+            var userId = order.CustomerId; // Get the user ID who placed the order
+            var staffId = await _accountService.GetCurrentUserIdAsync();
+
+            order.Status = model.Status;
+            order.StaffId = staffId;
+            await _orderService.UpdateOrderAsync(order);
+
+            if (model.Status == "Confirmed")
+            {
+                await _cartService.ClearCartByUserIdAsync(userId);
+            }
+
+            string notificationTitle = "Order Update";
+            string notificationContent = $"Your order #{order.Id} has been {model.Status}.";
+            string notificationUrl = $"/Orders/Details/{order.Id}";
+
+            await _notificationService.SendNotificationToUser(userId, notificationTitle, notificationContent, notificationUrl);
+
+            return Json(new { success = true });
+        }
+
 
         [HttpGet]
         public async Task<IActionResult> RecalculateTotal(int discountId)

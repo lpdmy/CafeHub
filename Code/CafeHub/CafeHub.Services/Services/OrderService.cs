@@ -29,6 +29,7 @@ namespace CafeHub.Services.Services
             return order;
         }
 
+       
         public async Task<Order?> GetOrderDetailsAsync(int id)
         {
             return await _orderRepository.GetOrderWithDetailsAsync(id);
@@ -38,9 +39,24 @@ namespace CafeHub.Services.Services
         {
             return await _orderRepository.GetOrdersByCustomerAsync(customerId);
         }
-        public async Task UpdateOrderAsync(Order order)
+        public async Task<Order> UpdateOrderAsync(Order order)
         {
+          
+
+            // Update order properties
             await _orderRepository.UpdateAsync(order);
+
+            return order;
+        }
+
+        public async Task<IEnumerable<Order>> GetAllOrdersAsync()
+        {
+            return await _orderRepository.GetAllAsync();
+        }
+
+        public async Task<List<Order>> GetPendingOrdersAsync()
+        {
+            return await _orderRepository.GetPendingOrdersAsync();
         }
     }
 }

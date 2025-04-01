@@ -50,5 +50,17 @@ namespace CafeHub.Repository.Repositories
         {
             return await _context.Orders.ToListAsync();
         }
+        public async Task<List<Order>> GetPendingOrdersAsync()
+        {
+            return await _context.Orders
+                .Where(o => o.Status != "Confirmed" && o.Status != "Denied")
+                .OrderByDescending(o => o.OrderDate) // Orders from newest to oldest
+                .Include(o => o.Customer)
+                .Include(o => o.OrderItems)
+                .ThenInclude(oi => oi.Product)
+                .ToListAsync();
+        }
+
+
     }
 }
