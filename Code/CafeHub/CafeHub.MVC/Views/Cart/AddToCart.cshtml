@@ -63,16 +63,17 @@
                                                 <!-- Add to Cart Form -->
                                                 <form asp-controller="Cart" asp-action="Add" method="post" class="mt-3">
                                                     <input type="hidden" name="productId" value="@product.Id" />
+                                                    <input type="hidden" name="basePrice" value="@product.Price" />
                                                     <div class="form-group mb-2">
                                                         <label>Quantity:</label>
                                                         <input type="number" name="quantity" value="1" min="1" class="form-control" required />
                                                     </div>
                                                     <div class="form-group mb-2">
                                                         <label>Size:</label>
-                                                        <select name="size" class="form-control" required>
-                                                            <option value="Small">Small</option>
-                                                            <option value="Medium">Medium</option>
-                                                            <option value="Large">Large</option>
+                                                        <select name="size" class="form-control size-selector" data-product-id="@product.Id" required>
+                                                            <option value="Small" data-multiplier="1.0">Small</option>
+                                                            <option value="Medium" data-multiplier="1.1">Medium (+30%)</option>
+                                                            <option value="Large" data-multiplier="1.2">Large (+50%)</option>
                                                         </select>
                                                     </div>
                                                     <div class="form-group mb-2">
@@ -98,4 +99,43 @@
         </div>
     </div>
 </div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $(".menu-list-item form").submit(function (e) {
+            e.preventDefault(); // Prevent normal form submission
+
+            let form = $(this);
+            let formData = form.serialize(); // Serialize form data
+
+            $.ajax({
+                url: form.attr("action"),
+                type: "POST",
+                data: formData,
+                success: function (response) {
+                    if (response.success) {
+                        alert(response.message);
+                        // Optionally update cart count or UI dynamically
+                    } else {
+                        alert("Error: " + response.message);
+                    }
+                },
+                error: function () {
+                    alert("An error occurred while adding the item.");
+                }
+            });
+        });
+
+        // Update price dynamically when selecting a size
+        $(".size-selector").change(function () {
+            let productId = $(this).data("product-id");
+            let basePrice = parseFloat($(`input[name="basePrice"][value="${productId}"]`).val());
+            let multiplier = parseFloat($(this).find(":selected").data("multiplier"));
+            let newPrice = (basePrice * multiplier).toFixed(2);
+            $(`#price-${productId}`).text(`$${newPrice}`);
+        });
+    });
+</script>
+
 <!-- Page Menu Section End -->

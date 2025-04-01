@@ -1,47 +1,164 @@
-﻿@model CafeHub.Commons.Models.Order
+﻿@model CafeHub.MVC.Models.OrderViewModel
 
-@{
-    ViewData["Title"] = "Create";
-}
+<style>
+    /* Ensure dropdown text is visible */
+    #discountDropdown {
+        color: white; /* Change selected option text color */
+        background-color: #121d23; /* Ensure dropdown has a white background */
+    }
 
-<h1>Create</h1>
+        /* Style the options in the dropdown */
+        #discountDropdown option {
+            color: white !important; /* Ensure text inside options is visible */
+            background-color: #121d23 !important; /* Ensure option background is white */
+        }
 
-<h4>Order</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="CustomerId" class="control-label"></label>
-                <select asp-for="CustomerId" class ="form-control" asp-items="ViewBag.CustomerId"></select>
+    /* Optional: Improve dropdown styling */
+    .form-control {
+        border: 1px solid #ccc; /* Add a border */
+        border-radius: 10px; /* Rounded corners */
+        padding: 8px; /* Improve spacing */
+    }
+</style>
+
+<div class="page-book-table">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6">
+                <div class="book-table-content">
+                    <div class="section-title">
+                        <h3 class="wow fadeInUp">Order Summary</h3>
+                        <h2 class="text-anime-style-3" data-cursor="-opaque">Confirm Your Order</h2>
+                    </div>
+
+                    <div class="contact-us-form wow fadeInUp" data-wow-delay="0.6s">
+                        <form asp-controller="Orders" asp-action="Create" method="post">
+                            <div class="row">
+                                <div class="form-group col-md-12 mb-4">
+                                    <label>Name:</label>
+                                    <input asp-for="CustomerName" class="form-control" readonly />
+                                </div>
+                                <div class="form-group col-md-12 mb-4">
+                                    <label>Phone:</label>
+                                    <input asp-for="PhoneNumber" class="form-control" readonly />
+                                </div>
+                                <div class="form-group col-md-12 mb-4">
+                                    <label>Address:</label>
+                                    <input asp-for="Address" class="form-control" readonly />
+                                </div>
+
+                                @for (int i = 0; i < Model.OrderItems.Count; i++)
+                                {
+                                    <input type="hidden" name="OrderItems.Index" value="@i" />
+
+                                    <div class="form-group col-md-12 mb-4 border p-3 rounded">
+                                        <p><strong>Product:</strong> @Model.OrderItems[i].ProductName</p>
+                                        <p><strong>Size:</strong> @Model.OrderItems[i].Size</p>
+                                        <p><strong>Sugar:</strong> @Model.OrderItems[i].SugarAmount %</p>
+                                        <p><strong>Ice:</strong> @Model.OrderItems[i].IceAmount %</p>
+                                        <p><strong>Quantity:</strong> @Model.OrderItems[i].Quantity</p>
+                                        <p><strong>Price:</strong> @Model.OrderItems[i].UnitPrice</p>
+
+                                        <!-- Hidden fields -->
+                                        <input type="hidden" asp-for="OrderItems[@i].ProductId" />
+                                        <input type="hidden" asp-for="OrderItems[@i].ProductName" />
+                                        <input type="hidden" asp-for="OrderItems[@i].Quantity" />
+                                        <input type="hidden" asp-for="OrderItems[@i].UnitPrice" />
+                                        <input type="hidden" asp-for="OrderItems[@i].Size" />
+                                        <input type="hidden" asp-for="OrderItems[@i].SugarAmount" />
+                                        <input type="hidden" asp-for="OrderItems[@i].IceAmount" />
+                                    </div>
+                                }
+
+                                <!-- Discount Selection -->
+                                <div class="form-group col-md-12 mb-4">
+                                    <label for="SelectedDiscountId">Discount:</label>
+                                    <select asp-for="SelectedDiscountId" class="form-control" id="discountDropdown">
+                                        <option value="">Select a discount</option>
+                                        @foreach (var discount in Model.AvailableDiscounts)
+                                        {
+                                            <option value="@discount.Id" data-type="@discount.DiscountType" data-value="@discount.DiscountValue">
+                                                @discount.Name (@(discount.DiscountType == "Percentage" ? discount.DiscountValue + "%" : "$" + discount.DiscountValue))
+                                            </option>
+                                        }
+                                    </select>
+                                </div>
+
+                                <!-- Hidden input field to store the selected discount ID -->
+                                <input type="hidden" asp-for="SelectedDiscountId" id="selectedDiscountInput" />
+
+                                
+
+
+                                <!-- Total -->
+                                <div class="form-group col-md-12 mb-4">
+                                    <label>Total Amount:</label>
+                                    <input asp-for="TotalAmount" class="form-control" id="totalAmount" readonly />
+                                </div>
+
+                                <!-- Payment Method -->
+                                <div class="form-group col-md-12 mb-4">
+                                    <label>Payment Method:</label>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" asp-for="PaymentMethod" value="Cash" checked />
+                                        <label class="form-check-label">Cash</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" asp-for="PaymentMethod" value="VNPAY" />
+                                        <label class="form-check-label">VNPAY</label>
+                                    </div>
+                                    <span class="text-danger" asp-validation-for="PaymentMethod"></span>
+                                </div>
+
+                                <!-- Submit -->
+                                <div class="col-lg-12">
+                                    <div class="book-table-btn">
+                                        <button type="submit" class="btn-default">Confirm & Pay</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+
+                        <p class="mt-3">
+                            Want to update your cart?
+                            <div class="book-table-btn">
+                                <a asp-controller="Cart" asp-action="Index" class="btn-default ml-2">View Cart</a>
+                            </div>
+                        </p>
+                    </div>
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="OrderDate" class="control-label"></label>
-                <input asp-for="OrderDate" class="form-control" />
-                <span asp-validation-for="OrderDate" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Status" class="control-label"></label>
-                <input asp-for="Status" class="form-control" />
-                <span asp-validation-for="Status" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="TotalAmount" class="control-label"></label>
-                <input asp-for="TotalAmount" class="form-control" />
-                <span asp-validation-for="TotalAmount" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
+        </div>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('#discountDropdown').change(function () {
+            var discountId = $(this).val();  // Get selected discount ID
+            if (discountId) {
+                $.ajax({
+                    url: '@Url.Action("RecalculateTotal", "Orders")',
+                    type: 'GET',
+                    data: { discountId: discountId },
+                    success: function (response) {
+                        $('#totalAmount').val(response.totalAmount.toFixed(2)); // Update Total Amount
+                    },
+                    error: function () {
+                        alert('Error updating total amount.');
+                    }
+                });
+            }
+        });
+    });
+</script>
+<script>
+    $(document).ready(function () {
+        $('#discountDropdown').change(function () {
+            $('#selectedDiscountInput').val($(this).val()); // Store selected discount ID in hidden field
+        });
+    });
+</script>
 
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}
+

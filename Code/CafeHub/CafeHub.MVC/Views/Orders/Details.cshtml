@@ -1,40 +1,62 @@
-﻿@model CafeHub.Commons.Models.Order
+﻿@model CafeHub.MVC.Models.OrderViewModel
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Order Details";
 }
 
-<h1>Details</h1>
+<div class="page-book-table">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6">
+                <div class="book-table-content">
+                    <div class="section-title">
+                        <h3 class="wow fadeInUp">Order Summary</h3>
+                        <h2 class="text-anime-style-3" data-cursor="-opaque">Confirm Your Order</h2>
+                    </div>
 
-<div>
-    <h4>Order</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.OrderDate)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.OrderDate)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Status)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Status)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.TotalAmount)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.TotalAmount)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Customer)
-        </dt>
-    
-    </dl>
-</div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+                    <div class="contact-us-form wow fadeInUp" data-wow-delay="0.6s">
+                        <form asp-controller="Orders" asp-action="Create" method="post">
+                            <div class="row">
+                                <div class="form-group col-md-12 mb-4">
+                                    <label>Name:</label>
+                                    <input asp-for="CustomerName" class="form-control" readonly />
+                                </div>
+                                <div class="form-group col-md-12 mb-4">
+                                    <label>Phone:</label>
+                                    <input asp-for="PhoneNumber" class="form-control" readonly />
+                                </div>
+                                <div class="form-group col-md-12 mb-4">
+                                    <label>Address:</label>
+                                    <input asp-for="Address" class="form-control" readonly />
+                                </div>
+
+
+                                <div class="form-group col-md-12 mb-4">
+                                    <label>Applied Discount:</label>
+                                    <input type="text" class="form-control" value="@(Model.SelectedDiscountId.HasValue ? Model.AvailableDiscounts.FirstOrDefault(d => d.Id == Model.SelectedDiscountId)?.Name : "None")" readonly />
+                                </div>
+
+                                <div class="form-group col-md-12 mb-4">
+                                    <label>Total Amount:</label>
+                                    <input asp-for="TotalAmount" class="form-control" readonly />
+                                </div>
+
+                                <div class="form-group col-md-12 mb-4">
+                                    <label>Payment Method:</label>
+                                    <input asp-for="PaymentMethod" class="form-control" readonly />
+                                </div>
+
+                                <div class="col-lg-12">
+                                    <div class="book-table-btn">
+                                        <a href="@Url.Action("Index", "Transaction")" class="btn-default">View Transactions</a>
+                                        <a href="@Url.Action("Index", "Home")" class="btn-default ml-2">Back to Home</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

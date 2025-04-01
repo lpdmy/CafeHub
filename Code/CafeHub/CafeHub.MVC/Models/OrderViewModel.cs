@@ -22,6 +22,13 @@ namespace CafeHub.MVC.Models
         public decimal TotalAmount { get; set; }
 
 
-        public Payment? Payment { get; set; }
+        [Required(ErrorMessage = "Please select a payment method")]
+        public string PaymentMethod { get; set; } = "Cash";
+
+
+        // Discount selection
+        public int? SelectedDiscountId { get; set; } // ID of the selected discount
+        public List<DiscountViewModel> AvailableDiscounts { get; set; } = new List<DiscountViewModel>();
+
     }
 }

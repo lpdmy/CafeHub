@@ -25,6 +25,7 @@ namespace CafeHub.Repository.Repositories
         {
             return await _dbSet.FindAsync(id);
         }
+       
 
         public async Task<IEnumerable<T>> GetAllAsync()
         {

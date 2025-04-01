@@ -1,0 +1,70 @@
+﻿@model IEnumerable<OrderViewModel>
+
+@{
+    ViewData["Title"] = "Order Confirmation";
+}
+
+<h2>Order Confirmation</h2>
+
+@foreach (var order in Model)
+{
+    <div class="card mb-3">
+        <div class="card-header">Order #@order.Id</div>
+        <div class="card-body">
+            <p><strong>Customer:</strong> @order.CustomerName</p>
+            <p><strong>Phone:</strong> @order.PhoneNumber</p>
+            <p><strong>Address:</strong> @order.Address</p>
+            <p><strong>Total Amount:</strong> $@order.TotalAmount</p>
+            <p><strong>Payment Method:</strong> @order.PaymentMethod</p>
+
+            <h4>Order Items</h4>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Product</th>
+                        <th>Size</th>
+                        <th>Quantity</th>
+                        <th>Price</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in order.OrderItems)
+                    {
+                        <tr>
+                            <td>@item.ProductName</td>
+                            <td>@item.Size</td>
+                            <td>@item.Quantity</td>
+                            <td>$@item.UnitPrice</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+            <form>
+                <button type="button" class="btn btn-success" onclick="updateOrderStatus(@order.Id, 'Confirmed')">Confirm</button>
+                <button type="button" class="btn btn-danger" onclick="updateOrderStatus(@order.Id, 'Denied')">Deny</button>
+            </form>
+        </div>
+    </div>
+}
+
+<script>
+    function updateOrderStatus(orderId, status) {
+        fetch('/Orders/UpdateStatus', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ orderId: orderId, status: status })
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert("Order #" + orderId + " status updated to " + status);
+                    location.reload();
+                } else {
+                    alert("Failed to update order status.");
+                }
+            });
+    }
+</script>

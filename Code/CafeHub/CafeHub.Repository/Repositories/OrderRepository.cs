@@ -18,8 +18,9 @@ namespace CafeHub.Repository.Repositories
         public async Task<Order?> GetOrderWithDetailsAsync(int id)
         {
             return await _dbSet
-                .Include(o => o.OrderItems) // Adjust navigation properties based on your model
-                .ThenInclude(oi => oi.Product) // If you want product details too
+                .Include(o => o.OrderItems)
+                .Include(o => o.Payment)
+                .Include(o => o.Customer)
                 .FirstOrDefaultAsync(o => o.Id == id);
         }
 
@@ -49,5 +50,17 @@ namespace CafeHub.Repository.Repositories
         {
             return await _context.Orders.ToListAsync();
         }
+        public async Task<List<Order>> GetPendingOrdersAsync()
+        {
+            return await _context.Orders
+                .Where(o => o.Status != "Confirmed" && o.Status != "Denied")
+                .OrderByDescending(o => o.OrderDate) // Orders from newest to oldest
+                .Include(o => o.Customer)
+                .Include(o => o.OrderItems)
+                .ThenInclude(oi => oi.Product)
+                .ToListAsync();
+        }
+
+
     }
 }
