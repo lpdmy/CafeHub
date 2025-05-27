@@ -51,7 +51,7 @@ namespace CafeHub.MVC.Controllers
                 DateOfBirth = model.DateOfBirth,
                 Gender = model.Gender,
                 Address = model.Address,
-                ProfilePictureUrl = model.ProfilePictureUrl
+                ProfilePictureUrl = model.ProfilePictureUrl 
             };
 
             var result = await _accountService.RegisterAsync(user, model.Password);
